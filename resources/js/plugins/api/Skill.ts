@@ -3,27 +3,27 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class Skill extends ApiObject {
     getName(): string | null {
-        return callStr(1357, this.handle, []);
+        return callStr(1355, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1358, this.handle, []);
+        return callNum(1356, this.handle, []);
     }
 
     isMembers(): boolean {
-        return callNum(1359, this.handle, []) !== 0;
+        return callNum(1357, this.handle, []) !== 0;
     }
 
     name(): string | null {
-        return callStr(1360, this.handle, []);
+        return callStr(1358, this.handle, []);
     }
 
     ordinal(): number {
-        return callNum(1361, this.handle, []);
+        return callNum(1359, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1362, this.handle, []);
+        return callStr(1360, this.handle, []);
     }
 
 }

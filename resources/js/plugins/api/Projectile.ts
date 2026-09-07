@@ -9,143 +9,143 @@ import { WorldPoint } from './WorldPoint';
 
 export class Projectile extends ApiObject {
     getAnimation(): Animation | null {
-        return wrap(1132, this.handle, [], Animation);
+        return wrap(1130, this.handle, [], Animation);
     }
 
     getAnimationFrame(): number {
-        return callNum(1133, this.handle, []);
+        return callNum(1131, this.handle, []);
     }
 
     getAnimationHeightOffset(): number {
-        return callNum(1134, this.handle, []);
+        return callNum(1132, this.handle, []);
     }
 
     getEndCycle(): number {
-        return callNum(1135, this.handle, []);
+        return callNum(1133, this.handle, []);
     }
 
     getEndHeight(): number {
-        return callNum(1136, this.handle, []);
+        return callNum(1134, this.handle, []);
     }
 
     getFloor(): number {
-        return callNum(1137, this.handle, []);
+        return callNum(1135, this.handle, []);
     }
 
     getHash(): number {
-        return callNum(1138, this.handle, []);
+        return callNum(1136, this.handle, []);
     }
 
     getHeight(): number {
-        return callNum(1139, this.handle, []);
+        return callNum(1137, this.handle, []);
     }
 
     getId(): number {
-        return callNum(1140, this.handle, []);
+        return callNum(1138, this.handle, []);
     }
 
     getInteracting(): Actor | null {
-        return wrap(1141, this.handle, [], Actor);
+        return wrap(1139, this.handle, [], Actor);
     }
 
     getModel(): Model | null {
-        return wrap(1142, this.handle, [], Model);
+        return wrap(1140, this.handle, [], Model);
     }
 
     getModelHeight(): number {
-        return callNum(1143, this.handle, []);
+        return callNum(1141, this.handle, []);
     }
 
     getNext(): Node | null {
-        return wrap(1144, this.handle, [], Node);
+        return wrap(1142, this.handle, [], Node);
     }
 
     getOrientation(): number {
-        return callNum(1145, this.handle, []);
+        return callNum(1143, this.handle, []);
     }
 
     getPrevious(): Node | null {
-        return wrap(1146, this.handle, [], Node);
+        return wrap(1144, this.handle, [], Node);
     }
 
     getRemainingCycles(): number {
-        return callNum(1147, this.handle, []);
+        return callNum(1145, this.handle, []);
     }
 
     getRenderMode(): number {
-        return callNum(1148, this.handle, []);
+        return callNum(1146, this.handle, []);
     }
 
     getSlope(): number {
-        return callNum(1149, this.handle, []);
+        return callNum(1147, this.handle, []);
     }
 
     getSourceActor(): Actor | null {
-        return wrap(1150, this.handle, [], Actor);
+        return wrap(1148, this.handle, [], Actor);
     }
 
     getSourceLevel(): number {
-        return callNum(1151, this.handle, []);
+        return callNum(1149, this.handle, []);
     }
 
     getSourcePoint(): WorldPoint | null {
-        return wrap(1152, this.handle, [], WorldPoint);
+        return wrap(1150, this.handle, [], WorldPoint);
     }
 
     getStartCycle(): number {
-        return callNum(1153, this.handle, []);
+        return callNum(1151, this.handle, []);
     }
 
     getStartHeight(): number {
-        return callNum(1154, this.handle, []);
+        return callNum(1152, this.handle, []);
     }
 
     getStartPos(): number {
-        return callNum(1155, this.handle, []);
+        return callNum(1153, this.handle, []);
     }
 
     getTarget(): LocalPoint | null {
-        return wrap(1156, this.handle, [], LocalPoint);
+        return wrap(1154, this.handle, [], LocalPoint);
     }
 
     getTargetActor(): Actor | null {
-        return wrap(1157, this.handle, [], Actor);
+        return wrap(1155, this.handle, [], Actor);
     }
 
     getTargetLevel(): number {
-        return callNum(1158, this.handle, []);
+        return callNum(1156, this.handle, []);
     }
 
     getTargetPoint(): WorldPoint | null {
-        return wrap(1159, this.handle, [], WorldPoint);
+        return wrap(1157, this.handle, [], WorldPoint);
     }
 
     getX(): number {
-        return callNum(1160, this.handle, []);
+        return callNum(1158, this.handle, []);
     }
 
     getX1(): number {
-        return callNum(1161, this.handle, []);
+        return callNum(1159, this.handle, []);
     }
 
     getY(): number {
-        return callNum(1162, this.handle, []);
+        return callNum(1160, this.handle, []);
     }
 
     getY1(): number {
-        return callNum(1163, this.handle, []);
+        return callNum(1161, this.handle, []);
     }
 
     getZ(): number {
-        return callNum(1164, this.handle, []);
+        return callNum(1162, this.handle, []);
     }
 
     setEndCycle(a0: number): void {
-        callVoid(1165, this.handle, [a0]);
+        callVoid(1163, this.handle, [a0]);
     }
 
     setModelHeight(a0: number): void {
-        callVoid(1166, this.handle, [a0]);
+        callVoid(1164, this.handle, [a0]);
     }
 
 }

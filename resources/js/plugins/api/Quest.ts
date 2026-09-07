@@ -3,31 +3,31 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class Quest extends ApiObject {
     getId(): number {
-        return callNum(1168, this.handle, []);
+        return callNum(1166, this.handle, []);
     }
 
     getName(): string | null {
-        return callStr(1169, this.handle, []);
+        return callStr(1167, this.handle, []);
     }
 
     getState(a0: ApiObject | null): string | null {
-        return callStr(1170, this.handle, [(a0 ? a0.handle : -1)]);
+        return callStr(1168, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     hashCode(): number {
-        return callNum(1171, this.handle, []);
+        return callNum(1169, this.handle, []);
     }
 
     name(): string | null {
-        return callStr(1172, this.handle, []);
+        return callStr(1170, this.handle, []);
     }
 
     ordinal(): number {
-        return callNum(1173, this.handle, []);
+        return callNum(1171, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1174, this.handle, []);
+        return callStr(1172, this.handle, []);
     }
 
 }

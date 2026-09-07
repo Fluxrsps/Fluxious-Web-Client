@@ -4,19 +4,19 @@ import { Actor } from './Actor';
 
 export class OverheadTextChanged extends ApiObject {
     getActor(): Actor | null {
-        return wrap(1820, this.handle, [], Actor);
+        return wrap(1818, this.handle, [], Actor);
     }
 
     getOverheadText(): string | null {
-        return callStr(1821, this.handle, []);
+        return callStr(1819, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1822, this.handle, []);
+        return callNum(1820, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1823, this.handle, []);
+        return callStr(1821, this.handle, []);
     }
 
 }

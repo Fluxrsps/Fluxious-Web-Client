@@ -3,23 +3,23 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class Prayer extends ApiObject {
     getVarbit(): number {
-        return callNum(1120, this.handle, []);
+        return callNum(1118, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1121, this.handle, []);
+        return callNum(1119, this.handle, []);
     }
 
     name(): string | null {
-        return callStr(1122, this.handle, []);
+        return callStr(1120, this.handle, []);
     }
 
     ordinal(): number {
-        return callNum(1123, this.handle, []);
+        return callNum(1121, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1124, this.handle, []);
+        return callStr(1122, this.handle, []);
     }
 
 }

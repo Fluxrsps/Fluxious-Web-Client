@@ -4,23 +4,23 @@ import { Node } from './Node';
 
 export class IntegerNode extends ApiObject {
     getHash(): number {
-        return callNum(638, this.handle, []);
+        return callNum(636, this.handle, []);
     }
 
     getNext(): Node | null {
-        return wrap(639, this.handle, [], Node);
+        return wrap(637, this.handle, [], Node);
     }
 
     getPrevious(): Node | null {
-        return wrap(640, this.handle, [], Node);
+        return wrap(638, this.handle, [], Node);
     }
 
     getValue(): number {
-        return callNum(641, this.handle, []);
+        return callNum(639, this.handle, []);
     }
 
     setValue(a0: number): void {
-        callVoid(642, this.handle, [a0]);
+        callVoid(640, this.handle, [a0]);
     }
 
 }

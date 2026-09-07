@@ -3,19 +3,19 @@ import { ApiObject, callNum, callStr, callVoid } from './runtime';
 
 export class PlayerMenuOptionsChanged extends ApiObject {
     getIndex(): number {
-        return callNum(1831, this.handle, []);
+        return callNum(1829, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1832, this.handle, []);
+        return callNum(1830, this.handle, []);
     }
 
     setIndex(a0: number): void {
-        callVoid(1833, this.handle, [a0]);
+        callVoid(1831, this.handle, [a0]);
     }
 
     toString(): string | null {
-        return callStr(1834, this.handle, []);
+        return callStr(1832, this.handle, []);
     }
 
 }

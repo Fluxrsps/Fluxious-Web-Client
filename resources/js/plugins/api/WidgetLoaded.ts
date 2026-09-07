@@ -3,19 +3,19 @@ import { ApiObject, callNum, callStr, callVoid } from './runtime';
 
 export class WidgetLoaded extends ApiObject {
     getGroupId(): number {
-        return callNum(1940, this.handle, []);
+        return callNum(1938, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1941, this.handle, []);
+        return callNum(1939, this.handle, []);
     }
 
     setGroupId(a0: number): void {
-        callVoid(1942, this.handle, [a0]);
+        callVoid(1940, this.handle, [a0]);
     }
 
     toString(): string | null {
-        return callStr(1943, this.handle, []);
+        return callStr(1941, this.handle, []);
     }
 
 }

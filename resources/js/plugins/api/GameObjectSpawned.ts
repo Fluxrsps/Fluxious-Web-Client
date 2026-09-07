@@ -5,27 +5,27 @@ import { Tile } from './Tile';
 
 export class GameObjectSpawned extends ApiObject {
     getGameObject(): GameObject | null {
-        return wrap(1701, this.handle, [], GameObject);
+        return wrap(1699, this.handle, [], GameObject);
     }
 
     getTile(): Tile | null {
-        return wrap(1702, this.handle, [], Tile);
+        return wrap(1700, this.handle, [], Tile);
     }
 
     hashCode(): number {
-        return callNum(1703, this.handle, []);
+        return callNum(1701, this.handle, []);
     }
 
     setGameObject(a0: ApiObject | null): void {
-        callVoid(1704, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1702, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setTile(a0: ApiObject | null): void {
-        callVoid(1705, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1703, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     toString(): string | null {
-        return callStr(1706, this.handle, []);
+        return callStr(1704, this.handle, []);
     }
 
 }

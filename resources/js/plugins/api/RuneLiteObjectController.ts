@@ -5,91 +5,91 @@ import { Model } from './Model';
 
 export class RuneLiteObjectController extends ApiObject {
     getLevel(): number {
-        return callNum(1237, this.handle, []);
+        return callNum(1235, this.handle, []);
     }
 
     getLocation(): LocalPoint | null {
-        return wrap(1238, this.handle, [], LocalPoint);
+        return wrap(1236, this.handle, [], LocalPoint);
     }
 
     getModel(): Model | null {
-        return wrap(1239, this.handle, [], Model);
+        return wrap(1237, this.handle, [], Model);
     }
 
     getOrientation(): number {
-        return callNum(1240, this.handle, []);
+        return callNum(1238, this.handle, []);
     }
 
     getRadius(): number {
-        return callNum(1241, this.handle, []);
+        return callNum(1239, this.handle, []);
     }
 
     getRenderMode(): number {
-        return callNum(1242, this.handle, []);
+        return callNum(1240, this.handle, []);
     }
 
     getWorldView(): number {
-        return callNum(1243, this.handle, []);
+        return callNum(1241, this.handle, []);
     }
 
     getX(): number {
-        return callNum(1244, this.handle, []);
+        return callNum(1242, this.handle, []);
     }
 
     getY(): number {
-        return callNum(1245, this.handle, []);
+        return callNum(1243, this.handle, []);
     }
 
     getZ(): number {
-        return callNum(1246, this.handle, []);
+        return callNum(1244, this.handle, []);
     }
 
     isDrawFrontTilesFirst(): boolean {
-        return callNum(1247, this.handle, []) !== 0;
+        return callNum(1245, this.handle, []) !== 0;
     }
 
     setDrawFrontTilesFirst(a0: boolean): void {
-        callVoid(1248, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(1246, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setLevel(a0: number): void {
-        callVoid(1249, this.handle, [a0]);
+        callVoid(1247, this.handle, [a0]);
     }
 
     setLocation(a0: ApiObject | null, a1: number): void {
-        callVoid(1250, this.handle, [(a0 ? a0.handle : -1), a1]);
+        callVoid(1248, this.handle, [(a0 ? a0.handle : -1), a1]);
     }
 
     setOrientation(a0: number): void {
-        callVoid(1251, this.handle, [a0]);
+        callVoid(1249, this.handle, [a0]);
     }
 
     setRadius(a0: number): void {
-        callVoid(1252, this.handle, [a0]);
+        callVoid(1250, this.handle, [a0]);
     }
 
     setRenderMode(a0: number): void {
-        callVoid(1253, this.handle, [a0]);
+        callVoid(1251, this.handle, [a0]);
     }
 
     setWorldView(a0: number): void {
-        callVoid(1254, this.handle, [a0]);
+        callVoid(1252, this.handle, [a0]);
     }
 
     setX(a0: number): void {
-        callVoid(1255, this.handle, [a0]);
+        callVoid(1253, this.handle, [a0]);
     }
 
     setY(a0: number): void {
-        callVoid(1256, this.handle, [a0]);
+        callVoid(1254, this.handle, [a0]);
     }
 
     setZ(a0: number): void {
-        callVoid(1257, this.handle, [a0]);
+        callVoid(1255, this.handle, [a0]);
     }
 
     tick(a0: number): void {
-        callVoid(1258, this.handle, [a0]);
+        callVoid(1256, this.handle, [a0]);
     }
 
 }

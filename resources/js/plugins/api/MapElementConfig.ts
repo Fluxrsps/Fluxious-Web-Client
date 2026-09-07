@@ -4,11 +4,11 @@ import { SpritePixels } from './SpritePixels';
 
 export class MapElementConfig extends ApiObject {
     getCategory(): number {
-        return callNum(2157, this.handle, []);
+        return callNum(2155, this.handle, []);
     }
 
     getMapIcon(a0: boolean): SpritePixels | null {
-        return wrap(2158, this.handle, [(a0 ? 1 : 0)], SpritePixels);
+        return wrap(2156, this.handle, [(a0 ? 1 : 0)], SpritePixels);
     }
 
 }

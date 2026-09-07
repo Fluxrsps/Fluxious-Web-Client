@@ -4,23 +4,23 @@ import { ClanChannel } from './ClanChannel';
 
 export class ClanChannelChanged extends ApiObject {
     getClanChannel(): ClanChannel | null {
-        return wrap(1649, this.handle, [], ClanChannel);
+        return wrap(1647, this.handle, [], ClanChannel);
     }
 
     getClanId(): number {
-        return callNum(1650, this.handle, []);
+        return callNum(1648, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1651, this.handle, []);
+        return callNum(1649, this.handle, []);
     }
 
     isGuest(): boolean {
-        return callNum(1652, this.handle, []) !== 0;
+        return callNum(1650, this.handle, []) !== 0;
     }
 
     toString(): string | null {
-        return callStr(1653, this.handle, []);
+        return callStr(1651, this.handle, []);
     }
 
 }

@@ -3,23 +3,23 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class MenuAction extends ApiObject {
     getId(): number {
-        return callNum(732, this.handle, []);
+        return callNum(730, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(733, this.handle, []);
+        return callNum(731, this.handle, []);
     }
 
     name(): string | null {
-        return callStr(734, this.handle, []);
+        return callStr(732, this.handle, []);
     }
 
     ordinal(): number {
-        return callNum(735, this.handle, []);
+        return callNum(733, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(736, this.handle, []);
+        return callStr(734, this.handle, []);
     }
 
 }

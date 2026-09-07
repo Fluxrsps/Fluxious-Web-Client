@@ -8,107 +8,107 @@ import { Tile } from './Tile';
 
 export class WorldView extends ApiObject {
     contains(a0: ApiObject | null): boolean {
-        return callNum(1506, this.handle, [(a0 ? a0.handle : -1)]) !== 0;
+        return callNum(1504, this.handle, [(a0 ? a0.handle : -1)]) !== 0;
     }
 
     contains$WorldPoint(a0: ApiObject | null): boolean {
-        return callNum(1507, this.handle, [(a0 ? a0.handle : -1)]) !== 0;
+        return callNum(1505, this.handle, [(a0 ? a0.handle : -1)]) !== 0;
     }
 
     getBaseX(): number {
-        return callNum(1508, this.handle, []);
+        return callNum(1506, this.handle, []);
     }
 
     getBaseY(): number {
-        return callNum(1509, this.handle, []);
+        return callNum(1507, this.handle, []);
     }
 
     getCanvasProjection(): Projection | null {
-        return wrap(1510, this.handle, [], Projection);
+        return wrap(1508, this.handle, [], Projection);
     }
 
     getCollisionMaps(): ApiArray<CollisionData | null> {
-        return new ApiArray<CollisionData | null>(callNum(1511, this.handle, []), 'handle', CollisionData);
+        return new ApiArray<CollisionData | null>(callNum(1509, this.handle, []), 'handle', CollisionData);
     }
 
     getGraphicsObjects(): Deque | null {
-        return wrap(1512, this.handle, [], Deque);
+        return wrap(1510, this.handle, [], Deque);
     }
 
     getId(): number {
-        return callNum(1513, this.handle, []);
+        return callNum(1511, this.handle, []);
     }
 
     getInstanceTemplateChunks(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1514, this.handle, []), 'none', null);
+        return new ApiArray<number>(callNum(1512, this.handle, []), 'none', null);
     }
 
     getMainWorldProjection(): Projection | null {
-        return wrap(1515, this.handle, [], Projection);
+        return wrap(1513, this.handle, [], Projection);
     }
 
     getMapRegions(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1516, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(1514, this.handle, []), 'num', null);
     }
 
     getPlane(): number {
-        return callNum(1517, this.handle, []);
+        return callNum(1515, this.handle, []);
     }
 
     getScene(): Scene | null {
-        return wrap(1518, this.handle, [], Scene);
+        return wrap(1516, this.handle, [], Scene);
     }
 
     getSelectedSceneTile(): Tile | null {
-        return wrap(1519, this.handle, [], Tile);
+        return wrap(1517, this.handle, [], Tile);
     }
 
     getSizeX(): number {
-        return callNum(1520, this.handle, []);
+        return callNum(1518, this.handle, []);
     }
 
     getSizeY(): number {
-        return callNum(1521, this.handle, []);
+        return callNum(1519, this.handle, []);
     }
 
     getTileHeight(a0: number, a1: number, a2: number): number {
-        return callNum(1522, this.handle, [a0, a1, a2]);
+        return callNum(1520, this.handle, [a0, a1, a2]);
     }
 
     getTileHeights(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1523, this.handle, []), 'none', null);
+        return new ApiArray<number>(callNum(1521, this.handle, []), 'none', null);
     }
 
     getTileSettings(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1524, this.handle, []), 'none', null);
+        return new ApiArray<number>(callNum(1522, this.handle, []), 'none', null);
     }
 
     getYellowClickAction(): number {
-        return callNum(1525, this.handle, []);
+        return callNum(1523, this.handle, []);
     }
 
     isInstance(): boolean {
-        return callNum(1526, this.handle, []) !== 0;
+        return callNum(1524, this.handle, []) !== 0;
     }
 
     isTopLevel(): boolean {
-        return callNum(1527, this.handle, []) !== 0;
+        return callNum(1525, this.handle, []) !== 0;
     }
 
     npcs(): ApiObject | null {
-        return wrap(1528, this.handle, [], ApiObject);
+        return wrap(1526, this.handle, [], ApiObject);
     }
 
     players(): ApiObject | null {
-        return wrap(1529, this.handle, [], ApiObject);
+        return wrap(1527, this.handle, [], ApiObject);
     }
 
     worldEntities(): ApiObject | null {
-        return wrap(1530, this.handle, [], ApiObject);
+        return wrap(1528, this.handle, [], ApiObject);
     }
 
     worldViews(): ApiObject | null {
-        return wrap(1531, this.handle, [], ApiObject);
+        return wrap(1529, this.handle, [], ApiObject);
     }
 
 }

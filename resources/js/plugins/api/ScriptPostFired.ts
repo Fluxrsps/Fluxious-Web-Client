@@ -3,15 +3,15 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class ScriptPostFired extends ApiObject {
     getScriptId(): number {
-        return callNum(1881, this.handle, []);
+        return callNum(1879, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1882, this.handle, []);
+        return callNum(1880, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1883, this.handle, []);
+        return callStr(1881, this.handle, []);
     }
 
 }

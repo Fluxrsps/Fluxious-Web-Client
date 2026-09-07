@@ -7,55 +7,55 @@ import { ObjectComposition } from './ObjectComposition';
 
 export class DynamicObject extends ApiObject {
     getAnimCycle(): number {
-        return callNum(449, this.handle, []);
+        return callNum(447, this.handle, []);
     }
 
     getAnimFrame(): number {
-        return callNum(450, this.handle, []);
+        return callNum(448, this.handle, []);
     }
 
     getAnimation(): Animation | null {
-        return wrap(451, this.handle, [], Animation);
+        return wrap(449, this.handle, [], Animation);
     }
 
     getAnimationHeightOffset(): number {
-        return callNum(452, this.handle, []);
+        return callNum(450, this.handle, []);
     }
 
     getHash(): number {
-        return callNum(453, this.handle, []);
+        return callNum(451, this.handle, []);
     }
 
     getModel(): Model | null {
-        return wrap(454, this.handle, [], Model);
+        return wrap(452, this.handle, [], Model);
     }
 
     getModelHeight(): number {
-        return callNum(455, this.handle, []);
+        return callNum(453, this.handle, []);
     }
 
     getModelZbuf(): Model | null {
-        return wrap(456, this.handle, [], Model);
+        return wrap(454, this.handle, [], Model);
     }
 
     getNext(): Node | null {
-        return wrap(457, this.handle, [], Node);
+        return wrap(455, this.handle, [], Node);
     }
 
     getPrevious(): Node | null {
-        return wrap(458, this.handle, [], Node);
+        return wrap(456, this.handle, [], Node);
     }
 
     getRecordedObjectComposition(): ObjectComposition | null {
-        return wrap(459, this.handle, [], ObjectComposition);
+        return wrap(457, this.handle, [], ObjectComposition);
     }
 
     getRenderMode(): number {
-        return callNum(460, this.handle, []);
+        return callNum(458, this.handle, []);
     }
 
     setModelHeight(a0: number): void {
-        callVoid(461, this.handle, [a0]);
+        callVoid(459, this.handle, [a0]);
     }
 
 }

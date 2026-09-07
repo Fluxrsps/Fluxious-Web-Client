@@ -6,27 +6,27 @@ import { WorldMapRenderer } from './WorldMapRenderer';
 
 export class WorldMap extends ApiObject {
     getWorldMapData(): WorldMapData | null {
-        return wrap(2159, this.handle, [], WorldMapData);
+        return wrap(2157, this.handle, [], WorldMapData);
     }
 
     getWorldMapPosition(): Point | null {
-        return wrap(2160, this.handle, [], Point);
+        return wrap(2158, this.handle, [], Point);
     }
 
     getWorldMapRenderer(): WorldMapRenderer | null {
-        return wrap(2161, this.handle, [], WorldMapRenderer);
+        return wrap(2159, this.handle, [], WorldMapRenderer);
     }
 
     getWorldMapZoom(): number {
-        return callNum(2162, this.handle, []);
+        return callNum(2160, this.handle, []);
     }
 
     initializeWorldMap(a0: ApiObject | null): void {
-        callVoid(2163, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(2161, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setWorldMapPositionTarget(a0: ApiObject | null): void {
-        callVoid(2164, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(2162, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
 }

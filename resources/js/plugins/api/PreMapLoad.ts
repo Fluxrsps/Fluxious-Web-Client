@@ -5,19 +5,19 @@ import { WorldView } from './WorldView';
 
 export class PreMapLoad extends ApiObject {
     getScene(): Scene | null {
-        return wrap(1856, this.handle, [], Scene);
+        return wrap(1854, this.handle, [], Scene);
     }
 
     getWorldView(): WorldView | null {
-        return wrap(1857, this.handle, [], WorldView);
+        return wrap(1855, this.handle, [], WorldView);
     }
 
     hashCode(): number {
-        return callNum(1858, this.handle, []);
+        return callNum(1856, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1859, this.handle, []);
+        return callStr(1857, this.handle, []);
     }
 
 }

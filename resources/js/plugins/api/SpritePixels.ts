@@ -3,63 +3,63 @@ import { ApiArray, ApiObject, callNum, callVoid } from './runtime';
 
 export class SpritePixels extends ApiObject {
     autoUpdate(): void {
-        callVoid(1363, this.handle, []);
+        callVoid(1361, this.handle, []);
     }
 
     drawAnimated(a0: number, a1: number): void {
-        callVoid(1364, this.handle, [a0, a1]);
+        callVoid(1362, this.handle, [a0, a1]);
     }
 
     drawAt(a0: number, a1: number): void {
-        callVoid(1365, this.handle, [a0, a1]);
+        callVoid(1363, this.handle, [a0, a1]);
     }
 
     drawHoverSprite(a0: number, a1: number, a2: ApiObject | null): void {
-        callVoid(1366, this.handle, [a0, a1, (a2 ? a2.handle : -1)]);
+        callVoid(1364, this.handle, [a0, a1, (a2 ? a2.handle : -1)]);
     }
 
     getHeight(): number {
-        return callNum(1367, this.handle, []);
+        return callNum(1365, this.handle, []);
     }
 
     getMaxHeight(): number {
-        return callNum(1368, this.handle, []);
+        return callNum(1366, this.handle, []);
     }
 
     getMaxWidth(): number {
-        return callNum(1369, this.handle, []);
+        return callNum(1367, this.handle, []);
     }
 
     getOffsetX(): number {
-        return callNum(1370, this.handle, []);
+        return callNum(1368, this.handle, []);
     }
 
     getOffsetY(): number {
-        return callNum(1371, this.handle, []);
+        return callNum(1369, this.handle, []);
     }
 
     getPixels(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1372, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(1370, this.handle, []), 'num', null);
     }
 
     getWidth(): number {
-        return callNum(1373, this.handle, []);
+        return callNum(1371, this.handle, []);
     }
 
     setMaxHeight(a0: number): void {
-        callVoid(1374, this.handle, [a0]);
+        callVoid(1372, this.handle, [a0]);
     }
 
     setMaxWidth(a0: number): void {
-        callVoid(1375, this.handle, [a0]);
+        callVoid(1373, this.handle, [a0]);
     }
 
     setOffsetX(a0: number): void {
-        callVoid(1376, this.handle, [a0]);
+        callVoid(1374, this.handle, [a0]);
     }
 
     setOffsetY(a0: number): void {
-        callVoid(1377, this.handle, [a0]);
+        callVoid(1375, this.handle, [a0]);
     }
 
 }

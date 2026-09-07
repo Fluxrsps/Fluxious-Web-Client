@@ -3,15 +3,15 @@ import { ApiObject, callNum, wrap } from './runtime';
 
 export class Node extends ApiObject {
     getHash(): number {
-        return callNum(993, this.handle, []);
+        return callNum(991, this.handle, []);
     }
 
     getNext(): Node | null {
-        return wrap(994, this.handle, [], Node);
+        return wrap(992, this.handle, [], Node);
     }
 
     getPrevious(): Node | null {
-        return wrap(995, this.handle, [], Node);
+        return wrap(993, this.handle, [], Node);
     }
 
 }

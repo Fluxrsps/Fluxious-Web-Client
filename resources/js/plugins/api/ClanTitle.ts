@@ -3,19 +3,19 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class ClanTitle extends ApiObject {
     getId(): number {
-        return callNum(1546, this.handle, []);
+        return callNum(1544, this.handle, []);
     }
 
     getName(): string | null {
-        return callStr(1547, this.handle, []);
+        return callStr(1545, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1548, this.handle, []);
+        return callNum(1546, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1549, this.handle, []);
+        return callStr(1547, this.handle, []);
     }
 
 }

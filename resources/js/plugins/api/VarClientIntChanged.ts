@@ -3,15 +3,15 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class VarClientIntChanged extends ApiObject {
     getIndex(): number {
-        return callNum(1905, this.handle, []);
+        return callNum(1903, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1906, this.handle, []);
+        return callNum(1904, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1907, this.handle, []);
+        return callStr(1905, this.handle, []);
     }
 
 }

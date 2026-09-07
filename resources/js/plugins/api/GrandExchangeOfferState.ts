@@ -3,19 +3,19 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class GrandExchangeOfferState extends ApiObject {
     hashCode(): number {
-        return callNum(545, this.handle, []);
+        return callNum(543, this.handle, []);
     }
 
     name(): string | null {
-        return callStr(546, this.handle, []);
+        return callStr(544, this.handle, []);
     }
 
     ordinal(): number {
-        return callNum(547, this.handle, []);
+        return callNum(545, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(548, this.handle, []);
+        return callStr(546, this.handle, []);
     }
 
 }

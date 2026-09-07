@@ -3,53 +3,53 @@ import { ApiObject, callNum, callStr, callStrArg, callVoid } from './runtime';
 
 export class World extends ApiObject {
     getActivity(): string | null {
-        return callStr(1473, this.handle, []);
+        return callStr(1471, this.handle, []);
     }
 
     getAddress(): string | null {
-        return callStr(1474, this.handle, []);
+        return callStr(1472, this.handle, []);
     }
 
     getId(): number {
-        return callNum(1475, this.handle, []);
+        return callNum(1473, this.handle, []);
     }
 
     getIndex(): number {
-        return callNum(1476, this.handle, []);
+        return callNum(1474, this.handle, []);
     }
 
     getLocation(): number {
-        return callNum(1477, this.handle, []);
+        return callNum(1475, this.handle, []);
     }
 
     getPlayerCount(): number {
-        return callNum(1478, this.handle, []);
+        return callNum(1476, this.handle, []);
     }
 
     setActivity(a0: string): void {
         callStrArg(0, a0);
-        callVoid(1479, this.handle, [0]);
+        callVoid(1477, this.handle, [0]);
     }
 
     setAddress(a0: string): void {
         callStrArg(0, a0);
-        callVoid(1480, this.handle, [0]);
+        callVoid(1478, this.handle, [0]);
     }
 
     setId(a0: number): void {
-        callVoid(1481, this.handle, [a0]);
+        callVoid(1479, this.handle, [a0]);
     }
 
     setIndex(a0: number): void {
-        callVoid(1482, this.handle, [a0]);
+        callVoid(1480, this.handle, [a0]);
     }
 
     setLocation(a0: number): void {
-        callVoid(1483, this.handle, [a0]);
+        callVoid(1481, this.handle, [a0]);
     }
 
     setPlayerCount(a0: number): void {
-        callVoid(1484, this.handle, [a0]);
+        callVoid(1482, this.handle, [a0]);
     }
 
 }

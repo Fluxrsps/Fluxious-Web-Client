@@ -4,11 +4,11 @@ import { WorldPoint } from './WorldPoint';
 
 export class WorldMapIcon extends ApiObject {
     getCoordinate(): WorldPoint | null {
-        return wrap(2166, this.handle, [], WorldPoint);
+        return wrap(2164, this.handle, [], WorldPoint);
     }
 
     getType(): number {
-        return callNum(2167, this.handle, []);
+        return callNum(2165, this.handle, []);
     }
 
 }

@@ -13,308 +13,308 @@ import { WorldView } from './WorldView';
 
 export class Player extends ApiObject {
     clearSpotAnims(): void {
-        callVoid(1031, this.handle, []);
+        callVoid(1029, this.handle, []);
     }
 
     createSpotAnim(a0: number, a1: number, a2: number, a3: number): void {
-        callVoid(1032, this.handle, [a0, a1, a2, a3]);
+        callVoid(1030, this.handle, [a0, a1, a2, a3]);
     }
 
     getAnimation(): number {
-        return callNum(1033, this.handle, []);
+        return callNum(1031, this.handle, []);
     }
 
     getAnimationFrame(): number {
-        return callNum(1034, this.handle, []);
+        return callNum(1032, this.handle, []);
     }
 
     getAnimationHeightOffset(): number {
-        return callNum(1035, this.handle, []);
+        return callNum(1033, this.handle, []);
     }
 
     getCameraFocus(): LocalPoint | null {
-        return wrap(1036, this.handle, [], LocalPoint);
+        return wrap(1034, this.handle, [], LocalPoint);
     }
 
     getCanvasSpriteLocation(a0: ApiObject | null, a1: number): Point | null {
-        return wrap(1037, this.handle, [(a0 ? a0.handle : -1), a1], Point);
+        return wrap(1035, this.handle, [(a0 ? a0.handle : -1), a1], Point);
     }
 
     getCombatLevel(): number {
-        return callNum(1038, this.handle, []);
+        return callNum(1036, this.handle, []);
     }
 
     getCurrentOrientation(): number {
-        return callNum(1039, this.handle, []);
+        return callNum(1037, this.handle, []);
     }
 
     getFootprintSize(): number {
-        return callNum(1040, this.handle, []);
+        return callNum(1038, this.handle, []);
     }
 
     getGraphic(): number {
-        return callNum(1041, this.handle, []);
+        return callNum(1039, this.handle, []);
     }
 
     getGraphicHeight(): number {
-        return callNum(1042, this.handle, []);
+        return callNum(1040, this.handle, []);
     }
 
     getHash(): number {
-        return callNum(1043, this.handle, []);
+        return callNum(1041, this.handle, []);
     }
 
     getHealthRatio(): number {
-        return callNum(1044, this.handle, []);
+        return callNum(1042, this.handle, []);
     }
 
     getHealthScale(): number {
-        return callNum(1045, this.handle, []);
+        return callNum(1043, this.handle, []);
     }
 
     getId(): number {
-        return callNum(1046, this.handle, []);
+        return callNum(1044, this.handle, []);
     }
 
     getIdlePoseAnimation(): number {
-        return callNum(1047, this.handle, []);
+        return callNum(1045, this.handle, []);
     }
 
     getIdleRotateLeft(): number {
-        return callNum(1048, this.handle, []);
+        return callNum(1046, this.handle, []);
     }
 
     getIdleRotateRight(): number {
-        return callNum(1049, this.handle, []);
+        return callNum(1047, this.handle, []);
     }
 
     getInteracting(): Actor | null {
-        return wrap(1050, this.handle, [], Actor);
+        return wrap(1048, this.handle, [], Actor);
     }
 
     getLocalLocation(): LocalPoint | null {
-        return wrap(1051, this.handle, [], LocalPoint);
+        return wrap(1049, this.handle, [], LocalPoint);
     }
 
     getLogicalHeight(): number {
-        return callNum(1052, this.handle, []);
+        return callNum(1050, this.handle, []);
     }
 
     getMinimapLocation(): Point | null {
-        return wrap(1053, this.handle, [], Point);
+        return wrap(1051, this.handle, [], Point);
     }
 
     getModel(): Model | null {
-        return wrap(1054, this.handle, [], Model);
+        return wrap(1052, this.handle, [], Model);
     }
 
     getModelHeight(): number {
-        return callNum(1055, this.handle, []);
+        return callNum(1053, this.handle, []);
     }
 
     getName(): string | null {
-        return callStr(1056, this.handle, []);
+        return callStr(1054, this.handle, []);
     }
 
     getNext(): Node | null {
-        return wrap(1057, this.handle, [], Node);
+        return wrap(1055, this.handle, [], Node);
     }
 
     getOrientation(): number {
-        return callNum(1058, this.handle, []);
+        return callNum(1056, this.handle, []);
     }
 
     getOverheadCycle(): number {
-        return callNum(1059, this.handle, []);
+        return callNum(1057, this.handle, []);
     }
 
     getOverheadIcon(): string | null {
-        return callStr(1060, this.handle, []);
+        return callStr(1058, this.handle, []);
     }
 
     getOverheadText(): string | null {
-        return callStr(1061, this.handle, []);
+        return callStr(1059, this.handle, []);
     }
 
     getPlayerComposition(): PlayerComposition | null {
-        return wrap(1062, this.handle, [], PlayerComposition);
+        return wrap(1060, this.handle, [], PlayerComposition);
     }
 
     getPoseAnimation(): number {
-        return callNum(1063, this.handle, []);
+        return callNum(1061, this.handle, []);
     }
 
     getPoseAnimationFrame(): number {
-        return callNum(1064, this.handle, []);
+        return callNum(1062, this.handle, []);
     }
 
     getPrevious(): Node | null {
-        return wrap(1065, this.handle, [], Node);
+        return wrap(1063, this.handle, [], Node);
     }
 
     getRenderMode(): number {
-        return callNum(1066, this.handle, []);
+        return callNum(1064, this.handle, []);
     }
 
     getRunAnimation(): number {
-        return callNum(1067, this.handle, []);
+        return callNum(1065, this.handle, []);
     }
 
     getSkullIcon(): number {
-        return callNum(1068, this.handle, []);
+        return callNum(1066, this.handle, []);
     }
 
     getSpotAnimFrame(): number {
-        return callNum(1069, this.handle, []);
+        return callNum(1067, this.handle, []);
     }
 
     getSpotAnims(): IterableHashTable | null {
-        return wrap(1070, this.handle, [], IterableHashTable);
+        return wrap(1068, this.handle, [], IterableHashTable);
     }
 
     getTeam(): number {
-        return callNum(1071, this.handle, []);
+        return callNum(1069, this.handle, []);
     }
 
     getWalkAnimation(): number {
-        return callNum(1072, this.handle, []);
+        return callNum(1070, this.handle, []);
     }
 
     getWalkRotate180(): number {
-        return callNum(1073, this.handle, []);
+        return callNum(1071, this.handle, []);
     }
 
     getWalkRotateLeft(): number {
-        return callNum(1074, this.handle, []);
+        return callNum(1072, this.handle, []);
     }
 
     getWalkRotateRight(): number {
-        return callNum(1075, this.handle, []);
+        return callNum(1073, this.handle, []);
     }
 
     getWorldArea(): WorldArea | null {
-        return wrap(1076, this.handle, [], WorldArea);
+        return wrap(1074, this.handle, [], WorldArea);
     }
 
     getWorldLocation(): WorldPoint | null {
-        return wrap(1077, this.handle, [], WorldPoint);
+        return wrap(1075, this.handle, [], WorldPoint);
     }
 
     getWorldView(): WorldView | null {
-        return wrap(1078, this.handle, [], WorldView);
+        return wrap(1076, this.handle, [], WorldView);
     }
 
     hasSpotAnim(a0: number): boolean {
-        return callNum(1079, this.handle, [a0]) !== 0;
+        return callNum(1077, this.handle, [a0]) !== 0;
     }
 
     isClanMember(): boolean {
-        return callNum(1080, this.handle, []) !== 0;
+        return callNum(1078, this.handle, []) !== 0;
     }
 
     isDead(): boolean {
-        return callNum(1081, this.handle, []) !== 0;
+        return callNum(1079, this.handle, []) !== 0;
     }
 
     isFriend(): boolean {
-        return callNum(1082, this.handle, []) !== 0;
+        return callNum(1080, this.handle, []) !== 0;
     }
 
     isFriendsChatMember(): boolean {
-        return callNum(1083, this.handle, []) !== 0;
+        return callNum(1081, this.handle, []) !== 0;
     }
 
     isInteracting(): boolean {
-        return callNum(1084, this.handle, []) !== 0;
+        return callNum(1082, this.handle, []) !== 0;
     }
 
     removeSpotAnim(a0: number): void {
-        callVoid(1085, this.handle, [a0]);
+        callVoid(1083, this.handle, [a0]);
     }
 
     setActionFrame(a0: number): void {
-        callVoid(1086, this.handle, [a0]);
+        callVoid(1084, this.handle, [a0]);
     }
 
     setAnimation(a0: number): void {
-        callVoid(1087, this.handle, [a0]);
+        callVoid(1085, this.handle, [a0]);
     }
 
     setAnimationFrame(a0: number): void {
-        callVoid(1088, this.handle, [a0]);
+        callVoid(1086, this.handle, [a0]);
     }
 
     setDead(a0: boolean): void {
-        callVoid(1089, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(1087, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setGraphic(a0: number): void {
-        callVoid(1090, this.handle, [a0]);
+        callVoid(1088, this.handle, [a0]);
     }
 
     setGraphicHeight(a0: number): void {
-        callVoid(1091, this.handle, [a0]);
+        callVoid(1089, this.handle, [a0]);
     }
 
     setIdlePoseAnimation(a0: number): void {
-        callVoid(1092, this.handle, [a0]);
+        callVoid(1090, this.handle, [a0]);
     }
 
     setIdleRotateLeft(a0: number): void {
-        callVoid(1093, this.handle, [a0]);
+        callVoid(1091, this.handle, [a0]);
     }
 
     setIdleRotateRight(a0: number): void {
-        callVoid(1094, this.handle, [a0]);
+        callVoid(1092, this.handle, [a0]);
     }
 
     setModelHeight(a0: number): void {
-        callVoid(1095, this.handle, [a0]);
+        callVoid(1093, this.handle, [a0]);
     }
 
     setOverheadCycle(a0: number): void {
-        callVoid(1096, this.handle, [a0]);
+        callVoid(1094, this.handle, [a0]);
     }
 
     setOverheadText(a0: string): void {
         callStrArg(0, a0);
-        callVoid(1097, this.handle, [0]);
+        callVoid(1095, this.handle, [0]);
     }
 
     setPoseAnimation(a0: number): void {
-        callVoid(1098, this.handle, [a0]);
+        callVoid(1096, this.handle, [a0]);
     }
 
     setPoseAnimationFrame(a0: number): void {
-        callVoid(1099, this.handle, [a0]);
+        callVoid(1097, this.handle, [a0]);
     }
 
     setRunAnimation(a0: number): void {
-        callVoid(1100, this.handle, [a0]);
+        callVoid(1098, this.handle, [a0]);
     }
 
     setSkullIcon(a0: number): void {
-        callVoid(1101, this.handle, [a0]);
+        callVoid(1099, this.handle, [a0]);
     }
 
     setSpotAnimFrame(a0: number): void {
-        callVoid(1102, this.handle, [a0]);
+        callVoid(1100, this.handle, [a0]);
     }
 
     setWalkAnimation(a0: number): void {
-        callVoid(1103, this.handle, [a0]);
+        callVoid(1101, this.handle, [a0]);
     }
 
     setWalkRotate180(a0: number): void {
-        callVoid(1104, this.handle, [a0]);
+        callVoid(1102, this.handle, [a0]);
     }
 
     setWalkRotateLeft(a0: number): void {
-        callVoid(1105, this.handle, [a0]);
+        callVoid(1103, this.handle, [a0]);
     }
 
     setWalkRotateRight(a0: number): void {
-        callVoid(1106, this.handle, [a0]);
+        callVoid(1104, this.handle, [a0]);
     }
 
 }

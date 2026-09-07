@@ -3,27 +3,27 @@ import { ApiObject, callNum } from './runtime';
 
 export class WorldEntityConfig extends ApiObject {
     getBoundsHeight(): number {
-        return callNum(1495, this.handle, []);
+        return callNum(1493, this.handle, []);
     }
 
     getBoundsWidth(): number {
-        return callNum(1496, this.handle, []);
+        return callNum(1494, this.handle, []);
     }
 
     getBoundsX(): number {
-        return callNum(1497, this.handle, []);
+        return callNum(1495, this.handle, []);
     }
 
     getBoundsY(): number {
-        return callNum(1498, this.handle, []);
+        return callNum(1496, this.handle, []);
     }
 
     getCategory(): number {
-        return callNum(1499, this.handle, []);
+        return callNum(1497, this.handle, []);
     }
 
     getId(): number {
-        return callNum(1500, this.handle, []);
+        return callNum(1498, this.handle, []);
     }
 
 }

@@ -4,19 +4,19 @@ import { SpritePixels } from './SpritePixels';
 
 export class HealthBarConfig extends ApiObject {
     getHealthBarBackSprite(): SpritePixels | null {
-        return wrap(588, this.handle, [], SpritePixels);
+        return wrap(586, this.handle, [], SpritePixels);
     }
 
     getHealthBarFrontSprite(): SpritePixels | null {
-        return wrap(589, this.handle, [], SpritePixels);
+        return wrap(587, this.handle, [], SpritePixels);
     }
 
     getHealthBarFrontSpriteId(): number {
-        return callNum(590, this.handle, []);
+        return callNum(588, this.handle, []);
     }
 
     setPadding(a0: number): void {
-        callVoid(591, this.handle, [a0]);
+        callVoid(589, this.handle, [a0]);
     }
 
 }

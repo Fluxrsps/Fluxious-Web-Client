@@ -8,75 +8,75 @@ import { WorldView } from './WorldView';
 
 export class GraphicsObject extends ApiObject {
     finished(): boolean {
-        return callNum(549, this.handle, []) !== 0;
+        return callNum(547, this.handle, []) !== 0;
     }
 
     getAnimation(): Animation | null {
-        return wrap(550, this.handle, [], Animation);
+        return wrap(548, this.handle, [], Animation);
     }
 
     getAnimationFrame(): number {
-        return callNum(551, this.handle, []);
+        return callNum(549, this.handle, []);
     }
 
     getAnimationHeightOffset(): number {
-        return callNum(552, this.handle, []);
+        return callNum(550, this.handle, []);
     }
 
     getHash(): number {
-        return callNum(553, this.handle, []);
+        return callNum(551, this.handle, []);
     }
 
     getId(): number {
-        return callNum(554, this.handle, []);
+        return callNum(552, this.handle, []);
     }
 
     getLevel(): number {
-        return callNum(555, this.handle, []);
+        return callNum(553, this.handle, []);
     }
 
     getLocation(): LocalPoint | null {
-        return wrap(556, this.handle, [], LocalPoint);
+        return wrap(554, this.handle, [], LocalPoint);
     }
 
     getModel(): Model | null {
-        return wrap(557, this.handle, [], Model);
+        return wrap(555, this.handle, [], Model);
     }
 
     getModelHeight(): number {
-        return callNum(558, this.handle, []);
+        return callNum(556, this.handle, []);
     }
 
     getNext(): Node | null {
-        return wrap(559, this.handle, [], Node);
+        return wrap(557, this.handle, [], Node);
     }
 
     getPrevious(): Node | null {
-        return wrap(560, this.handle, [], Node);
+        return wrap(558, this.handle, [], Node);
     }
 
     getRenderMode(): number {
-        return callNum(561, this.handle, []);
+        return callNum(559, this.handle, []);
     }
 
     getStartCycle(): number {
-        return callNum(562, this.handle, []);
+        return callNum(560, this.handle, []);
     }
 
     getWorldView(): WorldView | null {
-        return wrap(563, this.handle, [], WorldView);
+        return wrap(561, this.handle, [], WorldView);
     }
 
     getZ(): number {
-        return callNum(564, this.handle, []);
+        return callNum(562, this.handle, []);
     }
 
     setFinished(a0: boolean): void {
-        callVoid(565, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(563, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setModelHeight(a0: number): void {
-        callVoid(566, this.handle, [a0]);
+        callVoid(564, this.handle, [a0]);
     }
 
 }

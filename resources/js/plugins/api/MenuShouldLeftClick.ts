@@ -3,19 +3,19 @@ import { ApiObject, callNum, callStr, callVoid } from './runtime';
 
 export class MenuShouldLeftClick extends ApiObject {
     hashCode(): number {
-        return callNum(1801, this.handle, []);
+        return callNum(1799, this.handle, []);
     }
 
     isForceRightClick(): boolean {
-        return callNum(1802, this.handle, []) !== 0;
+        return callNum(1800, this.handle, []) !== 0;
     }
 
     setForceRightClick(a0: boolean): void {
-        callVoid(1803, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(1801, this.handle, [(a0 ? 1 : 0)]);
     }
 
     toString(): string | null {
-        return callStr(1804, this.handle, []);
+        return callStr(1802, this.handle, []);
     }
 
 }

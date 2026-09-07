@@ -8,87 +8,87 @@ import { WorldView } from './WorldView';
 
 export class DecorativeObject extends ApiObject {
     getCanvasLocation(): Point | null {
-        return wrap(427, this.handle, [], Point);
+        return wrap(425, this.handle, [], Point);
     }
 
     getCanvasLocation$int(a0: number): Point | null {
-        return wrap(428, this.handle, [a0], Point);
+        return wrap(426, this.handle, [a0], Point);
     }
 
     getConfig(): number {
-        return callNum(429, this.handle, []);
+        return callNum(427, this.handle, []);
     }
 
     getHash(): number {
-        return callNum(430, this.handle, []);
+        return callNum(428, this.handle, []);
     }
 
     getId(): number {
-        return callNum(431, this.handle, []);
+        return callNum(429, this.handle, []);
     }
 
     getLocalLocation(): LocalPoint | null {
-        return wrap(432, this.handle, [], LocalPoint);
+        return wrap(430, this.handle, [], LocalPoint);
     }
 
     getMinimapLocation(): Point | null {
-        return wrap(433, this.handle, [], Point);
+        return wrap(431, this.handle, [], Point);
     }
 
     getOpOverride(a0: number): string | null {
-        return callStr(434, this.handle, [a0]);
+        return callStr(432, this.handle, [a0]);
     }
 
     getPlane(): number {
-        return callNum(435, this.handle, []);
+        return callNum(433, this.handle, []);
     }
 
     getRenderable(): Renderable | null {
-        return wrap(436, this.handle, [], Renderable);
+        return wrap(434, this.handle, [], Renderable);
     }
 
     getRenderable2(): Renderable | null {
-        return wrap(437, this.handle, [], Renderable);
+        return wrap(435, this.handle, [], Renderable);
     }
 
     getWorldLocation(): WorldPoint | null {
-        return wrap(438, this.handle, [], WorldPoint);
+        return wrap(436, this.handle, [], WorldPoint);
     }
 
     getWorldView(): WorldView | null {
-        return wrap(439, this.handle, [], WorldView);
+        return wrap(437, this.handle, [], WorldView);
     }
 
     getX(): number {
-        return callNum(440, this.handle, []);
+        return callNum(438, this.handle, []);
     }
 
     getXOffset(): number {
-        return callNum(441, this.handle, []);
+        return callNum(439, this.handle, []);
     }
 
     getXOffset2(): number {
-        return callNum(442, this.handle, []);
+        return callNum(440, this.handle, []);
     }
 
     getY(): number {
-        return callNum(443, this.handle, []);
+        return callNum(441, this.handle, []);
     }
 
     getYOffset(): number {
-        return callNum(444, this.handle, []);
+        return callNum(442, this.handle, []);
     }
 
     getYOffset2(): number {
-        return callNum(445, this.handle, []);
+        return callNum(443, this.handle, []);
     }
 
     getZ(): number {
-        return callNum(446, this.handle, []);
+        return callNum(444, this.handle, []);
     }
 
     isOpShown(a0: number): boolean {
-        return callNum(447, this.handle, [a0]) !== 0;
+        return callNum(445, this.handle, [a0]) !== 0;
     }
 
 }

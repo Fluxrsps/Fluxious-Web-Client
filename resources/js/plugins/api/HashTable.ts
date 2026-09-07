@@ -4,7 +4,7 @@ import { Node } from './Node';
 
 export class HashTable extends ApiObject {
     get(a0: number): Node | null {
-        return wrap(583, this.handle, [a0], Node);
+        return wrap(581, this.handle, [a0], Node);
     }
 
 }

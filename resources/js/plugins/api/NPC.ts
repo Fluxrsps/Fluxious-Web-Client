@@ -14,304 +14,304 @@ import { WorldView } from './WorldView';
 
 export class NPC extends ApiObject {
     clearSpotAnims(): void {
-        callVoid(886, this.handle, []);
+        callVoid(884, this.handle, []);
     }
 
     createSpotAnim(a0: number, a1: number, a2: number, a3: number): void {
-        callVoid(887, this.handle, [a0, a1, a2, a3]);
+        callVoid(885, this.handle, [a0, a1, a2, a3]);
     }
 
     getAnimation(): number {
-        return callNum(888, this.handle, []);
+        return callNum(886, this.handle, []);
     }
 
     getAnimationFrame(): number {
-        return callNum(889, this.handle, []);
+        return callNum(887, this.handle, []);
     }
 
     getAnimationHeightOffset(): number {
-        return callNum(890, this.handle, []);
+        return callNum(888, this.handle, []);
     }
 
     getCameraFocus(): LocalPoint | null {
-        return wrap(891, this.handle, [], LocalPoint);
+        return wrap(889, this.handle, [], LocalPoint);
     }
 
     getCanvasSpriteLocation(a0: ApiObject | null, a1: number): Point | null {
-        return wrap(892, this.handle, [(a0 ? a0.handle : -1), a1], Point);
+        return wrap(890, this.handle, [(a0 ? a0.handle : -1), a1], Point);
     }
 
     getChatheadOverrides(): NpcOverrides | null {
-        return wrap(893, this.handle, [], NpcOverrides);
+        return wrap(891, this.handle, [], NpcOverrides);
     }
 
     getCombatLevel(): number {
-        return callNum(894, this.handle, []);
+        return callNum(892, this.handle, []);
     }
 
     getComposition(): NPCComposition | null {
-        return wrap(895, this.handle, [], NPCComposition);
+        return wrap(893, this.handle, [], NPCComposition);
     }
 
     getCurrentOrientation(): number {
-        return callNum(896, this.handle, []);
+        return callNum(894, this.handle, []);
     }
 
     getFootprintSize(): number {
-        return callNum(897, this.handle, []);
+        return callNum(895, this.handle, []);
     }
 
     getGraphic(): number {
-        return callNum(898, this.handle, []);
+        return callNum(896, this.handle, []);
     }
 
     getGraphicHeight(): number {
-        return callNum(899, this.handle, []);
+        return callNum(897, this.handle, []);
     }
 
     getHash(): number {
-        return callNum(900, this.handle, []);
+        return callNum(898, this.handle, []);
     }
 
     getHealthRatio(): number {
-        return callNum(901, this.handle, []);
+        return callNum(899, this.handle, []);
     }
 
     getHealthScale(): number {
-        return callNum(902, this.handle, []);
+        return callNum(900, this.handle, []);
     }
 
     getId(): number {
-        return callNum(903, this.handle, []);
+        return callNum(901, this.handle, []);
     }
 
     getIdlePoseAnimation(): number {
-        return callNum(904, this.handle, []);
+        return callNum(902, this.handle, []);
     }
 
     getIdleRotateLeft(): number {
-        return callNum(905, this.handle, []);
+        return callNum(903, this.handle, []);
     }
 
     getIdleRotateRight(): number {
-        return callNum(906, this.handle, []);
+        return callNum(904, this.handle, []);
     }
 
     getIndex(): number {
-        return callNum(907, this.handle, []);
+        return callNum(905, this.handle, []);
     }
 
     getInteracting(): Actor | null {
-        return wrap(908, this.handle, [], Actor);
+        return wrap(906, this.handle, [], Actor);
     }
 
     getLocalLocation(): LocalPoint | null {
-        return wrap(909, this.handle, [], LocalPoint);
+        return wrap(907, this.handle, [], LocalPoint);
     }
 
     getLogicalHeight(): number {
-        return callNum(910, this.handle, []);
+        return callNum(908, this.handle, []);
     }
 
     getMinimapLocation(): Point | null {
-        return wrap(911, this.handle, [], Point);
+        return wrap(909, this.handle, [], Point);
     }
 
     getModel(): Model | null {
-        return wrap(912, this.handle, [], Model);
+        return wrap(910, this.handle, [], Model);
     }
 
     getModelHeight(): number {
-        return callNum(913, this.handle, []);
+        return callNum(911, this.handle, []);
     }
 
     getModelOverrides(): NpcOverrides | null {
-        return wrap(914, this.handle, [], NpcOverrides);
+        return wrap(912, this.handle, [], NpcOverrides);
     }
 
     getName(): string | null {
-        return callStr(915, this.handle, []);
+        return callStr(913, this.handle, []);
     }
 
     getNext(): Node | null {
-        return wrap(916, this.handle, [], Node);
+        return wrap(914, this.handle, [], Node);
     }
 
     getOrientation(): number {
-        return callNum(917, this.handle, []);
+        return callNum(915, this.handle, []);
     }
 
     getOverheadArchiveIds(): ApiArray<number> {
-        return new ApiArray<number>(callNum(918, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(916, this.handle, []), 'num', null);
     }
 
     getOverheadCycle(): number {
-        return callNum(919, this.handle, []);
+        return callNum(917, this.handle, []);
     }
 
     getOverheadSpriteIds(): ApiArray<number> {
-        return new ApiArray<number>(callNum(920, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(918, this.handle, []), 'num', null);
     }
 
     getOverheadText(): string | null {
-        return callStr(921, this.handle, []);
+        return callStr(919, this.handle, []);
     }
 
     getPoseAnimation(): number {
-        return callNum(922, this.handle, []);
+        return callNum(920, this.handle, []);
     }
 
     getPoseAnimationFrame(): number {
-        return callNum(923, this.handle, []);
+        return callNum(921, this.handle, []);
     }
 
     getPrevious(): Node | null {
-        return wrap(924, this.handle, [], Node);
+        return wrap(922, this.handle, [], Node);
     }
 
     getRenderMode(): number {
-        return callNum(925, this.handle, []);
+        return callNum(923, this.handle, []);
     }
 
     getRunAnimation(): number {
-        return callNum(926, this.handle, []);
+        return callNum(924, this.handle, []);
     }
 
     getSpotAnimFrame(): number {
-        return callNum(927, this.handle, []);
+        return callNum(925, this.handle, []);
     }
 
     getSpotAnims(): IterableHashTable | null {
-        return wrap(928, this.handle, [], IterableHashTable);
+        return wrap(926, this.handle, [], IterableHashTable);
     }
 
     getTransformedComposition(): NPCComposition | null {
-        return wrap(929, this.handle, [], NPCComposition);
+        return wrap(927, this.handle, [], NPCComposition);
     }
 
     getWalkAnimation(): number {
-        return callNum(930, this.handle, []);
+        return callNum(928, this.handle, []);
     }
 
     getWalkRotate180(): number {
-        return callNum(931, this.handle, []);
+        return callNum(929, this.handle, []);
     }
 
     getWalkRotateLeft(): number {
-        return callNum(932, this.handle, []);
+        return callNum(930, this.handle, []);
     }
 
     getWalkRotateRight(): number {
-        return callNum(933, this.handle, []);
+        return callNum(931, this.handle, []);
     }
 
     getWorldArea(): WorldArea | null {
-        return wrap(934, this.handle, [], WorldArea);
+        return wrap(932, this.handle, [], WorldArea);
     }
 
     getWorldLocation(): WorldPoint | null {
-        return wrap(935, this.handle, [], WorldPoint);
+        return wrap(933, this.handle, [], WorldPoint);
     }
 
     getWorldView(): WorldView | null {
-        return wrap(936, this.handle, [], WorldView);
+        return wrap(934, this.handle, [], WorldView);
     }
 
     hasSpotAnim(a0: number): boolean {
-        return callNum(937, this.handle, [a0]) !== 0;
+        return callNum(935, this.handle, [a0]) !== 0;
     }
 
     isDead(): boolean {
-        return callNum(938, this.handle, []) !== 0;
+        return callNum(936, this.handle, []) !== 0;
     }
 
     isInteracting(): boolean {
-        return callNum(939, this.handle, []) !== 0;
+        return callNum(937, this.handle, []) !== 0;
     }
 
     removeSpotAnim(a0: number): void {
-        callVoid(940, this.handle, [a0]);
+        callVoid(938, this.handle, [a0]);
     }
 
     setActionFrame(a0: number): void {
-        callVoid(941, this.handle, [a0]);
+        callVoid(939, this.handle, [a0]);
     }
 
     setAnimation(a0: number): void {
-        callVoid(942, this.handle, [a0]);
+        callVoid(940, this.handle, [a0]);
     }
 
     setAnimationFrame(a0: number): void {
-        callVoid(943, this.handle, [a0]);
+        callVoid(941, this.handle, [a0]);
     }
 
     setDead(a0: boolean): void {
-        callVoid(944, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(942, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setGraphic(a0: number): void {
-        callVoid(945, this.handle, [a0]);
+        callVoid(943, this.handle, [a0]);
     }
 
     setGraphicHeight(a0: number): void {
-        callVoid(946, this.handle, [a0]);
+        callVoid(944, this.handle, [a0]);
     }
 
     setIdlePoseAnimation(a0: number): void {
-        callVoid(947, this.handle, [a0]);
+        callVoid(945, this.handle, [a0]);
     }
 
     setIdleRotateLeft(a0: number): void {
-        callVoid(948, this.handle, [a0]);
+        callVoid(946, this.handle, [a0]);
     }
 
     setIdleRotateRight(a0: number): void {
-        callVoid(949, this.handle, [a0]);
+        callVoid(947, this.handle, [a0]);
     }
 
     setModelHeight(a0: number): void {
-        callVoid(950, this.handle, [a0]);
+        callVoid(948, this.handle, [a0]);
     }
 
     setOverheadCycle(a0: number): void {
-        callVoid(951, this.handle, [a0]);
+        callVoid(949, this.handle, [a0]);
     }
 
     setOverheadText(a0: string): void {
         callStrArg(0, a0);
-        callVoid(952, this.handle, [0]);
+        callVoid(950, this.handle, [0]);
     }
 
     setPoseAnimation(a0: number): void {
-        callVoid(953, this.handle, [a0]);
+        callVoid(951, this.handle, [a0]);
     }
 
     setPoseAnimationFrame(a0: number): void {
-        callVoid(954, this.handle, [a0]);
+        callVoid(952, this.handle, [a0]);
     }
 
     setRunAnimation(a0: number): void {
-        callVoid(955, this.handle, [a0]);
+        callVoid(953, this.handle, [a0]);
     }
 
     setSpotAnimFrame(a0: number): void {
-        callVoid(956, this.handle, [a0]);
+        callVoid(954, this.handle, [a0]);
     }
 
     setWalkAnimation(a0: number): void {
-        callVoid(957, this.handle, [a0]);
+        callVoid(955, this.handle, [a0]);
     }
 
     setWalkRotate180(a0: number): void {
-        callVoid(958, this.handle, [a0]);
+        callVoid(956, this.handle, [a0]);
     }
 
     setWalkRotateLeft(a0: number): void {
-        callVoid(959, this.handle, [a0]);
+        callVoid(957, this.handle, [a0]);
     }
 
     setWalkRotateRight(a0: number): void {
-        callVoid(960, this.handle, [a0]);
+        callVoid(958, this.handle, [a0]);
     }
 
 }

@@ -3,19 +3,19 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class Angle extends ApiObject {
     getAngle(): number {
-        return callNum(1550, this.handle, []);
+        return callNum(1548, this.handle, []);
     }
 
     getNearestDirection(): string | null {
-        return callStr(1551, this.handle, []);
+        return callStr(1549, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1552, this.handle, []);
+        return callNum(1550, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1553, this.handle, []);
+        return callStr(1551, this.handle, []);
     }
 
 }

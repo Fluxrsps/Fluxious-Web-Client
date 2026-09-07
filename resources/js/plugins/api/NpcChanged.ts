@@ -5,19 +5,19 @@ import { NPCComposition } from './NPCComposition';
 
 export class NpcChanged extends ApiObject {
     getNpc(): NPC | null {
-        return wrap(1808, this.handle, [], NPC);
+        return wrap(1806, this.handle, [], NPC);
     }
 
     getOld(): NPCComposition | null {
-        return wrap(1809, this.handle, [], NPCComposition);
+        return wrap(1807, this.handle, [], NPCComposition);
     }
 
     hashCode(): number {
-        return callNum(1810, this.handle, []);
+        return callNum(1808, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1811, this.handle, []);
+        return callStr(1809, this.handle, []);
     }
 
 }

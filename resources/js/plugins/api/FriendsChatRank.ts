@@ -3,23 +3,23 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class FriendsChatRank extends ApiObject {
     getValue(): number {
-        return callNum(502, this.handle, []);
+        return callNum(500, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(503, this.handle, []);
+        return callNum(501, this.handle, []);
     }
 
     name(): string | null {
-        return callStr(504, this.handle, []);
+        return callStr(502, this.handle, []);
     }
 
     ordinal(): number {
-        return callNum(505, this.handle, []);
+        return callNum(503, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(506, this.handle, []);
+        return callStr(504, this.handle, []);
     }
 
 }

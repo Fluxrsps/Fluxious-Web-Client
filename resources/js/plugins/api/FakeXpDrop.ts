@@ -3,19 +3,19 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class FakeXpDrop extends ApiObject {
     getSkill(): string | null {
-        return callStr(1678, this.handle, []);
+        return callStr(1676, this.handle, []);
     }
 
     getXp(): number {
-        return callNum(1679, this.handle, []);
+        return callNum(1677, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1680, this.handle, []);
+        return callNum(1678, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1681, this.handle, []);
+        return callStr(1679, this.handle, []);
     }
 
 }

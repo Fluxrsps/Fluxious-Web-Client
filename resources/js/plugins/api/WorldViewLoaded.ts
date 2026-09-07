@@ -4,15 +4,15 @@ import { WorldView } from './WorldView';
 
 export class WorldViewLoaded extends ApiObject {
     getWorldView(): WorldView | null {
-        return wrap(1953, this.handle, [], WorldView);
+        return wrap(1951, this.handle, [], WorldView);
     }
 
     hashCode(): number {
-        return callNum(1954, this.handle, []);
+        return callNum(1952, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1955, this.handle, []);
+        return callStr(1953, this.handle, []);
     }
 
 }

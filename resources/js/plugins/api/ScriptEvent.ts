@@ -4,43 +4,43 @@ import { Widget } from './Widget';
 
 export class ScriptEvent extends ApiObject {
     getArguments(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1339, this.handle, []), 'none', null);
+        return new ApiArray<number>(callNum(1337, this.handle, []), 'none', null);
     }
 
     getMouseX(): number {
-        return callNum(1340, this.handle, []);
+        return callNum(1338, this.handle, []);
     }
 
     getMouseY(): number {
-        return callNum(1341, this.handle, []);
+        return callNum(1339, this.handle, []);
     }
 
     getOp(): number {
-        return callNum(1342, this.handle, []);
+        return callNum(1340, this.handle, []);
     }
 
     getOpbase(): string | null {
-        return callStr(1343, this.handle, []);
+        return callStr(1341, this.handle, []);
     }
 
     getSource(): Widget | null {
-        return wrap(1344, this.handle, [], Widget);
+        return wrap(1342, this.handle, [], Widget);
     }
 
     getTarget(): Widget | null {
-        return wrap(1345, this.handle, [], Widget);
+        return wrap(1343, this.handle, [], Widget);
     }
 
     getTypedKeyChar(): number {
-        return callNum(1346, this.handle, []);
+        return callNum(1344, this.handle, []);
     }
 
     getTypedKeyCode(): number {
-        return callNum(1347, this.handle, []);
+        return callNum(1345, this.handle, []);
     }
 
     run(): void {
-        callVoid(1348, this.handle, []);
+        callVoid(1346, this.handle, []);
     }
 
 }

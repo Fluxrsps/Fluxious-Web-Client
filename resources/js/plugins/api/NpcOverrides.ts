@@ -3,19 +3,19 @@ import { ApiArray, ApiObject, callNum } from './runtime';
 
 export class NpcOverrides extends ApiObject {
     getColorToReplaceWith(): ApiArray<number> {
-        return new ApiArray<number>(callNum(997, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(995, this.handle, []), 'num', null);
     }
 
     getModelIds(): ApiArray<number> {
-        return new ApiArray<number>(callNum(998, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(996, this.handle, []), 'num', null);
     }
 
     getTextureToReplaceWith(): ApiArray<number> {
-        return new ApiArray<number>(callNum(999, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(997, this.handle, []), 'num', null);
     }
 
     useLocalPlayer(): boolean {
-        return callNum(1000, this.handle, []) !== 0;
+        return callNum(998, this.handle, []) !== 0;
     }
 
 }

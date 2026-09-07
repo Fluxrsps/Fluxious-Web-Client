@@ -3,40 +3,40 @@ import { ApiObject, callNum, callStrArg, callVoid } from './runtime';
 
 export class Callbacks extends ApiObject {
     draw(a0: ApiObject | null, a1: boolean): boolean {
-        return callNum(1959, this.handle, [(a0 ? a0.handle : -1), (a1 ? 1 : 0)]) !== 0;
+        return callNum(1957, this.handle, [(a0 ? a0.handle : -1), (a1 ? 1 : 0)]) !== 0;
     }
 
     drawAboveOverheads(): void {
-        callVoid(1960, this.handle, []);
+        callVoid(1958, this.handle, []);
     }
 
     drawScene(): void {
-        callVoid(1961, this.handle, []);
+        callVoid(1959, this.handle, []);
     }
 
     frame(): void {
-        callVoid(1962, this.handle, []);
+        callVoid(1960, this.handle, []);
     }
 
     isRuneLiteClientOutdated(): boolean {
-        return callNum(1963, this.handle, []) !== 0;
+        return callNum(1961, this.handle, []) !== 0;
     }
 
     openUrl(a0: string): void {
         callStrArg(0, a0);
-        callVoid(1964, this.handle, [0]);
+        callVoid(1962, this.handle, [0]);
     }
 
     serverTick(): void {
-        callVoid(1965, this.handle, []);
+        callVoid(1963, this.handle, []);
     }
 
     tick(): void {
-        callVoid(1966, this.handle, []);
+        callVoid(1964, this.handle, []);
     }
 
     tickEnd(): void {
-        callVoid(1967, this.handle, []);
+        callVoid(1965, this.handle, []);
     }
 
 }

@@ -3,39 +3,39 @@ import { ApiObject, callNum, callStr, callVoid } from './runtime';
 
 export class VarbitChanged extends ApiObject {
     getIndex(): number {
-        return callNum(1911, this.handle, []);
+        return callNum(1909, this.handle, []);
     }
 
     getValue(): number {
-        return callNum(1912, this.handle, []);
+        return callNum(1910, this.handle, []);
     }
 
     getVarbitId(): number {
-        return callNum(1913, this.handle, []);
+        return callNum(1911, this.handle, []);
     }
 
     getVarpId(): number {
-        return callNum(1914, this.handle, []);
+        return callNum(1912, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1915, this.handle, []);
+        return callNum(1913, this.handle, []);
     }
 
     setValue(a0: number): void {
-        callVoid(1916, this.handle, [a0]);
+        callVoid(1914, this.handle, [a0]);
     }
 
     setVarbitId(a0: number): void {
-        callVoid(1917, this.handle, [a0]);
+        callVoid(1915, this.handle, [a0]);
     }
 
     setVarpId(a0: number): void {
-        callVoid(1918, this.handle, [a0]);
+        callVoid(1916, this.handle, [a0]);
     }
 
     toString(): string | null {
-        return callStr(1919, this.handle, []);
+        return callStr(1917, this.handle, []);
     }
 
 }

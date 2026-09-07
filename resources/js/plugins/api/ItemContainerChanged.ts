@@ -4,19 +4,19 @@ import { ItemContainer } from './ItemContainer';
 
 export class ItemContainerChanged extends ApiObject {
     getContainerId(): number {
-        return callNum(1752, this.handle, []);
+        return callNum(1750, this.handle, []);
     }
 
     getItemContainer(): ItemContainer | null {
-        return wrap(1753, this.handle, [], ItemContainer);
+        return wrap(1751, this.handle, [], ItemContainer);
     }
 
     hashCode(): number {
-        return callNum(1754, this.handle, []);
+        return callNum(1752, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1755, this.handle, []);
+        return callStr(1753, this.handle, []);
     }
 
 }

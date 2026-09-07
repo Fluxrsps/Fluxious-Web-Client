@@ -3,27 +3,27 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class GrandExchangeOffer extends ApiObject {
     getItemId(): number {
-        return callNum(539, this.handle, []);
+        return callNum(537, this.handle, []);
     }
 
     getPrice(): number {
-        return callNum(540, this.handle, []);
+        return callNum(538, this.handle, []);
     }
 
     getQuantitySold(): number {
-        return callNum(541, this.handle, []);
+        return callNum(539, this.handle, []);
     }
 
     getSpent(): number {
-        return callNum(542, this.handle, []);
+        return callNum(540, this.handle, []);
     }
 
     getState(): string | null {
-        return callStr(543, this.handle, []);
+        return callStr(541, this.handle, []);
     }
 
     getTotalQuantity(): number {
-        return callNum(544, this.handle, []);
+        return callNum(542, this.handle, []);
     }
 
 }

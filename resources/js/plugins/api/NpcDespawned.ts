@@ -5,19 +5,19 @@ import { NPC } from './NPC';
 
 export class NpcDespawned extends ApiObject {
     getActor(): Actor | null {
-        return wrap(1812, this.handle, [], Actor);
+        return wrap(1810, this.handle, [], Actor);
     }
 
     getNpc(): NPC | null {
-        return wrap(1813, this.handle, [], NPC);
+        return wrap(1811, this.handle, [], NPC);
     }
 
     hashCode(): number {
-        return callNum(1814, this.handle, []);
+        return callNum(1812, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1815, this.handle, []);
+        return callStr(1813, this.handle, []);
     }
 
 }

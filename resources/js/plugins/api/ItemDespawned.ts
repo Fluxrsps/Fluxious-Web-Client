@@ -5,19 +5,19 @@ import { TileItem } from './TileItem';
 
 export class ItemDespawned extends ApiObject {
     getItem(): TileItem | null {
-        return wrap(1756, this.handle, [], TileItem);
+        return wrap(1754, this.handle, [], TileItem);
     }
 
     getTile(): Tile | null {
-        return wrap(1757, this.handle, [], Tile);
+        return wrap(1755, this.handle, [], Tile);
     }
 
     hashCode(): number {
-        return callNum(1758, this.handle, []);
+        return callNum(1756, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1759, this.handle, []);
+        return callStr(1757, this.handle, []);
     }
 
 }

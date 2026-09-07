@@ -4,47 +4,47 @@ import { Node } from './Node';
 
 export class Texture extends ApiObject {
     getAnimationDirection(): number {
-        return callNum(1386, this.handle, []);
+        return callNum(1384, this.handle, []);
     }
 
     getAnimationSpeed(): number {
-        return callNum(1387, this.handle, []);
+        return callNum(1385, this.handle, []);
     }
 
     getHash(): number {
-        return callNum(1388, this.handle, []);
+        return callNum(1386, this.handle, []);
     }
 
     getNext(): Node | null {
-        return wrap(1389, this.handle, [], Node);
+        return wrap(1387, this.handle, [], Node);
     }
 
     getPixels(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1390, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(1388, this.handle, []), 'num', null);
     }
 
     getPrevious(): Node | null {
-        return wrap(1391, this.handle, [], Node);
+        return wrap(1389, this.handle, [], Node);
     }
 
     getU(): number {
-        return callNum(1392, this.handle, []);
+        return callNum(1390, this.handle, []);
     }
 
     getV(): number {
-        return callNum(1393, this.handle, []);
+        return callNum(1391, this.handle, []);
     }
 
     isLoaded(): boolean {
-        return callNum(1394, this.handle, []) !== 0;
+        return callNum(1392, this.handle, []) !== 0;
     }
 
     setU(a0: number): void {
-        callVoid(1395, this.handle, [a0]);
+        callVoid(1393, this.handle, [a0]);
     }
 
     setV(a0: number): void {
-        callVoid(1396, this.handle, [a0]);
+        callVoid(1394, this.handle, [a0]);
     }
 
 }

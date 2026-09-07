@@ -4,15 +4,15 @@ import { AmbientSoundEffect } from './AmbientSoundEffect';
 
 export class AmbientSoundEffectCreated extends ApiObject {
     getAmbientSoundEffect(): AmbientSoundEffect | null {
-        return wrap(1608, this.handle, [], AmbientSoundEffect);
+        return wrap(1606, this.handle, [], AmbientSoundEffect);
     }
 
     hashCode(): number {
-        return callNum(1609, this.handle, []);
+        return callNum(1607, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1610, this.handle, []);
+        return callStr(1608, this.handle, []);
     }
 
 }

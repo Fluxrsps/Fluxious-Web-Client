@@ -3,11 +3,11 @@ import { ApiObject, callStr } from './runtime';
 
 export class Ignore extends ApiObject {
     getName(): string | null {
-        return callStr(602, this.handle, []);
+        return callStr(600, this.handle, []);
     }
 
     getPrevName(): string | null {
-        return callStr(603, this.handle, []);
+        return callStr(601, this.handle, []);
     }
 
 }

@@ -3,23 +3,23 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class GameState extends ApiObject {
     getState(): number {
-        return callNum(534, this.handle, []);
+        return callNum(532, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(535, this.handle, []);
+        return callNum(533, this.handle, []);
     }
 
     name(): string | null {
-        return callStr(536, this.handle, []);
+        return callStr(534, this.handle, []);
     }
 
     ordinal(): number {
-        return callNum(537, this.handle, []);
+        return callNum(535, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(538, this.handle, []);
+        return callStr(536, this.handle, []);
     }
 
 }

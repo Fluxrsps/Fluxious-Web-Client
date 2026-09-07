@@ -5,35 +5,35 @@ import { Widget } from './Widget';
 
 export class ScriptEventBuilder extends ApiObject {
     build(): ScriptEvent | null {
-        return wrap(1349, this.handle, [], ScriptEvent);
+        return wrap(1347, this.handle, [], ScriptEvent);
     }
 
     getArguments(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1350, this.handle, []), 'none', null);
+        return new ApiArray<number>(callNum(1348, this.handle, []), 'none', null);
     }
 
     getOp(): number {
-        return callNum(1351, this.handle, []);
+        return callNum(1349, this.handle, []);
     }
 
     getSource(): Widget | null {
-        return wrap(1352, this.handle, [], Widget);
+        return wrap(1350, this.handle, [], Widget);
     }
 
     getTarget(): Widget | null {
-        return wrap(1353, this.handle, [], Widget);
+        return wrap(1351, this.handle, [], Widget);
     }
 
     setOp(a0: number): ScriptEventBuilder | null {
-        return wrap(1354, this.handle, [a0], ScriptEventBuilder);
+        return wrap(1352, this.handle, [a0], ScriptEventBuilder);
     }
 
     setSource(a0: ApiObject | null): ScriptEventBuilder | null {
-        return wrap(1355, this.handle, [(a0 ? a0.handle : -1)], ScriptEventBuilder);
+        return wrap(1353, this.handle, [(a0 ? a0.handle : -1)], ScriptEventBuilder);
     }
 
     setTarget(a0: ApiObject | null): ScriptEventBuilder | null {
-        return wrap(1356, this.handle, [(a0 ? a0.handle : -1)], ScriptEventBuilder);
+        return wrap(1354, this.handle, [(a0 ? a0.handle : -1)], ScriptEventBuilder);
     }
 
 }

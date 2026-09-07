@@ -5,19 +5,19 @@ import { ClanChannelMember } from './ClanChannelMember';
 
 export class ClanMemberJoined extends ApiObject {
     getClanChannel(): ClanChannel | null {
-        return wrap(1654, this.handle, [], ClanChannel);
+        return wrap(1652, this.handle, [], ClanChannel);
     }
 
     getClanMember(): ClanChannelMember | null {
-        return wrap(1655, this.handle, [], ClanChannelMember);
+        return wrap(1653, this.handle, [], ClanChannelMember);
     }
 
     hashCode(): number {
-        return callNum(1656, this.handle, []);
+        return callNum(1654, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1657, this.handle, []);
+        return callStr(1655, this.handle, []);
     }
 
 }

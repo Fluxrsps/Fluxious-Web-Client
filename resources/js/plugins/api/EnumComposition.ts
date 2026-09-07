@@ -3,35 +3,35 @@ import { ApiArray, ApiObject, callNum, callStr } from './runtime';
 
 export class EnumComposition extends ApiObject {
     getIntVals(): ApiArray<number> {
-        return new ApiArray<number>(callNum(465, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(463, this.handle, []), 'num', null);
     }
 
     getIntValue(a0: number): number {
-        return callNum(466, this.handle, [a0]);
+        return callNum(464, this.handle, [a0]);
     }
 
     getKeys(): ApiArray<number> {
-        return new ApiArray<number>(callNum(467, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(465, this.handle, []), 'num', null);
     }
 
     getLongVals(): ApiArray<number> {
-        return new ApiArray<number>(callNum(468, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(466, this.handle, []), 'num', null);
     }
 
     getLongValue(a0: number): number {
-        return callNum(469, this.handle, [a0]);
+        return callNum(467, this.handle, [a0]);
     }
 
     getStringVals(): ApiArray<string | null> {
-        return new ApiArray<string | null>(callNum(470, this.handle, []), 'str', null);
+        return new ApiArray<string | null>(callNum(468, this.handle, []), 'str', null);
     }
 
     getStringValue(a0: number): string | null {
-        return callStr(471, this.handle, [a0]);
+        return callStr(469, this.handle, [a0]);
     }
 
     size(): number {
-        return callNum(472, this.handle, []);
+        return callNum(470, this.handle, []);
     }
 
 }

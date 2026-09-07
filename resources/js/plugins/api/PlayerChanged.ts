@@ -4,15 +4,15 @@ import { Player } from './Player';
 
 export class PlayerChanged extends ApiObject {
     getPlayer(): Player | null {
-        return wrap(1824, this.handle, [], Player);
+        return wrap(1822, this.handle, [], Player);
     }
 
     hashCode(): number {
-        return callNum(1825, this.handle, []);
+        return callNum(1823, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1826, this.handle, []);
+        return callStr(1824, this.handle, []);
     }
 
 }

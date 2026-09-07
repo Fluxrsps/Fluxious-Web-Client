@@ -5,35 +5,35 @@ import { Projectile } from './Projectile';
 
 export class ProjectileMoved extends ApiObject {
     getPosition(): LocalPoint | null {
-        return wrap(1860, this.handle, [], LocalPoint);
+        return wrap(1858, this.handle, [], LocalPoint);
     }
 
     getProjectile(): Projectile | null {
-        return wrap(1861, this.handle, [], Projectile);
+        return wrap(1859, this.handle, [], Projectile);
     }
 
     getZ(): number {
-        return callNum(1862, this.handle, []);
+        return callNum(1860, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1863, this.handle, []);
+        return callNum(1861, this.handle, []);
     }
 
     setPosition(a0: ApiObject | null): void {
-        callVoid(1864, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1862, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setProjectile(a0: ApiObject | null): void {
-        callVoid(1865, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1863, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setZ(a0: number): void {
-        callVoid(1866, this.handle, [a0]);
+        callVoid(1864, this.handle, [a0]);
     }
 
     toString(): string | null {
-        return callStr(1867, this.handle, []);
+        return callStr(1865, this.handle, []);
     }
 
 }

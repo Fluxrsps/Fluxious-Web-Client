@@ -3,11 +3,11 @@ import { ApiObject, callStr } from './runtime';
 
 export class Nameable extends ApiObject {
     getName(): string | null {
-        return callStr(987, this.handle, []);
+        return callStr(985, this.handle, []);
     }
 
     getPrevName(): string | null {
-        return callStr(988, this.handle, []);
+        return callStr(986, this.handle, []);
     }
 
 }

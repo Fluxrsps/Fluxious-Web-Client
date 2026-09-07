@@ -7,59 +7,59 @@ import { WorldView } from './WorldView';
 
 export class TileObject extends ApiObject {
     getCanvasLocation(): Point | null {
-        return wrap(1432, this.handle, [], Point);
+        return wrap(1430, this.handle, [], Point);
     }
 
     getCanvasLocation$int(a0: number): Point | null {
-        return wrap(1433, this.handle, [a0], Point);
+        return wrap(1431, this.handle, [a0], Point);
     }
 
     getHash(): number {
-        return callNum(1434, this.handle, []);
+        return callNum(1432, this.handle, []);
     }
 
     getId(): number {
-        return callNum(1435, this.handle, []);
+        return callNum(1433, this.handle, []);
     }
 
     getLocalLocation(): LocalPoint | null {
-        return wrap(1436, this.handle, [], LocalPoint);
+        return wrap(1434, this.handle, [], LocalPoint);
     }
 
     getMinimapLocation(): Point | null {
-        return wrap(1437, this.handle, [], Point);
+        return wrap(1435, this.handle, [], Point);
     }
 
     getOpOverride(a0: number): string | null {
-        return callStr(1438, this.handle, [a0]);
+        return callStr(1436, this.handle, [a0]);
     }
 
     getPlane(): number {
-        return callNum(1439, this.handle, []);
+        return callNum(1437, this.handle, []);
     }
 
     getWorldLocation(): WorldPoint | null {
-        return wrap(1440, this.handle, [], WorldPoint);
+        return wrap(1438, this.handle, [], WorldPoint);
     }
 
     getWorldView(): WorldView | null {
-        return wrap(1441, this.handle, [], WorldView);
+        return wrap(1439, this.handle, [], WorldView);
     }
 
     getX(): number {
-        return callNum(1442, this.handle, []);
+        return callNum(1440, this.handle, []);
     }
 
     getY(): number {
-        return callNum(1443, this.handle, []);
+        return callNum(1441, this.handle, []);
     }
 
     getZ(): number {
-        return callNum(1444, this.handle, []);
+        return callNum(1442, this.handle, []);
     }
 
     isOpShown(a0: number): boolean {
-        return callNum(1445, this.handle, [a0]) !== 0;
+        return callNum(1443, this.handle, [a0]) !== 0;
     }
 
 }

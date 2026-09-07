@@ -5,35 +5,35 @@ import { Node } from './Node';
 
 export class Renderable extends ApiObject {
     getAnimationHeightOffset(): number {
-        return callNum(1191, this.handle, []);
+        return callNum(1189, this.handle, []);
     }
 
     getHash(): number {
-        return callNum(1192, this.handle, []);
+        return callNum(1190, this.handle, []);
     }
 
     getModel(): Model | null {
-        return wrap(1193, this.handle, [], Model);
+        return wrap(1191, this.handle, [], Model);
     }
 
     getModelHeight(): number {
-        return callNum(1194, this.handle, []);
+        return callNum(1192, this.handle, []);
     }
 
     getNext(): Node | null {
-        return wrap(1195, this.handle, [], Node);
+        return wrap(1193, this.handle, [], Node);
     }
 
     getPrevious(): Node | null {
-        return wrap(1196, this.handle, [], Node);
+        return wrap(1194, this.handle, [], Node);
     }
 
     getRenderMode(): number {
-        return callNum(1197, this.handle, []);
+        return callNum(1195, this.handle, []);
     }
 
     setModelHeight(a0: number): void {
-        callVoid(1198, this.handle, [a0]);
+        callVoid(1196, this.handle, [a0]);
     }
 
 }

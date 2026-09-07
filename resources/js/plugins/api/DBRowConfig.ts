@@ -3,7 +3,7 @@ import { ApiObject, callNum } from './runtime';
 
 export class DBRowConfig extends ApiObject {
     getTableID(): number {
-        return callNum(1604, this.handle, []);
+        return callNum(1602, this.handle, []);
     }
 
 }

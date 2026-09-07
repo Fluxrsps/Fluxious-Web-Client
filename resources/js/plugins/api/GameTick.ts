@@ -3,11 +3,11 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class GameTick extends ApiObject {
     hashCode(): number {
-        return callNum(1710, this.handle, []);
+        return callNum(1708, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1711, this.handle, []);
+        return callStr(1709, this.handle, []);
     }
 
 }

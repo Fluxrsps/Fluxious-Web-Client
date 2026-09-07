@@ -3,27 +3,27 @@ import { ApiArray, ApiObject, callNum, callVoid } from './runtime';
 
 export class Rasterizer extends ApiObject {
     getHeight(): number {
-        return callNum(1179, this.handle, []);
+        return callNum(1177, this.handle, []);
     }
 
     getPixels(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1180, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(1178, this.handle, []), 'num', null);
     }
 
     getWidth(): number {
-        return callNum(1181, this.handle, []);
+        return callNum(1179, this.handle, []);
     }
 
     resetRasterClipping(): void {
-        callVoid(1182, this.handle, []);
+        callVoid(1180, this.handle, []);
     }
 
     setDrawRegion(a0: number, a1: number, a2: number, a3: number): void {
-        callVoid(1183, this.handle, [a0, a1, a2, a3]);
+        callVoid(1181, this.handle, [a0, a1, a2, a3]);
     }
 
     setRasterGouraudLowRes(a0: boolean): void {
-        callVoid(1184, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(1182, this.handle, [(a0 ? 1 : 0)]);
     }
 
 }

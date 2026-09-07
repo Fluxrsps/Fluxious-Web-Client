@@ -3,7 +3,7 @@ import { ApiObject, callVoid } from './runtime';
 
 export class JavaScriptCallback extends ApiObject {
     run(a0: ApiObject | null): void {
-        callVoid(1997, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1995, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
 }

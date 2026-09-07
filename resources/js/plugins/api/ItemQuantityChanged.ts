@@ -5,27 +5,27 @@ import { TileItem } from './TileItem';
 
 export class ItemQuantityChanged extends ApiObject {
     getItem(): TileItem | null {
-        return wrap(1760, this.handle, [], TileItem);
+        return wrap(1758, this.handle, [], TileItem);
     }
 
     getNewQuantity(): number {
-        return callNum(1761, this.handle, []);
+        return callNum(1759, this.handle, []);
     }
 
     getOldQuantity(): number {
-        return callNum(1762, this.handle, []);
+        return callNum(1760, this.handle, []);
     }
 
     getTile(): Tile | null {
-        return wrap(1763, this.handle, [], Tile);
+        return wrap(1761, this.handle, [], Tile);
     }
 
     hashCode(): number {
-        return callNum(1764, this.handle, []);
+        return callNum(1762, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1765, this.handle, []);
+        return callStr(1763, this.handle, []);
     }
 
 }

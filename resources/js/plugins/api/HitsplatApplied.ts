@@ -5,27 +5,27 @@ import { Hitsplat } from './Hitsplat';
 
 export class HitsplatApplied extends ApiObject {
     getActor(): Actor | null {
-        return wrap(1742, this.handle, [], Actor);
+        return wrap(1740, this.handle, [], Actor);
     }
 
     getHitsplat(): Hitsplat | null {
-        return wrap(1743, this.handle, [], Hitsplat);
+        return wrap(1741, this.handle, [], Hitsplat);
     }
 
     hashCode(): number {
-        return callNum(1744, this.handle, []);
+        return callNum(1742, this.handle, []);
     }
 
     setActor(a0: ApiObject | null): void {
-        callVoid(1745, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1743, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setHitsplat(a0: ApiObject | null): void {
-        callVoid(1746, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1744, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     toString(): string | null {
-        return callStr(1747, this.handle, []);
+        return callStr(1745, this.handle, []);
     }
 
 }

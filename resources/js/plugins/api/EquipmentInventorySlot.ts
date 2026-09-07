@@ -3,23 +3,23 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class EquipmentInventorySlot extends ApiObject {
     getSlotIdx(): number {
-        return callNum(473, this.handle, []);
+        return callNum(471, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(474, this.handle, []);
+        return callNum(472, this.handle, []);
     }
 
     name(): string | null {
-        return callStr(475, this.handle, []);
+        return callStr(473, this.handle, []);
     }
 
     ordinal(): number {
-        return callNum(476, this.handle, []);
+        return callNum(474, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(477, this.handle, []);
+        return callStr(475, this.handle, []);
     }
 
 }

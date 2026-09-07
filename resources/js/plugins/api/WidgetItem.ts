@@ -5,23 +5,23 @@ import { Widget } from './Widget';
 
 export class WidgetItem extends ApiObject {
     getCanvasLocation(): Point | null {
-        return wrap(2152, this.handle, [], Point);
+        return wrap(2150, this.handle, [], Point);
     }
 
     getId(): number {
-        return callNum(2153, this.handle, []);
+        return callNum(2151, this.handle, []);
     }
 
     getQuantity(): number {
-        return callNum(2154, this.handle, []);
+        return callNum(2152, this.handle, []);
     }
 
     getWidget(): Widget | null {
-        return wrap(2155, this.handle, [], Widget);
+        return wrap(2153, this.handle, [], Widget);
     }
 
     toString(): string | null {
-        return callStr(2156, this.handle, []);
+        return callStr(2154, this.handle, []);
     }
 
 }

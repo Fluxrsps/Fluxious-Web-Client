@@ -4,28 +4,28 @@ import { Script } from './Script';
 
 export class ScriptCallbackEvent extends ApiObject {
     getEventName(): string | null {
-        return callStr(1875, this.handle, []);
+        return callStr(1873, this.handle, []);
     }
 
     getScript(): Script | null {
-        return wrap(1876, this.handle, [], Script);
+        return wrap(1874, this.handle, [], Script);
     }
 
     hashCode(): number {
-        return callNum(1877, this.handle, []);
+        return callNum(1875, this.handle, []);
     }
 
     setEventName(a0: string): void {
         callStrArg(0, a0);
-        callVoid(1878, this.handle, [0]);
+        callVoid(1876, this.handle, [0]);
     }
 
     setScript(a0: ApiObject | null): void {
-        callVoid(1879, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1877, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     toString(): string | null {
-        return callStr(1880, this.handle, []);
+        return callStr(1878, this.handle, []);
     }
 
 }

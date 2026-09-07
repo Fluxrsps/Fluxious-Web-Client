@@ -5,71 +5,71 @@ import { Widget } from './Widget';
 
 export class MenuOptionClicked extends ApiObject {
     consume(): void {
-        callVoid(1784, this.handle, []);
+        callVoid(1782, this.handle, []);
     }
 
     getActionParam(): number {
-        return callNum(1785, this.handle, []);
+        return callNum(1783, this.handle, []);
     }
 
     getId(): number {
-        return callNum(1786, this.handle, []);
+        return callNum(1784, this.handle, []);
     }
 
     getItemId(): number {
-        return callNum(1787, this.handle, []);
+        return callNum(1785, this.handle, []);
     }
 
     getItemOp(): number {
-        return callNum(1788, this.handle, []);
+        return callNum(1786, this.handle, []);
     }
 
     getMenuAction(): string | null {
-        return callStr(1789, this.handle, []);
+        return callStr(1787, this.handle, []);
     }
 
     getMenuEntry(): MenuEntry | null {
-        return wrap(1790, this.handle, [], MenuEntry);
+        return wrap(1788, this.handle, [], MenuEntry);
     }
 
     getMenuOption(): string | null {
-        return callStr(1791, this.handle, []);
+        return callStr(1789, this.handle, []);
     }
 
     getMenuTarget(): string | null {
-        return callStr(1792, this.handle, []);
+        return callStr(1790, this.handle, []);
     }
 
     getParam0(): number {
-        return callNum(1793, this.handle, []);
+        return callNum(1791, this.handle, []);
     }
 
     getParam1(): number {
-        return callNum(1794, this.handle, []);
+        return callNum(1792, this.handle, []);
     }
 
     getWidget(): Widget | null {
-        return wrap(1795, this.handle, [], Widget);
+        return wrap(1793, this.handle, [], Widget);
     }
 
     getWidgetId(): number {
-        return callNum(1796, this.handle, []);
+        return callNum(1794, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1797, this.handle, []);
+        return callNum(1795, this.handle, []);
     }
 
     isConsumed(): boolean {
-        return callNum(1798, this.handle, []) !== 0;
+        return callNum(1796, this.handle, []) !== 0;
     }
 
     isItemOp(): boolean {
-        return callNum(1799, this.handle, []) !== 0;
+        return callNum(1797, this.handle, []) !== 0;
     }
 
     toString(): string | null {
-        return callStr(1800, this.handle, []);
+        return callStr(1798, this.handle, []);
     }
 
 }

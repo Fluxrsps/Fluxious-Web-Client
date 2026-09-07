@@ -3,23 +3,23 @@ import { ApiObject, callNum, callVoid } from './runtime';
 
 export class GameEngine extends ApiObject {
     initialize(): void {
-        callVoid(507, this.handle, []);
+        callVoid(505, this.handle, []);
     }
 
     isClientThread(): boolean {
-        return callNum(508, this.handle, []) !== 0;
+        return callNum(506, this.handle, []) !== 0;
     }
 
     resizeCanvas(): void {
-        callVoid(509, this.handle, []);
+        callVoid(507, this.handle, []);
     }
 
     setConfiguration(a0: ApiObject | null): void {
-        callVoid(510, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(508, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     unblockStartup(): void {
-        callVoid(511, this.handle, []);
+        callVoid(509, this.handle, []);
     }
 
 }

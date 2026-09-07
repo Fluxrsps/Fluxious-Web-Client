@@ -3,19 +3,19 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class WorldType extends ApiObject {
     hashCode(): number {
-        return callNum(1502, this.handle, []);
+        return callNum(1500, this.handle, []);
     }
 
     name(): string | null {
-        return callStr(1503, this.handle, []);
+        return callStr(1501, this.handle, []);
     }
 
     ordinal(): number {
-        return callNum(1504, this.handle, []);
+        return callNum(1502, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1505, this.handle, []);
+        return callStr(1503, this.handle, []);
     }
 
 }

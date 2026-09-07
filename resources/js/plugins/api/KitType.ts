@@ -3,23 +3,23 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class KitType extends ApiObject {
     getIndex(): number {
-        return callNum(1981, this.handle, []);
+        return callNum(1979, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1982, this.handle, []);
+        return callNum(1980, this.handle, []);
     }
 
     name(): string | null {
-        return callStr(1983, this.handle, []);
+        return callStr(1981, this.handle, []);
     }
 
     ordinal(): number {
-        return callNum(1984, this.handle, []);
+        return callNum(1982, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1985, this.handle, []);
+        return callStr(1983, this.handle, []);
     }
 
 }

@@ -3,7 +3,7 @@ import { ApiObject, callVoid } from './runtime';
 
 export class NodeCache extends ApiObject {
     reset(): void {
-        callVoid(996, this.handle, []);
+        callVoid(994, this.handle, []);
     }
 
 }

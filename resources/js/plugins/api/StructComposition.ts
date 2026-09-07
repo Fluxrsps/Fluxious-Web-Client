@@ -4,36 +4,36 @@ import { IterableHashTable } from './IterableHashTable';
 
 export class StructComposition extends ApiObject {
     getId(): number {
-        return callNum(1378, this.handle, []);
+        return callNum(1376, this.handle, []);
     }
 
     getIntValue(a0: number): number {
-        return callNum(1379, this.handle, [a0]);
+        return callNum(1377, this.handle, [a0]);
     }
 
     getLongValue(a0: number): number {
-        return callNum(1380, this.handle, [a0]);
+        return callNum(1378, this.handle, [a0]);
     }
 
     getParams(): IterableHashTable | null {
-        return wrap(1381, this.handle, [], IterableHashTable);
+        return wrap(1379, this.handle, [], IterableHashTable);
     }
 
     getStringValue(a0: number): string | null {
-        return callStr(1382, this.handle, [a0]);
+        return callStr(1380, this.handle, [a0]);
     }
 
     setValue(a0: number, a1: number): void {
-        callVoid(1383, this.handle, [a0, a1]);
+        callVoid(1381, this.handle, [a0, a1]);
     }
 
     setValue$int_String(a0: number, a1: string): void {
         callStrArg(1, a1);
-        callVoid(1384, this.handle, [a0, 0]);
+        callVoid(1382, this.handle, [a0, 0]);
     }
 
     setValue$int_long(a0: number, a1: number): void {
-        callVoid(1385, this.handle, [a0, a1]);
+        callVoid(1383, this.handle, [a0, a1]);
     }
 
 }

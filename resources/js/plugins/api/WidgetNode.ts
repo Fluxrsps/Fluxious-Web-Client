@@ -4,23 +4,23 @@ import { Node } from './Node';
 
 export class WidgetNode extends ApiObject {
     getHash(): number {
-        return callNum(1468, this.handle, []);
+        return callNum(1466, this.handle, []);
     }
 
     getId(): number {
-        return callNum(1469, this.handle, []);
+        return callNum(1467, this.handle, []);
     }
 
     getModalMode(): number {
-        return callNum(1470, this.handle, []);
+        return callNum(1468, this.handle, []);
     }
 
     getNext(): Node | null {
-        return wrap(1471, this.handle, [], Node);
+        return wrap(1469, this.handle, [], Node);
     }
 
     getPrevious(): Node | null {
-        return wrap(1472, this.handle, [], Node);
+        return wrap(1470, this.handle, [], Node);
     }
 
 }

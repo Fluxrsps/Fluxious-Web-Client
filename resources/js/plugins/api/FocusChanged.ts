@@ -3,19 +3,19 @@ import { ApiObject, callNum, callStr, callVoid } from './runtime';
 
 export class FocusChanged extends ApiObject {
     hashCode(): number {
-        return callNum(1682, this.handle, []);
+        return callNum(1680, this.handle, []);
     }
 
     isFocused(): boolean {
-        return callNum(1683, this.handle, []) !== 0;
+        return callNum(1681, this.handle, []) !== 0;
     }
 
     setFocused(a0: boolean): void {
-        callVoid(1684, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(1682, this.handle, [(a0 ? 1 : 0)]);
     }
 
     toString(): string | null {
-        return callStr(1685, this.handle, []);
+        return callStr(1683, this.handle, []);
     }
 
 }

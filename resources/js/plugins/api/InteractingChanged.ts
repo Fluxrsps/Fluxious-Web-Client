@@ -4,19 +4,19 @@ import { Actor } from './Actor';
 
 export class InteractingChanged extends ApiObject {
     getSource(): Actor | null {
-        return wrap(1748, this.handle, [], Actor);
+        return wrap(1746, this.handle, [], Actor);
     }
 
     getTarget(): Actor | null {
-        return wrap(1749, this.handle, [], Actor);
+        return wrap(1747, this.handle, [], Actor);
     }
 
     hashCode(): number {
-        return callNum(1750, this.handle, []);
+        return callNum(1748, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1751, this.handle, []);
+        return callStr(1749, this.handle, []);
     }
 
 }

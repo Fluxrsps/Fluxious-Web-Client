@@ -889,344 +889,336 @@ export class Client extends ApiObject {
         return callNum(337, this.handle, []) !== 0;
     }
 
-    isOnLoginScreen(): boolean {
+    isResized(): boolean {
         return callNum(338, this.handle, []) !== 0;
     }
 
-    isResized(): boolean {
-        return callNum(339, this.handle, []) !== 0;
-    }
-
     isRuneLiteObjectRegistered(a0: ApiObject | null): boolean {
-        return callNum(340, this.handle, [(a0 ? a0.handle : -1)]) !== 0;
+        return callNum(339, this.handle, [(a0 ? a0.handle : -1)]) !== 0;
     }
 
     isStretchedEnabled(): boolean {
-        return callNum(341, this.handle, []) !== 0;
+        return callNum(340, this.handle, []) !== 0;
     }
 
     isStretchedFast(): boolean {
-        return callNum(342, this.handle, []) !== 0;
+        return callNum(341, this.handle, []) !== 0;
     }
 
     isWidgetSelected(): boolean {
-        return callNum(343, this.handle, []) !== 0;
+        return callNum(342, this.handle, []) !== 0;
     }
 
     loadAnimation(a0: number): Animation | null {
-        return wrap(344, this.handle, [a0], Animation);
+        return wrap(343, this.handle, [a0], Animation);
     }
 
     loadModel(a0: number): Model | null {
-        return wrap(345, this.handle, [a0], Model);
+        return wrap(344, this.handle, [a0], Model);
     }
 
     loadModelData(a0: number): ModelData | null {
-        return wrap(346, this.handle, [a0], ModelData);
+        return wrap(345, this.handle, [a0], ModelData);
     }
 
     newclickInRegion$int_int_SpritePixels(a0: number, a1: number, a2: ApiObject | null): boolean {
-        return callNum(347, this.handle, [a0, a1, (a2 ? a2.handle : -1)]) !== 0;
+        return callNum(346, this.handle, [a0, a1, (a2 ? a2.handle : -1)]) !== 0;
     }
 
     newclickInRegion(a0: number, a1: number, a2: number, a3: number): boolean {
-        return callNum(348, this.handle, [a0, a1, a2, a3]) !== 0;
+        return callNum(347, this.handle, [a0, a1, a2, a3]) !== 0;
     }
 
     newmouseInRegion$int_int_SpritePixels(a0: number, a1: number, a2: ApiObject | null): boolean {
-        return callNum(349, this.handle, [a0, a1, (a2 ? a2.handle : -1)]) !== 0;
+        return callNum(348, this.handle, [a0, a1, (a2 ? a2.handle : -1)]) !== 0;
     }
 
     newmouseInRegion(a0: number, a1: number, a2: number, a3: number): boolean {
-        return callNum(350, this.handle, [a0, a1, a2, a3]) !== 0;
+        return callNum(349, this.handle, [a0, a1, a2, a3]) !== 0;
     }
 
     openInterface(a0: number, a1: number, a2: number): WidgetNode | null {
-        return wrap(351, this.handle, [a0, a1, a2], WidgetNode);
+        return wrap(350, this.handle, [a0, a1, a2], WidgetNode);
     }
 
     openWorldHopper(): void {
-        callVoid(352, this.handle, []);
+        callVoid(351, this.handle, []);
     }
 
     playSoundEffect(a0: number): void {
-        callVoid(353, this.handle, [a0]);
+        callVoid(352, this.handle, [a0]);
     }
 
     playSoundEffect$int_int(a0: number, a1: number): void {
-        callVoid(354, this.handle, [a0, a1]);
+        callVoid(353, this.handle, [a0, a1]);
     }
 
     playSoundEffect$int_int_int_int(a0: number, a1: number, a2: number, a3: number): void {
-        callVoid(355, this.handle, [a0, a1, a2, a3]);
+        callVoid(354, this.handle, [a0, a1, a2, a3]);
     }
 
     queueChangedVarp(a0: number): void {
-        callVoid(356, this.handle, [a0]);
+        callVoid(355, this.handle, [a0]);
     }
 
     refreshChat(): void {
-        callVoid(357, this.handle, []);
+        callVoid(356, this.handle, []);
     }
 
     registerRuneLiteObject(a0: ApiObject | null): void {
-        callVoid(358, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(357, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     removeRuneLiteObject(a0: ApiObject | null): void {
-        callVoid(359, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(358, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     resetHealthBarCaches(): void {
-        callVoid(360, this.handle, []);
+        callVoid(359, this.handle, []);
     }
 
     resizeCanvas(): void {
-        callVoid(361, this.handle, []);
+        callVoid(360, this.handle, []);
     }
 
     setAllWidgetsAreOpTargetable(a0: boolean): void {
-        callVoid(362, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(361, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setCameraFocalPointX(a0: number): void {
-        callVoid(363, this.handle, [a0]);
+        callVoid(362, this.handle, [a0]);
     }
 
     setCameraFocalPointY(a0: number): void {
-        callVoid(364, this.handle, [a0]);
+        callVoid(363, this.handle, [a0]);
     }
 
     setCameraFocalPointZ(a0: number): void {
-        callVoid(365, this.handle, [a0]);
+        callVoid(364, this.handle, [a0]);
     }
 
     setCameraMode(a0: number): void {
-        callVoid(366, this.handle, [a0]);
+        callVoid(365, this.handle, [a0]);
     }
 
     setCameraMouseButtonMask(a0: number): void {
-        callVoid(367, this.handle, [a0]);
+        callVoid(366, this.handle, [a0]);
     }
 
     setCameraPitchRelaxerEnabled(a0: boolean): void {
-        callVoid(368, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(367, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setCameraPitchTarget(a0: number): void {
-        callVoid(369, this.handle, [a0]);
+        callVoid(368, this.handle, [a0]);
     }
 
     setCameraShakeDisabled(a0: boolean): void {
-        callVoid(370, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(369, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setCameraSpeed(a0: number): void {
-        callVoid(371, this.handle, [a0]);
+        callVoid(370, this.handle, [a0]);
     }
 
     setCameraYawTarget(a0: number): void {
-        callVoid(372, this.handle, [a0]);
-    }
-
-    setClient(a0: number): void {
-        callVoid(373, this.handle, [a0]);
+        callVoid(371, this.handle, [a0]);
     }
 
     setCompass(a0: ApiObject | null): void {
-        callVoid(374, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(372, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setConfiguration(a0: ApiObject | null): void {
-        callVoid(375, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(373, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setDraggedOnWidget(a0: ApiObject | null): void {
-        callVoid(376, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(374, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setDraw2DMask(a0: number): void {
-        callVoid(377, this.handle, [a0]);
+        callVoid(375, this.handle, [a0]);
     }
 
     setDrawCallbacks(a0: ApiObject | null): void {
-        callVoid(378, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(376, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setExpandedMapLoading(a0: number): void {
-        callVoid(379, this.handle, [a0]);
+        callVoid(377, this.handle, [a0]);
     }
 
     setFreeCameraSpeed(a0: number): void {
-        callVoid(380, this.handle, [a0]);
+        callVoid(378, this.handle, [a0]);
     }
 
     setGeSearchResultCount(a0: number): void {
-        callVoid(381, this.handle, [a0]);
+        callVoid(379, this.handle, [a0]);
     }
 
     setGeSearchResultIndex(a0: number): void {
-        callVoid(382, this.handle, [a0]);
+        callVoid(380, this.handle, [a0]);
     }
 
     setGpuFlags(a0: number): void {
-        callVoid(383, this.handle, [a0]);
+        callVoid(381, this.handle, [a0]);
     }
 
     setHintArrow(a0: ApiObject | null): void {
-        callVoid(384, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(382, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setHintArrow$Player(a0: ApiObject | null): void {
-        callVoid(385, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(383, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setHintArrow$LocalPoint(a0: ApiObject | null): void {
-        callVoid(386, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(384, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setHintArrow$WorldPoint(a0: ApiObject | null): void {
-        callVoid(387, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(385, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setIdleTimeout(a0: number): void {
-        callVoid(388, this.handle, [a0]);
+        callVoid(386, this.handle, [a0]);
     }
 
     setIntStackSize(a0: number): void {
-        callVoid(389, this.handle, [a0]);
+        callVoid(387, this.handle, [a0]);
     }
 
     setInventoryDragDelay(a0: number): void {
-        callVoid(390, this.handle, [a0]);
+        callVoid(388, this.handle, [a0]);
     }
 
     setInvertPitch(a0: boolean): void {
-        callVoid(391, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(389, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setInvertYaw(a0: boolean): void {
-        callVoid(392, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(390, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setLoginScreen(a0: ApiObject | null): void {
-        callVoid(393, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(391, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setMenuScroll(a0: number): void {
-        callVoid(394, this.handle, [a0]);
+        callVoid(392, this.handle, [a0]);
     }
 
     setMinimapTileDrawer(a0: ApiObject | null): void {
-        callVoid(395, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(393, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setMinimapZoom(a0: boolean): void {
-        callVoid(396, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(394, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setMinimapZoom$double(a0: number): void {
-        callVoid(397, this.handle, [a0]);
+        callVoid(395, this.handle, [a0]);
     }
 
     setMouseoverTextEnabled(a0: boolean): void {
-        callVoid(398, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(396, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setMusicVolume(a0: number): void {
-        callVoid(399, this.handle, [a0]);
+        callVoid(397, this.handle, [a0]);
     }
 
     setObjectStackSize(a0: number): void {
-        callVoid(400, this.handle, [a0]);
+        callVoid(398, this.handle, [a0]);
     }
 
     setOculusOrbNormalSpeed(a0: number): void {
-        callVoid(401, this.handle, [a0]);
+        callVoid(399, this.handle, [a0]);
     }
 
     setOculusOrbState(a0: number): void {
-        callVoid(402, this.handle, [a0]);
+        callVoid(400, this.handle, [a0]);
     }
 
     setOtp(a0: string): void {
         callStrArg(0, a0);
-        callVoid(403, this.handle, [0]);
+        callVoid(401, this.handle, [0]);
     }
 
     setPassword(a0: string): void {
         callStrArg(0, a0);
-        callVoid(404, this.handle, [0]);
+        callVoid(402, this.handle, [0]);
     }
 
     setScalingFactor(a0: number): void {
-        callVoid(405, this.handle, [a0]);
+        callVoid(403, this.handle, [a0]);
     }
 
     setShouldRenderLoginScreenFire(a0: boolean): void {
-        callVoid(406, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(404, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setSkyboxColor(a0: number): void {
-        callVoid(407, this.handle, [a0]);
+        callVoid(405, this.handle, [a0]);
     }
 
     setStretchedEnabled(a0: boolean): void {
-        callVoid(408, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(406, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setStretchedFast(a0: boolean): void {
-        callVoid(409, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(407, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setStretchedIntegerScaling(a0: boolean): void {
-        callVoid(410, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(408, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setStretchedKeepAspectRatio(a0: boolean): void {
-        callVoid(411, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(409, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setTickCount(a0: number): void {
-        callVoid(412, this.handle, [a0]);
+        callVoid(410, this.handle, [a0]);
     }
 
     setUnlockedFps(a0: boolean): void {
-        callVoid(413, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(411, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setUnlockedFpsTarget(a0: number): void {
-        callVoid(414, this.handle, [a0]);
+        callVoid(412, this.handle, [a0]);
     }
 
     setUsername(a0: string): void {
         callStrArg(0, a0);
-        callVoid(415, this.handle, [0]);
+        callVoid(413, this.handle, [0]);
     }
 
     setVarbit(a0: number, a1: number): void {
-        callVoid(416, this.handle, [a0, a1]);
+        callVoid(414, this.handle, [a0, a1]);
     }
 
     setVarcIntValue(a0: number, a1: number): void {
-        callVoid(417, this.handle, [a0, a1]);
+        callVoid(415, this.handle, [a0, a1]);
     }
 
     setVarcStrValue(a0: number, a1: string): void {
         callStrArg(1, a1);
-        callVoid(418, this.handle, [a0, 0]);
+        callVoid(416, this.handle, [a0, 0]);
     }
 
     setWidgetSelected(a0: boolean): void {
-        callVoid(419, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(417, this.handle, [(a0 ? 1 : 0)]);
     }
 
     stopNow(): void {
-        callVoid(420, this.handle, []);
+        callVoid(418, this.handle, []);
     }
 
     unblockStartup(): void {
-        callVoid(421, this.handle, []);
+        callVoid(419, this.handle, []);
     }
 
 }

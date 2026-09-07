@@ -4,23 +4,23 @@ import { Texture } from './Texture';
 
 export class TextureProvider extends ApiObject {
     getBrightness(): number {
-        return callNum(1397, this.handle, []);
+        return callNum(1395, this.handle, []);
     }
 
     getDefaultColor(a0: number): number {
-        return callNum(1398, this.handle, [a0]);
+        return callNum(1396, this.handle, [a0]);
     }
 
     getTextures(): ApiArray<Texture | null> {
-        return new ApiArray<Texture | null>(callNum(1399, this.handle, []), 'handle', Texture);
+        return new ApiArray<Texture | null>(callNum(1397, this.handle, []), 'handle', Texture);
     }
 
     load(a0: number): ApiArray<number> {
-        return new ApiArray<number>(callNum(1400, this.handle, [a0]), 'num', null);
+        return new ApiArray<number>(callNum(1398, this.handle, [a0]), 'num', null);
     }
 
     setBrightness(a0: number): void {
-        callVoid(1401, this.handle, [a0]);
+        callVoid(1399, this.handle, [a0]);
     }
 
 }

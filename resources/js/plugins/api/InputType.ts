@@ -3,23 +3,23 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class InputType extends ApiObject {
     getType(): number {
-        return callNum(1992, this.handle, []);
+        return callNum(1990, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1993, this.handle, []);
+        return callNum(1991, this.handle, []);
     }
 
     name(): string | null {
-        return callStr(1994, this.handle, []);
+        return callStr(1992, this.handle, []);
     }
 
     ordinal(): number {
-        return callNum(1995, this.handle, []);
+        return callNum(1993, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1996, this.handle, []);
+        return callStr(1994, this.handle, []);
     }
 
 }

@@ -4,19 +4,19 @@ import { Actor } from './Actor';
 
 export class GraphicChanged extends ApiObject {
     getActor(): Actor | null {
-        return wrap(1723, this.handle, [], Actor);
+        return wrap(1721, this.handle, [], Actor);
     }
 
     hashCode(): number {
-        return callNum(1724, this.handle, []);
+        return callNum(1722, this.handle, []);
     }
 
     setActor(a0: ApiObject | null): void {
-        callVoid(1725, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1723, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     toString(): string | null {
-        return callStr(1726, this.handle, []);
+        return callStr(1724, this.handle, []);
     }
 
 }

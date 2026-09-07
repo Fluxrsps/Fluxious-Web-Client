@@ -4,67 +4,67 @@ import { Node } from './Node';
 
 export class MessageNode extends ApiObject {
     getHash(): number {
-        return callNum(780, this.handle, []);
+        return callNum(778, this.handle, []);
     }
 
     getId(): number {
-        return callNum(781, this.handle, []);
+        return callNum(779, this.handle, []);
     }
 
     getName(): string | null {
-        return callStr(782, this.handle, []);
+        return callStr(780, this.handle, []);
     }
 
     getNext(): Node | null {
-        return wrap(783, this.handle, [], Node);
+        return wrap(781, this.handle, [], Node);
     }
 
     getPrevious(): Node | null {
-        return wrap(784, this.handle, [], Node);
+        return wrap(782, this.handle, [], Node);
     }
 
     getRuneLiteFormatMessage(): string | null {
-        return callStr(785, this.handle, []);
+        return callStr(783, this.handle, []);
     }
 
     getSender(): string | null {
-        return callStr(786, this.handle, []);
+        return callStr(784, this.handle, []);
     }
 
     getTimestamp(): number {
-        return callNum(787, this.handle, []);
+        return callNum(785, this.handle, []);
     }
 
     getType(): string | null {
-        return callStr(788, this.handle, []);
+        return callStr(786, this.handle, []);
     }
 
     getValue(): string | null {
-        return callStr(789, this.handle, []);
+        return callStr(787, this.handle, []);
     }
 
     setName(a0: string): void {
         callStrArg(0, a0);
-        callVoid(790, this.handle, [0]);
+        callVoid(788, this.handle, [0]);
     }
 
     setRuneLiteFormatMessage(a0: string): void {
         callStrArg(0, a0);
-        callVoid(791, this.handle, [0]);
+        callVoid(789, this.handle, [0]);
     }
 
     setSender(a0: string): void {
         callStrArg(0, a0);
-        callVoid(792, this.handle, [0]);
+        callVoid(790, this.handle, [0]);
     }
 
     setTimestamp(a0: number): void {
-        callVoid(793, this.handle, [a0]);
+        callVoid(791, this.handle, [a0]);
     }
 
     setValue(a0: string): void {
         callStrArg(0, a0);
-        callVoid(794, this.handle, [0]);
+        callVoid(792, this.handle, [0]);
     }
 
 }

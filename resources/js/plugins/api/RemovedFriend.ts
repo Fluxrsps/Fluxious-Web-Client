@@ -4,15 +4,15 @@ import { Nameable } from './Nameable';
 
 export class RemovedFriend extends ApiObject {
     getNameable(): Nameable | null {
-        return wrap(1868, this.handle, [], Nameable);
+        return wrap(1866, this.handle, [], Nameable);
     }
 
     hashCode(): number {
-        return callNum(1869, this.handle, []);
+        return callNum(1867, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1870, this.handle, []);
+        return callStr(1868, this.handle, []);
     }
 
 }

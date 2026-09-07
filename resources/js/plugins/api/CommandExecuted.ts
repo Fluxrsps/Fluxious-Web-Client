@@ -3,19 +3,19 @@ import { ApiArray, ApiObject, callNum, callStr } from './runtime';
 
 export class CommandExecuted extends ApiObject {
     getArguments(): ApiArray<string | null> {
-        return new ApiArray<string | null>(callNum(1662, this.handle, []), 'str', null);
+        return new ApiArray<string | null>(callNum(1660, this.handle, []), 'str', null);
     }
 
     getCommand(): string | null {
-        return callStr(1663, this.handle, []);
+        return callStr(1661, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1664, this.handle, []);
+        return callNum(1662, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1665, this.handle, []);
+        return callStr(1663, this.handle, []);
     }
 
 }

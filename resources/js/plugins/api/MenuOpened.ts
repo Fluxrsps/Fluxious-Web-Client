@@ -4,19 +4,19 @@ import { MenuEntry } from './MenuEntry';
 
 export class MenuOpened extends ApiObject {
     getFirstEntry(): MenuEntry | null {
-        return wrap(1780, this.handle, [], MenuEntry);
+        return wrap(1778, this.handle, [], MenuEntry);
     }
 
     getMenuEntries(): ApiArray<MenuEntry | null> {
-        return new ApiArray<MenuEntry | null>(callNum(1781, this.handle, []), 'handle', MenuEntry);
+        return new ApiArray<MenuEntry | null>(callNum(1779, this.handle, []), 'handle', MenuEntry);
     }
 
     hashCode(): number {
-        return callNum(1782, this.handle, []);
+        return callNum(1780, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1783, this.handle, []);
+        return callStr(1781, this.handle, []);
     }
 
 }

@@ -3,15 +3,15 @@ import { ApiObject, callNum, callStr, wrap } from './runtime';
 
 export class EntityOps extends ApiObject {
     getNumOps(): number {
-        return callNum(462, this.handle, []);
+        return callNum(460, this.handle, []);
     }
 
     getOp(a0: number): string | null {
-        return callStr(463, this.handle, [a0]);
+        return callStr(461, this.handle, [a0]);
     }
 
     getSubOps(a0: number): EntityOps | null {
-        return wrap(464, this.handle, [a0], EntityOps);
+        return wrap(462, this.handle, [a0], EntityOps);
     }
 
 }

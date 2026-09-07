@@ -3,15 +3,15 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class ClanRank extends ApiObject {
     getRank(): number {
-        return callNum(1540, this.handle, []);
+        return callNum(1538, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1541, this.handle, []);
+        return callNum(1539, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1542, this.handle, []);
+        return callStr(1540, this.handle, []);
     }
 
 }

@@ -4,23 +4,23 @@ import { Node } from './Node';
 
 export class WidgetConfigNode extends ApiObject {
     getClickMask(): number {
-        return callNum(2139, this.handle, []);
+        return callNum(2137, this.handle, []);
     }
 
     getHash(): number {
-        return callNum(2140, this.handle, []);
+        return callNum(2138, this.handle, []);
     }
 
     getNext(): Node | null {
-        return wrap(2141, this.handle, [], Node);
+        return wrap(2139, this.handle, [], Node);
     }
 
     getOpMask(): number {
-        return callNum(2142, this.handle, []);
+        return callNum(2140, this.handle, []);
     }
 
     getPrevious(): Node | null {
-        return wrap(2143, this.handle, [], Node);
+        return wrap(2141, this.handle, [], Node);
     }
 
 }

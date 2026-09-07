@@ -4,23 +4,23 @@ import { ScriptEvent } from './ScriptEvent';
 
 export class ScriptPreFired extends ApiObject {
     getScriptEvent(): ScriptEvent | null {
-        return wrap(1884, this.handle, [], ScriptEvent);
+        return wrap(1882, this.handle, [], ScriptEvent);
     }
 
     getScriptId(): number {
-        return callNum(1885, this.handle, []);
+        return callNum(1883, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1886, this.handle, []);
+        return callNum(1884, this.handle, []);
     }
 
     setScriptEvent(a0: ApiObject | null): void {
-        callVoid(1887, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1885, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     toString(): string | null {
-        return callStr(1888, this.handle, []);
+        return callStr(1886, this.handle, []);
     }
 
 }

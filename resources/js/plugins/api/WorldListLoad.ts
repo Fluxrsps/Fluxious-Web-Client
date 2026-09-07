@@ -4,15 +4,15 @@ import { World } from './World';
 
 export class WorldListLoad extends ApiObject {
     getWorlds(): ApiArray<World | null> {
-        return new ApiArray<World | null>(callNum(1950, this.handle, []), 'handle', World);
+        return new ApiArray<World | null>(callNum(1948, this.handle, []), 'handle', World);
     }
 
     hashCode(): number {
-        return callNum(1951, this.handle, []);
+        return callNum(1949, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1952, this.handle, []);
+        return callStr(1950, this.handle, []);
     }
 
 }

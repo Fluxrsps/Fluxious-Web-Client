@@ -3,23 +3,23 @@ import { ApiObject, callNum, callStr, callVoid } from './runtime';
 
 export class GrandExchangeSearched extends ApiObject {
     consume(): void {
-        callVoid(1718, this.handle, []);
+        callVoid(1716, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1719, this.handle, []);
+        return callNum(1717, this.handle, []);
     }
 
     isConsumed(): boolean {
-        return callNum(1720, this.handle, []) !== 0;
+        return callNum(1718, this.handle, []) !== 0;
     }
 
     setConsumed(a0: boolean): void {
-        callVoid(1721, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(1719, this.handle, [(a0 ? 1 : 0)]);
     }
 
     toString(): string | null {
-        return callStr(1722, this.handle, []);
+        return callStr(1720, this.handle, []);
     }
 
 }

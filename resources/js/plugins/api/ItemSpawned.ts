@@ -5,19 +5,19 @@ import { TileItem } from './TileItem';
 
 export class ItemSpawned extends ApiObject {
     getItem(): TileItem | null {
-        return wrap(1766, this.handle, [], TileItem);
+        return wrap(1764, this.handle, [], TileItem);
     }
 
     getTile(): Tile | null {
-        return wrap(1767, this.handle, [], Tile);
+        return wrap(1765, this.handle, [], Tile);
     }
 
     hashCode(): number {
-        return callNum(1768, this.handle, []);
+        return callNum(1766, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1769, this.handle, []);
+        return callStr(1767, this.handle, []);
     }
 
 }

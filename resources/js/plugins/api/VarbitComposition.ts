@@ -3,15 +3,15 @@ import { ApiObject, callNum } from './runtime';
 
 export class VarbitComposition extends ApiObject {
     getIndex(): number {
-        return callNum(1446, this.handle, []);
+        return callNum(1444, this.handle, []);
     }
 
     getLeastSignificantBit(): number {
-        return callNum(1447, this.handle, []);
+        return callNum(1445, this.handle, []);
     }
 
     getMostSignificantBit(): number {
-        return callNum(1448, this.handle, []);
+        return callNum(1446, this.handle, []);
     }
 
 }

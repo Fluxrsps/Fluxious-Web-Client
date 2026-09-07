@@ -3,23 +3,23 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class InventoryID extends ApiObject {
     getId(): number {
-        return callNum(643, this.handle, []);
+        return callNum(641, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(644, this.handle, []);
+        return callNum(642, this.handle, []);
     }
 
     name(): string | null {
-        return callStr(645, this.handle, []);
+        return callStr(643, this.handle, []);
     }
 
     ordinal(): number {
-        return callNum(646, this.handle, []);
+        return callNum(644, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(647, this.handle, []);
+        return callStr(645, this.handle, []);
     }
 
 }

@@ -5,19 +5,19 @@ import { Player } from './Player';
 
 export class PlayerDespawned extends ApiObject {
     getActor(): Actor | null {
-        return wrap(1827, this.handle, [], Actor);
+        return wrap(1825, this.handle, [], Actor);
     }
 
     getPlayer(): Player | null {
-        return wrap(1828, this.handle, [], Player);
+        return wrap(1826, this.handle, [], Player);
     }
 
     hashCode(): number {
-        return callNum(1829, this.handle, []);
+        return callNum(1827, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1830, this.handle, []);
+        return callStr(1828, this.handle, []);
     }
 
 }

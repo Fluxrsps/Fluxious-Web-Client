@@ -3,7 +3,7 @@ import { ApiObject, callVoid } from './runtime';
 
 export class Deque extends ApiObject {
     clear(): void {
-        callVoid(448, this.handle, []);
+        callVoid(446, this.handle, []);
     }
 
 }

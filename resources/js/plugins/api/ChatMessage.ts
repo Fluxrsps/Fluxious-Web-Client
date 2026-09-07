@@ -4,58 +4,58 @@ import { MessageNode } from './MessageNode';
 
 export class ChatMessage extends ApiObject {
     getMessage(): string | null {
-        return callStr(1636, this.handle, []);
+        return callStr(1634, this.handle, []);
     }
 
     getMessageNode(): MessageNode | null {
-        return wrap(1637, this.handle, [], MessageNode);
+        return wrap(1635, this.handle, [], MessageNode);
     }
 
     getName(): string | null {
-        return callStr(1638, this.handle, []);
+        return callStr(1636, this.handle, []);
     }
 
     getSender(): string | null {
-        return callStr(1639, this.handle, []);
+        return callStr(1637, this.handle, []);
     }
 
     getTimestamp(): number {
-        return callNum(1640, this.handle, []);
+        return callNum(1638, this.handle, []);
     }
 
     getType(): string | null {
-        return callStr(1641, this.handle, []);
+        return callStr(1639, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1642, this.handle, []);
+        return callNum(1640, this.handle, []);
     }
 
     setMessage(a0: string): void {
         callStrArg(0, a0);
-        callVoid(1643, this.handle, [0]);
+        callVoid(1641, this.handle, [0]);
     }
 
     setMessageNode(a0: ApiObject | null): void {
-        callVoid(1644, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1642, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setName(a0: string): void {
         callStrArg(0, a0);
-        callVoid(1645, this.handle, [0]);
+        callVoid(1643, this.handle, [0]);
     }
 
     setSender(a0: string): void {
         callStrArg(0, a0);
-        callVoid(1646, this.handle, [0]);
+        callVoid(1644, this.handle, [0]);
     }
 
     setTimestamp(a0: number): void {
-        callVoid(1647, this.handle, [a0]);
+        callVoid(1645, this.handle, [a0]);
     }
 
     toString(): string | null {
-        return callStr(1648, this.handle, []);
+        return callStr(1646, this.handle, []);
     }
 
 }

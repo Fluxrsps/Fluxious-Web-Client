@@ -3,12 +3,12 @@ import { ApiObject, callNum, callStrArg } from './runtime';
 
 export class FontTypeFace extends ApiObject {
     getBaseline(): number {
-        return callNum(480, this.handle, []);
+        return callNum(478, this.handle, []);
     }
 
     getTextWidth(a0: string): number {
         callStrArg(0, a0);
-        return callNum(481, this.handle, [0]);
+        return callNum(479, this.handle, [0]);
     }
 
 }

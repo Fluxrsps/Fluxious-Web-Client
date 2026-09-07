@@ -4,15 +4,15 @@ import { GraphicsObject } from './GraphicsObject';
 
 export class GraphicsObjectCreated extends ApiObject {
     getGraphicsObject(): GraphicsObject | null {
-        return wrap(1727, this.handle, [], GraphicsObject);
+        return wrap(1725, this.handle, [], GraphicsObject);
     }
 
     hashCode(): number {
-        return callNum(1728, this.handle, []);
+        return callNum(1726, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1729, this.handle, []);
+        return callStr(1727, this.handle, []);
     }
 
 }

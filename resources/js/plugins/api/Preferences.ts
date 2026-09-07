@@ -3,32 +3,32 @@ import { ApiObject, callNum, callStr, callStrArg, callVoid } from './runtime';
 
 export class Preferences extends ApiObject {
     getAreaSoundEffectVolume(): number {
-        return callNum(1125, this.handle, []);
+        return callNum(1123, this.handle, []);
     }
 
     getHideUsername(): boolean {
-        return callNum(1126, this.handle, []) !== 0;
+        return callNum(1124, this.handle, []) !== 0;
     }
 
     getRememberedUsername(): string | null {
-        return callStr(1127, this.handle, []);
+        return callStr(1125, this.handle, []);
     }
 
     getSoundEffectVolume(): number {
-        return callNum(1128, this.handle, []);
+        return callNum(1126, this.handle, []);
     }
 
     setAreaSoundEffectVolume(a0: number): void {
-        callVoid(1129, this.handle, [a0]);
+        callVoid(1127, this.handle, [a0]);
     }
 
     setRememberedUsername(a0: string): void {
         callStrArg(0, a0);
-        callVoid(1130, this.handle, [0]);
+        callVoid(1128, this.handle, [0]);
     }
 
     setSoundEffectVolume(a0: number): void {
-        callVoid(1131, this.handle, [a0]);
+        callVoid(1129, this.handle, [a0]);
     }
 
 }

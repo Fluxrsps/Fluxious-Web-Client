@@ -3,15 +3,15 @@ import { ApiArray, ApiObject, callNum } from './runtime';
 
 export class IndexDataBase extends ApiObject {
     getFileIds(a0: number): ApiArray<number> {
-        return new ApiArray<number>(callNum(604, this.handle, [a0]), 'num', null);
+        return new ApiArray<number>(callNum(602, this.handle, [a0]), 'num', null);
     }
 
     isOverlayOutdated(): boolean {
-        return callNum(605, this.handle, []) !== 0;
+        return callNum(603, this.handle, []) !== 0;
     }
 
     loadData(a0: number, a1: number): ApiArray<number> {
-        return new ApiArray<number>(callNum(606, this.handle, [a0, a1]), 'num', null);
+        return new ApiArray<number>(callNum(604, this.handle, [a0, a1]), 'num', null);
     }
 
 }

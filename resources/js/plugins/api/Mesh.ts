@@ -3,63 +3,63 @@ import { ApiArray, ApiObject, callNum, wrap } from './runtime';
 
 export class Mesh extends ApiObject {
     getFaceCount(): number {
-        return callNum(765, this.handle, []);
+        return callNum(763, this.handle, []);
     }
 
     getFaceIndices1(): ApiArray<number> {
-        return new ApiArray<number>(callNum(766, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(764, this.handle, []), 'num', null);
     }
 
     getFaceIndices2(): ApiArray<number> {
-        return new ApiArray<number>(callNum(767, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(765, this.handle, []), 'num', null);
     }
 
     getFaceIndices3(): ApiArray<number> {
-        return new ApiArray<number>(callNum(768, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(766, this.handle, []), 'num', null);
     }
 
     getFaceTextures(): ApiArray<number> {
-        return new ApiArray<number>(callNum(769, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(767, this.handle, []), 'num', null);
     }
 
     getFaceTransparencies(): ApiArray<number> {
-        return new ApiArray<number>(callNum(770, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(768, this.handle, []), 'num', null);
     }
 
     getVerticesCount(): number {
-        return callNum(771, this.handle, []);
+        return callNum(769, this.handle, []);
     }
 
     getVerticesX(): ApiArray<number> {
-        return new ApiArray<number>(callNum(772, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(770, this.handle, []), 'num', null);
     }
 
     getVerticesY(): ApiArray<number> {
-        return new ApiArray<number>(callNum(773, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(771, this.handle, []), 'num', null);
     }
 
     getVerticesZ(): ApiArray<number> {
-        return new ApiArray<number>(callNum(774, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(772, this.handle, []), 'num', null);
     }
 
     rotateY180Ccw(): Mesh | null {
-        return wrap(775, this.handle, [], Mesh);
+        return wrap(773, this.handle, [], Mesh);
     }
 
     rotateY270Ccw(): Mesh | null {
-        return wrap(776, this.handle, [], Mesh);
+        return wrap(774, this.handle, [], Mesh);
     }
 
     rotateY90Ccw(): Mesh | null {
-        return wrap(777, this.handle, [], Mesh);
+        return wrap(775, this.handle, [], Mesh);
     }
 
     scale(a0: number, a1: number, a2: number): Mesh | null {
-        return wrap(778, this.handle, [a0, a1, a2], Mesh);
+        return wrap(776, this.handle, [a0, a1, a2], Mesh);
     }
 
     translate(a0: number, a1: number, a2: number): Mesh | null {
-        return wrap(779, this.handle, [a0, a1, a2], Mesh);
+        return wrap(777, this.handle, [a0, a1, a2], Mesh);
     }
 
 }

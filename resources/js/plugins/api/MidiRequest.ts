@@ -3,11 +3,11 @@ import { ApiObject, callNum } from './runtime';
 
 export class MidiRequest extends ApiObject {
     getArchiveId(): number {
-        return callNum(795, this.handle, []);
+        return callNum(793, this.handle, []);
     }
 
     isJingle(): boolean {
-        return callNum(796, this.handle, []) !== 0;
+        return callNum(794, this.handle, []) !== 0;
     }
 
 }

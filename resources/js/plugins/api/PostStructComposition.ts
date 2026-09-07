@@ -4,19 +4,19 @@ import { StructComposition } from './StructComposition';
 
 export class PostStructComposition extends ApiObject {
     getStructComposition(): StructComposition | null {
-        return wrap(1852, this.handle, [], StructComposition);
+        return wrap(1850, this.handle, [], StructComposition);
     }
 
     hashCode(): number {
-        return callNum(1853, this.handle, []);
+        return callNum(1851, this.handle, []);
     }
 
     setStructComposition(a0: ApiObject | null): void {
-        callVoid(1854, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1852, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     toString(): string | null {
-        return callStr(1855, this.handle, []);
+        return callStr(1853, this.handle, []);
     }
 
 }

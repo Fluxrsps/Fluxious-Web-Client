@@ -6,227 +6,227 @@ import { Node } from './Node';
 
 export class Model extends ApiObject {
     calculateBoundsCylinder(): void {
-        callVoid(797, this.handle, []);
+        callVoid(795, this.handle, []);
     }
 
     calculateExtreme(a0: number): void {
-        callVoid(798, this.handle, [a0]);
+        callVoid(796, this.handle, [a0]);
     }
 
     getAABB(a0: number): AABB | null {
-        return wrap(799, this.handle, [a0], AABB);
+        return wrap(797, this.handle, [a0], AABB);
     }
 
     getAnimationHeightOffset(): number {
-        return callNum(800, this.handle, []);
+        return callNum(798, this.handle, []);
     }
 
     getBottomY(): number {
-        return callNum(801, this.handle, []);
+        return callNum(799, this.handle, []);
     }
 
     getBufferOffset(): number {
-        return callNum(802, this.handle, []);
+        return callNum(800, this.handle, []);
     }
 
     getDiameter(): number {
-        return callNum(803, this.handle, []);
+        return callNum(801, this.handle, []);
     }
 
     getFaceBias(): ApiArray<number> {
-        return new ApiArray<number>(callNum(804, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(802, this.handle, []), 'num', null);
     }
 
     getFaceColors1(): ApiArray<number> {
-        return new ApiArray<number>(callNum(805, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(803, this.handle, []), 'num', null);
     }
 
     getFaceColors2(): ApiArray<number> {
-        return new ApiArray<number>(callNum(806, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(804, this.handle, []), 'num', null);
     }
 
     getFaceColors3(): ApiArray<number> {
-        return new ApiArray<number>(callNum(807, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(805, this.handle, []), 'num', null);
     }
 
     getFaceCount(): number {
-        return callNum(808, this.handle, []);
+        return callNum(806, this.handle, []);
     }
 
     getFaceIndices1(): ApiArray<number> {
-        return new ApiArray<number>(callNum(809, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(807, this.handle, []), 'num', null);
     }
 
     getFaceIndices2(): ApiArray<number> {
-        return new ApiArray<number>(callNum(810, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(808, this.handle, []), 'num', null);
     }
 
     getFaceIndices3(): ApiArray<number> {
-        return new ApiArray<number>(callNum(811, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(809, this.handle, []), 'num', null);
     }
 
     getFaceRenderPriorities(): ApiArray<number> {
-        return new ApiArray<number>(callNum(812, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(810, this.handle, []), 'num', null);
     }
 
     getFaceTextures(): ApiArray<number> {
-        return new ApiArray<number>(callNum(813, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(811, this.handle, []), 'num', null);
     }
 
     getFaceTransparencies(): ApiArray<number> {
-        return new ApiArray<number>(callNum(814, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(812, this.handle, []), 'num', null);
     }
 
     getHash(): number {
-        return callNum(815, this.handle, []);
+        return callNum(813, this.handle, []);
     }
 
     getModel(): Model | null {
-        return wrap(816, this.handle, [], Model);
+        return wrap(814, this.handle, [], Model);
     }
 
     getModelHeight(): number {
-        return callNum(817, this.handle, []);
+        return callNum(815, this.handle, []);
     }
 
     getNext(): Node | null {
-        return wrap(818, this.handle, [], Node);
+        return wrap(816, this.handle, [], Node);
     }
 
     getOverrideAmount(): number {
-        return callNum(819, this.handle, []);
+        return callNum(817, this.handle, []);
     }
 
     getOverrideHue(): number {
-        return callNum(820, this.handle, []);
+        return callNum(818, this.handle, []);
     }
 
     getOverrideLuminance(): number {
-        return callNum(821, this.handle, []);
+        return callNum(819, this.handle, []);
     }
 
     getOverrideSaturation(): number {
-        return callNum(822, this.handle, []);
+        return callNum(820, this.handle, []);
     }
 
     getPrevious(): Node | null {
-        return wrap(823, this.handle, [], Node);
+        return wrap(821, this.handle, [], Node);
     }
 
     getRadius(): number {
-        return callNum(824, this.handle, []);
+        return callNum(822, this.handle, []);
     }
 
     getRenderMode(): number {
-        return callNum(825, this.handle, []);
+        return callNum(823, this.handle, []);
     }
 
     getSceneId(): number {
-        return callNum(826, this.handle, []);
+        return callNum(824, this.handle, []);
     }
 
     getTexIndices1(): ApiArray<number> {
-        return new ApiArray<number>(callNum(827, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(825, this.handle, []), 'num', null);
     }
 
     getTexIndices2(): ApiArray<number> {
-        return new ApiArray<number>(callNum(828, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(826, this.handle, []), 'num', null);
     }
 
     getTexIndices3(): ApiArray<number> {
-        return new ApiArray<number>(callNum(829, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(827, this.handle, []), 'num', null);
     }
 
     getTextureFaces(): ApiArray<number> {
-        return new ApiArray<number>(callNum(830, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(828, this.handle, []), 'num', null);
     }
 
     getTransparency(): number {
-        return callNum(831, this.handle, []);
+        return callNum(829, this.handle, []);
     }
 
     getUnlitFaceColors(): ApiArray<number> {
-        return new ApiArray<number>(callNum(832, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(830, this.handle, []), 'num', null);
     }
 
     getUnskewedModel(): Model | null {
-        return wrap(833, this.handle, [], Model);
+        return wrap(831, this.handle, [], Model);
     }
 
     getUvBufferOffset(): number {
-        return callNum(834, this.handle, []);
+        return callNum(832, this.handle, []);
     }
 
     getVertexNormalsX(): ApiArray<number> {
-        return new ApiArray<number>(callNum(835, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(833, this.handle, []), 'num', null);
     }
 
     getVertexNormalsY(): ApiArray<number> {
-        return new ApiArray<number>(callNum(836, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(834, this.handle, []), 'num', null);
     }
 
     getVertexNormalsZ(): ApiArray<number> {
-        return new ApiArray<number>(callNum(837, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(835, this.handle, []), 'num', null);
     }
 
     getVerticesCount(): number {
-        return callNum(838, this.handle, []);
+        return callNum(836, this.handle, []);
     }
 
     getVerticesX(): ApiArray<number> {
-        return new ApiArray<number>(callNum(839, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(837, this.handle, []), 'num', null);
     }
 
     getVerticesY(): ApiArray<number> {
-        return new ApiArray<number>(callNum(840, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(838, this.handle, []), 'num', null);
     }
 
     getVerticesZ(): ApiArray<number> {
-        return new ApiArray<number>(callNum(841, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(839, this.handle, []), 'num', null);
     }
 
     getXYZMag(): number {
-        return callNum(842, this.handle, []);
+        return callNum(840, this.handle, []);
     }
 
     rotateY180Ccw(): Mesh | null {
-        return wrap(843, this.handle, [], Mesh);
+        return wrap(841, this.handle, [], Mesh);
     }
 
     rotateY270Ccw(): Mesh | null {
-        return wrap(844, this.handle, [], Mesh);
+        return wrap(842, this.handle, [], Mesh);
     }
 
     rotateY90Ccw(): Mesh | null {
-        return wrap(845, this.handle, [], Mesh);
+        return wrap(843, this.handle, [], Mesh);
     }
 
     scale(a0: number, a1: number, a2: number): Mesh | null {
-        return wrap(846, this.handle, [a0, a1, a2], Mesh);
+        return wrap(844, this.handle, [a0, a1, a2], Mesh);
     }
 
     setBufferOffset(a0: number): void {
-        callVoid(847, this.handle, [a0]);
+        callVoid(845, this.handle, [a0]);
     }
 
     setModelHeight(a0: number): void {
-        callVoid(848, this.handle, [a0]);
+        callVoid(846, this.handle, [a0]);
     }
 
     setSceneId(a0: number): void {
-        callVoid(849, this.handle, [a0]);
+        callVoid(847, this.handle, [a0]);
     }
 
     setUvBufferOffset(a0: number): void {
-        callVoid(850, this.handle, [a0]);
+        callVoid(848, this.handle, [a0]);
     }
 
     translate(a0: number, a1: number, a2: number): Mesh | null {
-        return wrap(851, this.handle, [a0, a1, a2], Mesh);
+        return wrap(849, this.handle, [a0, a1, a2], Mesh);
     }
 
     useBoundingBox(): boolean {
-        return callNum(852, this.handle, []) !== 0;
+        return callNum(850, this.handle, []) !== 0;
     }
 
 }

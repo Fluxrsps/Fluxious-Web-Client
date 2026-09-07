@@ -3,15 +3,15 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class GameStateChanged extends ApiObject {
     getGameState(): string | null {
-        return callStr(1707, this.handle, []);
+        return callStr(1705, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1708, this.handle, []);
+        return callNum(1706, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1709, this.handle, []);
+        return callStr(1707, this.handle, []);
     }
 
 }

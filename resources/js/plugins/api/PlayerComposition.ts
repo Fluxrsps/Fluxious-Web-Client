@@ -4,35 +4,35 @@ import { ColorTextureOverride } from './ColorTextureOverride';
 
 export class PlayerComposition extends ApiObject {
     getColorTextureOverrides(): ApiArray<ColorTextureOverride | null> {
-        return new ApiArray<ColorTextureOverride | null>(callNum(1107, this.handle, []), 'handle', ColorTextureOverride);
+        return new ApiArray<ColorTextureOverride | null>(callNum(1105, this.handle, []), 'handle', ColorTextureOverride);
     }
 
     getColors(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1108, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(1106, this.handle, []), 'num', null);
     }
 
     getEquipmentIds(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1109, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(1107, this.handle, []), 'num', null);
     }
 
     getGender(): number {
-        return callNum(1110, this.handle, []);
+        return callNum(1108, this.handle, []);
     }
 
     getTransformedNpcId(): number {
-        return callNum(1111, this.handle, []);
+        return callNum(1109, this.handle, []);
     }
 
     isFemale(): boolean {
-        return callNum(1112, this.handle, []) !== 0;
+        return callNum(1110, this.handle, []) !== 0;
     }
 
     setHash(): void {
-        callVoid(1113, this.handle, []);
+        callVoid(1111, this.handle, []);
     }
 
     setTransformedNpcId(a0: number): void {
-        callVoid(1114, this.handle, [a0]);
+        callVoid(1112, this.handle, [a0]);
     }
 
 }

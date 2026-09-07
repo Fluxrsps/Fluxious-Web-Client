@@ -5,11 +5,11 @@ import { ClanChannelMember } from './ClanChannelMember';
 export class ClanChannel extends ApiObject {
     findMember(a0: string): ClanChannelMember | null {
         callStrArg(0, a0);
-        return wrap(1532, this.handle, [0], ClanChannelMember);
+        return wrap(1530, this.handle, [0], ClanChannelMember);
     }
 
     getName(): string | null {
-        return callStr(1533, this.handle, []);
+        return callStr(1531, this.handle, []);
     }
 
 }

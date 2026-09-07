@@ -4,27 +4,27 @@ import { GrandExchangeOffer } from './GrandExchangeOffer';
 
 export class GrandExchangeOfferChanged extends ApiObject {
     getOffer(): GrandExchangeOffer | null {
-        return wrap(1712, this.handle, [], GrandExchangeOffer);
+        return wrap(1710, this.handle, [], GrandExchangeOffer);
     }
 
     getSlot(): number {
-        return callNum(1713, this.handle, []);
+        return callNum(1711, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1714, this.handle, []);
+        return callNum(1712, this.handle, []);
     }
 
     setOffer(a0: ApiObject | null): void {
-        callVoid(1715, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1713, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setSlot(a0: number): void {
-        callVoid(1716, this.handle, [a0]);
+        callVoid(1714, this.handle, [a0]);
     }
 
     toString(): string | null {
-        return callStr(1717, this.handle, []);
+        return callStr(1715, this.handle, []);
     }
 
 }

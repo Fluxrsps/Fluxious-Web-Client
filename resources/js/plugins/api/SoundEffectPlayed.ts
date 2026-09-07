@@ -4,43 +4,43 @@ import { Actor } from './Actor';
 
 export class SoundEffectPlayed extends ApiObject {
     consume(): void {
-        callVoid(1889, this.handle, []);
+        callVoid(1887, this.handle, []);
     }
 
     getDelay(): number {
-        return callNum(1890, this.handle, []);
+        return callNum(1888, this.handle, []);
     }
 
     getSoundId(): number {
-        return callNum(1891, this.handle, []);
+        return callNum(1889, this.handle, []);
     }
 
     getSource(): Actor | null {
-        return wrap(1892, this.handle, [], Actor);
+        return wrap(1890, this.handle, [], Actor);
     }
 
     hashCode(): number {
-        return callNum(1893, this.handle, []);
+        return callNum(1891, this.handle, []);
     }
 
     isConsumed(): boolean {
-        return callNum(1894, this.handle, []) !== 0;
+        return callNum(1892, this.handle, []) !== 0;
     }
 
     setConsumed(a0: boolean): void {
-        callVoid(1895, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(1893, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setDelay(a0: number): void {
-        callVoid(1896, this.handle, [a0]);
+        callVoid(1894, this.handle, [a0]);
     }
 
     setSoundId(a0: number): void {
-        callVoid(1897, this.handle, [a0]);
+        callVoid(1895, this.handle, [a0]);
     }
 
     toString(): string | null {
-        return callStr(1898, this.handle, []);
+        return callStr(1896, this.handle, []);
     }
 
 }

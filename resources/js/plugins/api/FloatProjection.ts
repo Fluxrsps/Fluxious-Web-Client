@@ -3,11 +3,11 @@ import { ApiArray, ApiObject, callNum } from './runtime';
 
 export class FloatProjection extends ApiObject {
     getProjection(): ApiArray<number> {
-        return new ApiArray<number>(callNum(478, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(476, this.handle, []), 'num', null);
     }
 
     project(a0: number, a1: number, a2: number): ApiArray<number> {
-        return new ApiArray<number>(callNum(479, this.handle, [a0, a1, a2]), 'num', null);
+        return new ApiArray<number>(callNum(477, this.handle, [a0, a1, a2]), 'num', null);
     }
 
 }

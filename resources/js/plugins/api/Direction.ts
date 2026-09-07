@@ -3,19 +3,19 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class Direction extends ApiObject {
     hashCode(): number {
-        return callNum(1554, this.handle, []);
+        return callNum(1552, this.handle, []);
     }
 
     name(): string | null {
-        return callStr(1555, this.handle, []);
+        return callStr(1553, this.handle, []);
     }
 
     ordinal(): number {
-        return callNum(1556, this.handle, []);
+        return callNum(1554, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1557, this.handle, []);
+        return callStr(1555, this.handle, []);
     }
 
 }

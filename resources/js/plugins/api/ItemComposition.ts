@@ -4,161 +4,161 @@ import { IterableHashTable } from './IterableHashTable';
 
 export class ItemComposition extends ApiObject {
     getAmbient(): number {
-        return callNum(652, this.handle, []);
+        return callNum(650, this.handle, []);
     }
 
     getColorToReplace(): ApiArray<number> {
-        return new ApiArray<number>(callNum(653, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(651, this.handle, []), 'num', null);
     }
 
     getColorToReplaceWith(): ApiArray<number> {
-        return new ApiArray<number>(callNum(654, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(652, this.handle, []), 'num', null);
     }
 
     getContrast(): number {
-        return callNum(655, this.handle, []);
+        return callNum(653, this.handle, []);
     }
 
     getHaPrice(): number {
-        return callNum(656, this.handle, []);
+        return callNum(654, this.handle, []);
     }
 
     getId(): number {
-        return callNum(657, this.handle, []);
+        return callNum(655, this.handle, []);
     }
 
     getIntValue(a0: number): number {
-        return callNum(658, this.handle, [a0]);
+        return callNum(656, this.handle, [a0]);
     }
 
     getInventoryActions(): ApiArray<string | null> {
-        return new ApiArray<string | null>(callNum(659, this.handle, []), 'str', null);
+        return new ApiArray<string | null>(callNum(657, this.handle, []), 'str', null);
     }
 
     getInventoryModel(): number {
-        return callNum(660, this.handle, []);
+        return callNum(658, this.handle, []);
     }
 
     getLinkedNoteId(): number {
-        return callNum(661, this.handle, []);
+        return callNum(659, this.handle, []);
     }
 
     getLongValue(a0: number): number {
-        return callNum(662, this.handle, [a0]);
+        return callNum(660, this.handle, [a0]);
     }
 
     getMembersName(): string | null {
-        return callStr(663, this.handle, []);
+        return callStr(661, this.handle, []);
     }
 
     getName(): string | null {
-        return callStr(664, this.handle, []);
+        return callStr(662, this.handle, []);
     }
 
     getNote(): number {
-        return callNum(665, this.handle, []);
+        return callNum(663, this.handle, []);
     }
 
     getParams(): IterableHashTable | null {
-        return wrap(666, this.handle, [], IterableHashTable);
+        return wrap(664, this.handle, [], IterableHashTable);
     }
 
     getPlaceholderId(): number {
-        return callNum(667, this.handle, []);
+        return callNum(665, this.handle, []);
     }
 
     getPlaceholderTemplateId(): number {
-        return callNum(668, this.handle, []);
+        return callNum(666, this.handle, []);
     }
 
     getPrice(): number {
-        return callNum(669, this.handle, []);
+        return callNum(667, this.handle, []);
     }
 
     getShiftClickActionIndex(): number {
-        return callNum(670, this.handle, []);
+        return callNum(668, this.handle, []);
     }
 
     getStringValue(a0: number): string | null {
-        return callStr(671, this.handle, [a0]);
+        return callStr(669, this.handle, [a0]);
     }
 
     getSubops(): ApiArray<number> {
-        return new ApiArray<number>(callNum(672, this.handle, []), 'none', null);
+        return new ApiArray<number>(callNum(670, this.handle, []), 'none', null);
     }
 
     getTextureToReplace(): ApiArray<number> {
-        return new ApiArray<number>(callNum(673, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(671, this.handle, []), 'num', null);
     }
 
     getTextureToReplaceWith(): ApiArray<number> {
-        return new ApiArray<number>(callNum(674, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(672, this.handle, []), 'num', null);
     }
 
     getXan2d(): number {
-        return callNum(675, this.handle, []);
+        return callNum(673, this.handle, []);
     }
 
     getYan2d(): number {
-        return callNum(676, this.handle, []);
+        return callNum(674, this.handle, []);
     }
 
     getZan2d(): number {
-        return callNum(677, this.handle, []);
+        return callNum(675, this.handle, []);
     }
 
     isGeTradeable(): boolean {
-        return callNum(678, this.handle, []) !== 0;
+        return callNum(676, this.handle, []) !== 0;
     }
 
     isMembers(): boolean {
-        return callNum(679, this.handle, []) !== 0;
+        return callNum(677, this.handle, []) !== 0;
     }
 
     isStackable(): boolean {
-        return callNum(680, this.handle, []) !== 0;
+        return callNum(678, this.handle, []) !== 0;
     }
 
     isTradeable(): boolean {
-        return callNum(681, this.handle, []) !== 0;
+        return callNum(679, this.handle, []) !== 0;
     }
 
     setInventoryModel(a0: number): void {
-        callVoid(682, this.handle, [a0]);
+        callVoid(680, this.handle, [a0]);
     }
 
     setName(a0: string): void {
         callStrArg(0, a0);
-        callVoid(683, this.handle, [0]);
+        callVoid(681, this.handle, [0]);
     }
 
     setShiftClickActionIndex(a0: number): void {
-        callVoid(684, this.handle, [a0]);
+        callVoid(682, this.handle, [a0]);
     }
 
     setValue(a0: number, a1: number): void {
-        callVoid(685, this.handle, [a0, a1]);
+        callVoid(683, this.handle, [a0, a1]);
     }
 
     setValue$int_String(a0: number, a1: string): void {
         callStrArg(1, a1);
-        callVoid(686, this.handle, [a0, 0]);
+        callVoid(684, this.handle, [a0, 0]);
     }
 
     setValue$int_long(a0: number, a1: number): void {
-        callVoid(687, this.handle, [a0, a1]);
+        callVoid(685, this.handle, [a0, a1]);
     }
 
     setXan2d(a0: number): void {
-        callVoid(688, this.handle, [a0]);
+        callVoid(686, this.handle, [a0]);
     }
 
     setYan2d(a0: number): void {
-        callVoid(689, this.handle, [a0]);
+        callVoid(687, this.handle, [a0]);
     }
 
     setZan2d(a0: number): void {
-        callVoid(690, this.handle, [a0]);
+        callVoid(688, this.handle, [a0]);
     }
 
 }

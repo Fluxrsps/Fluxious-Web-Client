@@ -4,23 +4,23 @@ import { Node } from './Node';
 
 export class Script extends ApiObject {
     getHash(): number {
-        return callNum(1334, this.handle, []);
+        return callNum(1332, this.handle, []);
     }
 
     getInstructions(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1335, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(1333, this.handle, []), 'num', null);
     }
 
     getIntOperands(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1336, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(1334, this.handle, []), 'num', null);
     }
 
     getNext(): Node | null {
-        return wrap(1337, this.handle, [], Node);
+        return wrap(1335, this.handle, [], Node);
     }
 
     getPrevious(): Node | null {
-        return wrap(1338, this.handle, [], Node);
+        return wrap(1336, this.handle, [], Node);
     }
 
 }

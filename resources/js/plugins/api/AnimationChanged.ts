@@ -4,19 +4,19 @@ import { Actor } from './Actor';
 
 export class AnimationChanged extends ApiObject {
     getActor(): Actor | null {
-        return wrap(1611, this.handle, [], Actor);
+        return wrap(1609, this.handle, [], Actor);
     }
 
     hashCode(): number {
-        return callNum(1612, this.handle, []);
+        return callNum(1610, this.handle, []);
     }
 
     setActor(a0: ApiObject | null): void {
-        callVoid(1613, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1611, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     toString(): string | null {
-        return callStr(1614, this.handle, []);
+        return callStr(1612, this.handle, []);
     }
 
 }

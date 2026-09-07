@@ -3,27 +3,27 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class AccountType extends ApiObject {
     hashCode(): number {
-        return callNum(1986, this.handle, []);
+        return callNum(1984, this.handle, []);
     }
 
     isGroupIronman(): boolean {
-        return callNum(1987, this.handle, []) !== 0;
+        return callNum(1985, this.handle, []) !== 0;
     }
 
     isIronman(): boolean {
-        return callNum(1988, this.handle, []) !== 0;
+        return callNum(1986, this.handle, []) !== 0;
     }
 
     name(): string | null {
-        return callStr(1989, this.handle, []);
+        return callStr(1987, this.handle, []);
     }
 
     ordinal(): number {
-        return callNum(1990, this.handle, []);
+        return callNum(1988, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1991, this.handle, []);
+        return callStr(1989, this.handle, []);
     }
 
 }

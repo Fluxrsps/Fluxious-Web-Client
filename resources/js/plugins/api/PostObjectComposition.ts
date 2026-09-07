@@ -4,15 +4,15 @@ import { ObjectComposition } from './ObjectComposition';
 
 export class PostObjectComposition extends ApiObject {
     getObjectComposition(): ObjectComposition | null {
-        return wrap(1849, this.handle, [], ObjectComposition);
+        return wrap(1847, this.handle, [], ObjectComposition);
     }
 
     hashCode(): number {
-        return callNum(1850, this.handle, []);
+        return callNum(1848, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1851, this.handle, []);
+        return callStr(1849, this.handle, []);
     }
 
 }

@@ -6,15 +6,15 @@ import { ClanTitle } from './ClanTitle';
 export class ClanSettings extends ApiObject {
     findMember(a0: string): ClanMember | null {
         callStrArg(0, a0);
-        return wrap(1543, this.handle, [0], ClanMember);
+        return wrap(1541, this.handle, [0], ClanMember);
     }
 
     getName(): string | null {
-        return callStr(1544, this.handle, []);
+        return callStr(1542, this.handle, []);
     }
 
     titleForRank(a0: ApiObject | null): ClanTitle | null {
-        return wrap(1545, this.handle, [(a0 ? a0.handle : -1)], ClanTitle);
+        return wrap(1543, this.handle, [(a0 ? a0.handle : -1)], ClanTitle);
     }
 
 }

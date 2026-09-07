@@ -3,11 +3,11 @@ import { ApiArray, ApiObject, callNum } from './runtime';
 
 export class ColorTextureOverride extends ApiObject {
     getColorToReplaceWith(): ApiArray<number> {
-        return new ApiArray<number>(callNum(425, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(423, this.handle, []), 'num', null);
     }
 
     getTextureToReplaceWith(): ApiArray<number> {
-        return new ApiArray<number>(callNum(426, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(424, this.handle, []), 'num', null);
     }
 
 }

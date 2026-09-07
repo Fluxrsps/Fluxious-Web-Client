@@ -6,43 +6,43 @@ import { WorldView } from './WorldView';
 
 export class WorldEntity extends ApiObject {
     getCameraFocus(): LocalPoint | null {
-        return wrap(1485, this.handle, [], LocalPoint);
+        return wrap(1483, this.handle, [], LocalPoint);
     }
 
     getConfig(): WorldEntityConfig | null {
-        return wrap(1486, this.handle, [], WorldEntityConfig);
+        return wrap(1484, this.handle, [], WorldEntityConfig);
     }
 
     getLocalLocation(): LocalPoint | null {
-        return wrap(1487, this.handle, [], LocalPoint);
+        return wrap(1485, this.handle, [], LocalPoint);
     }
 
     getOrientation(): number {
-        return callNum(1488, this.handle, []);
+        return callNum(1486, this.handle, []);
     }
 
     getOwnerType(): number {
-        return callNum(1489, this.handle, []);
+        return callNum(1487, this.handle, []);
     }
 
     getTargetLocation(): LocalPoint | null {
-        return wrap(1490, this.handle, [], LocalPoint);
+        return wrap(1488, this.handle, [], LocalPoint);
     }
 
     getTargetOrientation(): number {
-        return callNum(1491, this.handle, []);
+        return callNum(1489, this.handle, []);
     }
 
     getWorldView(): WorldView | null {
-        return wrap(1492, this.handle, [], WorldView);
+        return wrap(1490, this.handle, [], WorldView);
     }
 
     isHiddenForOverlap(): boolean {
-        return callNum(1493, this.handle, []) !== 0;
+        return callNum(1491, this.handle, []) !== 0;
     }
 
     transformToMainWorld(a0: ApiObject | null): LocalPoint | null {
-        return wrap(1494, this.handle, [(a0 ? a0.handle : -1)], LocalPoint);
+        return wrap(1492, this.handle, [(a0 ? a0.handle : -1)], LocalPoint);
     }
 
 }

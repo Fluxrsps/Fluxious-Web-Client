@@ -4,15 +4,15 @@ import { Actor } from './Actor';
 
 export class ActorDeath extends ApiObject {
     getActor(): Actor | null {
-        return wrap(1605, this.handle, [], Actor);
+        return wrap(1603, this.handle, [], Actor);
     }
 
     hashCode(): number {
-        return callNum(1606, this.handle, []);
+        return callNum(1604, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1607, this.handle, []);
+        return callStr(1605, this.handle, []);
     }
 
 }

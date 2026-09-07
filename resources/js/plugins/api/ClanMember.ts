@@ -4,11 +4,11 @@ import { ClanRank } from './ClanRank';
 
 export class ClanMember extends ApiObject {
     getName(): string | null {
-        return callStr(1538, this.handle, []);
+        return callStr(1536, this.handle, []);
     }
 
     getRank(): ClanRank | null {
-        return wrap(1539, this.handle, [], ClanRank);
+        return wrap(1537, this.handle, [], ClanRank);
     }
 
 }

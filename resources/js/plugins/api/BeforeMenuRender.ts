@@ -3,23 +3,23 @@ import { ApiObject, callNum, callStr, callVoid } from './runtime';
 
 export class BeforeMenuRender extends ApiObject {
     consume(): void {
-        callVoid(1631, this.handle, []);
+        callVoid(1629, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1632, this.handle, []);
+        return callNum(1630, this.handle, []);
     }
 
     isConsumed(): boolean {
-        return callNum(1633, this.handle, []) !== 0;
+        return callNum(1631, this.handle, []) !== 0;
     }
 
     setConsumed(a0: boolean): void {
-        callVoid(1634, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(1632, this.handle, [(a0 ? 1 : 0)]);
     }
 
     toString(): string | null {
-        return callStr(1635, this.handle, []);
+        return callStr(1633, this.handle, []);
     }
 
 }

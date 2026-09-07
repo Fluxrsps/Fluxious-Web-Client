@@ -4,19 +4,19 @@ import { HealthBarConfig } from './HealthBarConfig';
 
 export class PostHealthBarConfig extends ApiObject {
     getHealthBarConfig(): HealthBarConfig | null {
-        return wrap(1842, this.handle, [], HealthBarConfig);
+        return wrap(1840, this.handle, [], HealthBarConfig);
     }
 
     hashCode(): number {
-        return callNum(1843, this.handle, []);
+        return callNum(1841, this.handle, []);
     }
 
     setHealthBarConfig(a0: ApiObject | null): void {
-        callVoid(1844, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1842, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     toString(): string | null {
-        return callStr(1845, this.handle, []);
+        return callStr(1843, this.handle, []);
     }
 
 }

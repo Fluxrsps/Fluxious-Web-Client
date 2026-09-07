@@ -3,23 +3,23 @@ import { ApiObject, callNum } from './runtime';
 
 export class Hitsplat extends ApiObject {
     getAmount(): number {
-        return callNum(592, this.handle, []);
+        return callNum(590, this.handle, []);
     }
 
     getDisappearsOnGameCycle(): number {
-        return callNum(593, this.handle, []);
+        return callNum(591, this.handle, []);
     }
 
     getHitsplatType(): number {
-        return callNum(594, this.handle, []);
+        return callNum(592, this.handle, []);
     }
 
     isMine(): boolean {
-        return callNum(595, this.handle, []) !== 0;
+        return callNum(593, this.handle, []) !== 0;
     }
 
     isOthers(): boolean {
-        return callNum(596, this.handle, []) !== 0;
+        return callNum(594, this.handle, []) !== 0;
     }
 
 }

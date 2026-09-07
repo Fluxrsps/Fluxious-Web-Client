@@ -5,147 +5,147 @@ import { Node } from './Node';
 
 export class Scene extends ApiObject {
     buildRoofs(): void {
-        callVoid(1259, this.handle, []);
+        callVoid(1257, this.handle, []);
     }
 
     getAnimationHeightOffset(): number {
-        return callNum(1260, this.handle, []);
+        return callNum(1258, this.handle, []);
     }
 
     getBaseX(): number {
-        return callNum(1261, this.handle, []);
+        return callNum(1259, this.handle, []);
     }
 
     getBaseY(): number {
-        return callNum(1262, this.handle, []);
+        return callNum(1260, this.handle, []);
     }
 
     getDrawDistance(): number {
-        return callNum(1263, this.handle, []);
+        return callNum(1261, this.handle, []);
     }
 
     getExtendedTileSettings(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1264, this.handle, []), 'none', null);
+        return new ApiArray<number>(callNum(1262, this.handle, []), 'none', null);
     }
 
     getExtendedTiles(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1265, this.handle, []), 'none', null);
+        return new ApiArray<number>(callNum(1263, this.handle, []), 'none', null);
     }
 
     getHash(): number {
-        return callNum(1266, this.handle, []);
+        return callNum(1264, this.handle, []);
     }
 
     getInstanceTemplateChunks(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1267, this.handle, []), 'none', null);
+        return new ApiArray<number>(callNum(1265, this.handle, []), 'none', null);
     }
 
     getMapRegions(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1268, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(1266, this.handle, []), 'num', null);
     }
 
     getMinLevel(): number {
-        return callNum(1269, this.handle, []);
+        return callNum(1267, this.handle, []);
     }
 
     getModel(): Model | null {
-        return wrap(1270, this.handle, [], Model);
+        return wrap(1268, this.handle, [], Model);
     }
 
     getModelHeight(): number {
-        return callNum(1271, this.handle, []);
+        return callNum(1269, this.handle, []);
     }
 
     getNext(): Node | null {
-        return wrap(1272, this.handle, [], Node);
+        return wrap(1270, this.handle, [], Node);
     }
 
     getOverlayIds(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1273, this.handle, []), 'none', null);
+        return new ApiArray<number>(callNum(1271, this.handle, []), 'none', null);
     }
 
     getOverrideAmount(): number {
-        return callNum(1274, this.handle, []);
+        return callNum(1272, this.handle, []);
     }
 
     getOverrideHue(): number {
-        return callNum(1275, this.handle, []);
+        return callNum(1273, this.handle, []);
     }
 
     getOverrideLuminance(): number {
-        return callNum(1276, this.handle, []);
+        return callNum(1274, this.handle, []);
     }
 
     getOverrideSaturation(): number {
-        return callNum(1277, this.handle, []);
+        return callNum(1275, this.handle, []);
     }
 
     getPrevious(): Node | null {
-        return wrap(1278, this.handle, [], Node);
+        return wrap(1276, this.handle, [], Node);
     }
 
     getRenderMode(): number {
-        return callNum(1279, this.handle, []);
+        return callNum(1277, this.handle, []);
     }
 
     getRoofRemovalMode(): number {
-        return callNum(1280, this.handle, []);
+        return callNum(1278, this.handle, []);
     }
 
     getRoofs(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1281, this.handle, []), 'none', null);
+        return new ApiArray<number>(callNum(1279, this.handle, []), 'none', null);
     }
 
     getSkybox(): Model | null {
-        return wrap(1282, this.handle, [], Model);
+        return wrap(1280, this.handle, [], Model);
     }
 
     getTileHeights(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1283, this.handle, []), 'none', null);
+        return new ApiArray<number>(callNum(1281, this.handle, []), 'none', null);
     }
 
     getTileShapes(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1284, this.handle, []), 'none', null);
+        return new ApiArray<number>(callNum(1282, this.handle, []), 'none', null);
     }
 
     getTiles(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1285, this.handle, []), 'none', null);
+        return new ApiArray<number>(callNum(1283, this.handle, []), 'none', null);
     }
 
     getUnderlayIds(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1286, this.handle, []), 'none', null);
+        return new ApiArray<number>(callNum(1284, this.handle, []), 'none', null);
     }
 
     getWorldViewId(): number {
-        return callNum(1287, this.handle, []);
+        return callNum(1285, this.handle, []);
     }
 
     isInstance(): boolean {
-        return callNum(1288, this.handle, []) !== 0;
+        return callNum(1286, this.handle, []) !== 0;
     }
 
     removeGameObject(a0: ApiObject | null): void {
-        callVoid(1289, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1287, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     removeTile(a0: ApiObject | null): void {
-        callVoid(1290, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1288, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setDrawDistance(a0: number): void {
-        callVoid(1291, this.handle, [a0]);
+        callVoid(1289, this.handle, [a0]);
     }
 
     setMinLevel(a0: number): void {
-        callVoid(1292, this.handle, [a0]);
+        callVoid(1290, this.handle, [a0]);
     }
 
     setModelHeight(a0: number): void {
-        callVoid(1293, this.handle, [a0]);
+        callVoid(1291, this.handle, [a0]);
     }
 
     setRoofRemovalMode(a0: number): void {
-        callVoid(1294, this.handle, [a0]);
+        callVoid(1292, this.handle, [a0]);
     }
 
 }

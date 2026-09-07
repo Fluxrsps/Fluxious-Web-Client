@@ -3,23 +3,23 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class IconID extends ApiObject {
     getIndex(): number {
-        return callNum(597, this.handle, []);
+        return callNum(595, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(598, this.handle, []);
+        return callNum(596, this.handle, []);
     }
 
     name(): string | null {
-        return callStr(599, this.handle, []);
+        return callStr(597, this.handle, []);
     }
 
     ordinal(): number {
-        return callNum(600, this.handle, []);
+        return callNum(598, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(601, this.handle, []);
+        return callStr(599, this.handle, []);
     }
 
 }

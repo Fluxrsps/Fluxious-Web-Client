@@ -13,67 +13,67 @@ import { WorldPoint } from './WorldPoint';
 
 export class Tile extends ApiObject {
     getBridge(): Tile | null {
-        return wrap(1402, this.handle, [], Tile);
+        return wrap(1400, this.handle, [], Tile);
     }
 
     getDecorativeObject(): DecorativeObject | null {
-        return wrap(1403, this.handle, [], DecorativeObject);
+        return wrap(1401, this.handle, [], DecorativeObject);
     }
 
     getGameObjects(): ApiArray<GameObject | null> {
-        return new ApiArray<GameObject | null>(callNum(1404, this.handle, []), 'handle', GameObject);
+        return new ApiArray<GameObject | null>(callNum(1402, this.handle, []), 'handle', GameObject);
     }
 
     getGroundObject(): GroundObject | null {
-        return wrap(1405, this.handle, [], GroundObject);
+        return wrap(1403, this.handle, [], GroundObject);
     }
 
     getItemLayer(): ItemLayer | null {
-        return wrap(1406, this.handle, [], ItemLayer);
+        return wrap(1404, this.handle, [], ItemLayer);
     }
 
     getLocalLocation(): LocalPoint | null {
-        return wrap(1407, this.handle, [], LocalPoint);
+        return wrap(1405, this.handle, [], LocalPoint);
     }
 
     getPlane(): number {
-        return callNum(1408, this.handle, []);
+        return callNum(1406, this.handle, []);
     }
 
     getRenderLevel(): number {
-        return callNum(1409, this.handle, []);
+        return callNum(1407, this.handle, []);
     }
 
     getSceneLocation(): Point | null {
-        return wrap(1410, this.handle, [], Point);
+        return wrap(1408, this.handle, [], Point);
     }
 
     getSceneTileModel(): SceneTileModel | null {
-        return wrap(1411, this.handle, [], SceneTileModel);
+        return wrap(1409, this.handle, [], SceneTileModel);
     }
 
     getSceneTilePaint(): SceneTilePaint | null {
-        return wrap(1412, this.handle, [], SceneTilePaint);
+        return wrap(1410, this.handle, [], SceneTilePaint);
     }
 
     getWallObject(): WallObject | null {
-        return wrap(1413, this.handle, [], WallObject);
+        return wrap(1411, this.handle, [], WallObject);
     }
 
     getWorldLocation(): WorldPoint | null {
-        return wrap(1414, this.handle, [], WorldPoint);
+        return wrap(1412, this.handle, [], WorldPoint);
     }
 
     setGroundObject(a0: ApiObject | null): void {
-        callVoid(1415, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1413, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setSceneTileModel(a0: ApiObject | null): void {
-        callVoid(1416, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1414, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setSceneTilePaint(a0: ApiObject | null): void {
-        callVoid(1417, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1415, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
 }

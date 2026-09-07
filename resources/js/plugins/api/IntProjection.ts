@@ -3,35 +3,35 @@ import { ApiArray, ApiObject, callNum } from './runtime';
 
 export class IntProjection extends ApiObject {
     getCameraX(): number {
-        return callNum(630, this.handle, []);
+        return callNum(628, this.handle, []);
     }
 
     getCameraY(): number {
-        return callNum(631, this.handle, []);
+        return callNum(629, this.handle, []);
     }
 
     getCameraZ(): number {
-        return callNum(632, this.handle, []);
+        return callNum(630, this.handle, []);
     }
 
     getPitchCos(): number {
-        return callNum(633, this.handle, []);
+        return callNum(631, this.handle, []);
     }
 
     getPitchSin(): number {
-        return callNum(634, this.handle, []);
+        return callNum(632, this.handle, []);
     }
 
     getYawCos(): number {
-        return callNum(635, this.handle, []);
+        return callNum(633, this.handle, []);
     }
 
     getYawSin(): number {
-        return callNum(636, this.handle, []);
+        return callNum(634, this.handle, []);
     }
 
     project(a0: number, a1: number, a2: number): ApiArray<number> {
-        return new ApiArray<number>(callNum(637, this.handle, [a0, a1, a2]), 'num', null);
+        return new ApiArray<number>(callNum(635, this.handle, [a0, a1, a2]), 'num', null);
     }
 
 }

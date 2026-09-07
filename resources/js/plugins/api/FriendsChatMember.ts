@@ -3,19 +3,19 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class FriendsChatMember extends ApiObject {
     getName(): string | null {
-        return callStr(498, this.handle, []);
+        return callStr(496, this.handle, []);
     }
 
     getPrevName(): string | null {
-        return callStr(499, this.handle, []);
+        return callStr(497, this.handle, []);
     }
 
     getRank(): string | null {
-        return callStr(500, this.handle, []);
+        return callStr(498, this.handle, []);
     }
 
     getWorld(): number {
-        return callNum(501, this.handle, []);
+        return callNum(499, this.handle, []);
     }
 
 }

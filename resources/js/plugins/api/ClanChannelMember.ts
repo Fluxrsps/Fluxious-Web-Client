@@ -4,19 +4,19 @@ import { ClanRank } from './ClanRank';
 
 export class ClanChannelMember extends ApiObject {
     getName(): string | null {
-        return callStr(1534, this.handle, []);
+        return callStr(1532, this.handle, []);
     }
 
     getPrevName(): string | null {
-        return callStr(1535, this.handle, []);
+        return callStr(1533, this.handle, []);
     }
 
     getRank(): ClanRank | null {
-        return wrap(1536, this.handle, [], ClanRank);
+        return wrap(1534, this.handle, [], ClanRank);
     }
 
     getWorld(): number {
-        return callNum(1537, this.handle, []);
+        return callNum(1535, this.handle, []);
     }
 
 }

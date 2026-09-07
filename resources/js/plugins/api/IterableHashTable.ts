@@ -4,11 +4,11 @@ import { Node } from './Node';
 
 export class IterableHashTable extends ApiObject {
     get(a0: number): Node | null {
-        return wrap(720, this.handle, [a0], Node);
+        return wrap(718, this.handle, [a0], Node);
     }
 
     put(a0: ApiObject | null, a1: number): void {
-        callVoid(721, this.handle, [(a0 ? a0.handle : -1), a1]);
+        callVoid(719, this.handle, [(a0 ? a0.handle : -1), a1]);
     }
 
 }

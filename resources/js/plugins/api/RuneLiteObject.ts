@@ -7,155 +7,155 @@ import { Model } from './Model';
 
 export class RuneLiteObject extends ApiObject {
     finished(): boolean {
-        return callNum(1199, this.handle, []) !== 0;
+        return callNum(1197, this.handle, []) !== 0;
     }
 
     getAnimation(): Animation | null {
-        return wrap(1200, this.handle, [], Animation);
+        return wrap(1198, this.handle, [], Animation);
     }
 
     getAnimationController(): AnimationController | null {
-        return wrap(1201, this.handle, [], AnimationController);
+        return wrap(1199, this.handle, [], AnimationController);
     }
 
     getAnimationFrame(): number {
-        return callNum(1202, this.handle, []);
+        return callNum(1200, this.handle, []);
     }
 
     getBaseModel(): Model | null {
-        return wrap(1203, this.handle, [], Model);
+        return wrap(1201, this.handle, [], Model);
     }
 
     getLevel(): number {
-        return callNum(1204, this.handle, []);
+        return callNum(1202, this.handle, []);
     }
 
     getLocation(): LocalPoint | null {
-        return wrap(1205, this.handle, [], LocalPoint);
+        return wrap(1203, this.handle, [], LocalPoint);
     }
 
     getModel(): Model | null {
-        return wrap(1206, this.handle, [], Model);
+        return wrap(1204, this.handle, [], Model);
     }
 
     getOrientation(): number {
-        return callNum(1207, this.handle, []);
+        return callNum(1205, this.handle, []);
     }
 
     getPoseAnimationController(): AnimationController | null {
-        return wrap(1208, this.handle, [], AnimationController);
+        return wrap(1206, this.handle, [], AnimationController);
     }
 
     getRadius(): number {
-        return callNum(1209, this.handle, []);
+        return callNum(1207, this.handle, []);
     }
 
     getRenderMode(): number {
-        return callNum(1210, this.handle, []);
+        return callNum(1208, this.handle, []);
     }
 
     getStartCycle(): number {
-        return callNum(1211, this.handle, []);
+        return callNum(1209, this.handle, []);
     }
 
     getWorldView(): number {
-        return callNum(1212, this.handle, []);
+        return callNum(1210, this.handle, []);
     }
 
     getX(): number {
-        return callNum(1213, this.handle, []);
+        return callNum(1211, this.handle, []);
     }
 
     getY(): number {
-        return callNum(1214, this.handle, []);
+        return callNum(1212, this.handle, []);
     }
 
     getZ(): number {
-        return callNum(1215, this.handle, []);
+        return callNum(1213, this.handle, []);
     }
 
     isActive(): boolean {
-        return callNum(1216, this.handle, []) !== 0;
+        return callNum(1214, this.handle, []) !== 0;
     }
 
     isDrawFrontTilesFirst(): boolean {
-        return callNum(1217, this.handle, []) !== 0;
+        return callNum(1215, this.handle, []) !== 0;
     }
 
     setActive(a0: boolean): void {
-        callVoid(1218, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(1216, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setAnimation(a0: ApiObject | null): void {
-        callVoid(1219, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1217, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setAnimationController(a0: ApiObject | null): void {
-        callVoid(1220, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1218, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setDrawFrontTilesFirst(a0: boolean): void {
-        callVoid(1221, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(1219, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setFinished(a0: boolean): void {
-        callVoid(1222, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(1220, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setLevel(a0: number): void {
-        callVoid(1223, this.handle, [a0]);
+        callVoid(1221, this.handle, [a0]);
     }
 
     setLocation(a0: ApiObject | null, a1: number): void {
-        callVoid(1224, this.handle, [(a0 ? a0.handle : -1), a1]);
+        callVoid(1222, this.handle, [(a0 ? a0.handle : -1), a1]);
     }
 
     setModel(a0: ApiObject | null): void {
-        callVoid(1225, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1223, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setOrientation(a0: number): void {
-        callVoid(1226, this.handle, [a0]);
+        callVoid(1224, this.handle, [a0]);
     }
 
     setPoseAnimationController(a0: ApiObject | null): void {
-        callVoid(1227, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1225, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setRadius(a0: number): void {
-        callVoid(1228, this.handle, [a0]);
+        callVoid(1226, this.handle, [a0]);
     }
 
     setRenderMode(a0: number): void {
-        callVoid(1229, this.handle, [a0]);
+        callVoid(1227, this.handle, [a0]);
     }
 
     setShouldLoop(a0: boolean): void {
-        callVoid(1230, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(1228, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setStartCycle(a0: number): void {
-        callVoid(1231, this.handle, [a0]);
+        callVoid(1229, this.handle, [a0]);
     }
 
     setWorldView(a0: number): void {
-        callVoid(1232, this.handle, [a0]);
+        callVoid(1230, this.handle, [a0]);
     }
 
     setX(a0: number): void {
-        callVoid(1233, this.handle, [a0]);
+        callVoid(1231, this.handle, [a0]);
     }
 
     setY(a0: number): void {
-        callVoid(1234, this.handle, [a0]);
+        callVoid(1232, this.handle, [a0]);
     }
 
     setZ(a0: number): void {
-        callVoid(1235, this.handle, [a0]);
+        callVoid(1233, this.handle, [a0]);
     }
 
     tick(a0: number): void {
-        callVoid(1236, this.handle, [a0]);
+        callVoid(1234, this.handle, [a0]);
     }
 
 }

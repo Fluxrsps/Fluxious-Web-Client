@@ -4,67 +4,67 @@ import { WorldArea } from './WorldArea';
 
 export class WorldPoint extends ApiObject {
     distanceTo(a0: ApiObject | null): number {
-        return callNum(1588, this.handle, [(a0 ? a0.handle : -1)]);
+        return callNum(1586, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     distanceTo$WorldPoint(a0: ApiObject | null): number {
-        return callNum(1589, this.handle, [(a0 ? a0.handle : -1)]);
+        return callNum(1587, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     distanceTo2D(a0: ApiObject | null): number {
-        return callNum(1590, this.handle, [(a0 ? a0.handle : -1)]);
+        return callNum(1588, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     dx(a0: number): WorldPoint | null {
-        return wrap(1591, this.handle, [a0], WorldPoint);
+        return wrap(1589, this.handle, [a0], WorldPoint);
     }
 
     dy(a0: number): WorldPoint | null {
-        return wrap(1592, this.handle, [a0], WorldPoint);
+        return wrap(1590, this.handle, [a0], WorldPoint);
     }
 
     dz(a0: number): WorldPoint | null {
-        return wrap(1593, this.handle, [a0], WorldPoint);
+        return wrap(1591, this.handle, [a0], WorldPoint);
     }
 
     getPlane(): number {
-        return callNum(1594, this.handle, []);
+        return callNum(1592, this.handle, []);
     }
 
     getRegionID(): number {
-        return callNum(1595, this.handle, []);
+        return callNum(1593, this.handle, []);
     }
 
     getRegionX(): number {
-        return callNum(1596, this.handle, []);
+        return callNum(1594, this.handle, []);
     }
 
     getRegionY(): number {
-        return callNum(1597, this.handle, []);
+        return callNum(1595, this.handle, []);
     }
 
     getX(): number {
-        return callNum(1598, this.handle, []);
+        return callNum(1596, this.handle, []);
     }
 
     getY(): number {
-        return callNum(1599, this.handle, []);
+        return callNum(1597, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1600, this.handle, []);
+        return callNum(1598, this.handle, []);
     }
 
     isInScene(a0: ApiObject | null): boolean {
-        return callNum(1601, this.handle, [(a0 ? a0.handle : -1)]) !== 0;
+        return callNum(1599, this.handle, [(a0 ? a0.handle : -1)]) !== 0;
     }
 
     toString(): string | null {
-        return callStr(1602, this.handle, []);
+        return callStr(1600, this.handle, []);
     }
 
     toWorldArea(): WorldArea | null {
-        return wrap(1603, this.handle, [], WorldArea);
+        return wrap(1601, this.handle, [], WorldArea);
     }
 
 }

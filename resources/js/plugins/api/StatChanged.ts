@@ -3,27 +3,27 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class StatChanged extends ApiObject {
     getBoostedLevel(): number {
-        return callNum(1899, this.handle, []);
+        return callNum(1897, this.handle, []);
     }
 
     getLevel(): number {
-        return callNum(1900, this.handle, []);
+        return callNum(1898, this.handle, []);
     }
 
     getSkill(): string | null {
-        return callStr(1901, this.handle, []);
+        return callStr(1899, this.handle, []);
     }
 
     getXp(): number {
-        return callNum(1902, this.handle, []);
+        return callNum(1900, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1903, this.handle, []);
+        return callNum(1901, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1904, this.handle, []);
+        return callStr(1902, this.handle, []);
     }
 
 }

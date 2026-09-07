@@ -3,11 +3,11 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class PendingLogin extends ApiObject {
     getName(): string | null {
-        return callStr(1029, this.handle, []);
+        return callStr(1027, this.handle, []);
     }
 
     getWorld(): number {
-        return callNum(1030, this.handle, []);
+        return callNum(1028, this.handle, []);
     }
 
 }

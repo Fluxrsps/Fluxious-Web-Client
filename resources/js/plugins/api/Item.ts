@@ -3,19 +3,19 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class Item extends ApiObject {
     getId(): number {
-        return callNum(648, this.handle, []);
+        return callNum(646, this.handle, []);
     }
 
     getQuantity(): number {
-        return callNum(649, this.handle, []);
+        return callNum(647, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(650, this.handle, []);
+        return callNum(648, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(651, this.handle, []);
+        return callStr(649, this.handle, []);
     }
 
 }

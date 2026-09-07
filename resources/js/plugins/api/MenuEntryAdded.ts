@@ -4,43 +4,43 @@ import { MenuEntry } from './MenuEntry';
 
 export class MenuEntryAdded extends ApiObject {
     getActionParam0(): number {
-        return callNum(1770, this.handle, []);
+        return callNum(1768, this.handle, []);
     }
 
     getActionParam1(): number {
-        return callNum(1771, this.handle, []);
+        return callNum(1769, this.handle, []);
     }
 
     getIdentifier(): number {
-        return callNum(1772, this.handle, []);
+        return callNum(1770, this.handle, []);
     }
 
     getItemId(): number {
-        return callNum(1773, this.handle, []);
+        return callNum(1771, this.handle, []);
     }
 
     getMenuEntry(): MenuEntry | null {
-        return wrap(1774, this.handle, [], MenuEntry);
+        return wrap(1772, this.handle, [], MenuEntry);
     }
 
     getOption(): string | null {
-        return callStr(1775, this.handle, []);
+        return callStr(1773, this.handle, []);
     }
 
     getTarget(): string | null {
-        return callStr(1776, this.handle, []);
+        return callStr(1774, this.handle, []);
     }
 
     getType(): number {
-        return callNum(1777, this.handle, []);
+        return callNum(1775, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1778, this.handle, []);
+        return callNum(1776, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1779, this.handle, []);
+        return callStr(1777, this.handle, []);
     }
 
 }

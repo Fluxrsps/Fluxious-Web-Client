@@ -3,7 +3,7 @@ import { ApiArray, ApiObject, callNum } from './runtime';
 
 export class Projection extends ApiObject {
     project(a0: number, a1: number, a2: number): ApiArray<number> {
-        return new ApiArray<number>(callNum(1167, this.handle, [a0, a1, a2]), 'num', null);
+        return new ApiArray<number>(callNum(1165, this.handle, [a0, a1, a2]), 'num', null);
     }
 
 }

@@ -6,23 +6,23 @@ import { Nameable } from './Nameable';
 export class FriendContainer extends ApiObject {
     findByName(a0: string): Nameable | null {
         callStrArg(0, a0);
-        return wrap(485, this.handle, [0], Nameable);
+        return wrap(483, this.handle, [0], Nameable);
     }
 
     getCount(): number {
-        return callNum(486, this.handle, []);
+        return callNum(484, this.handle, []);
     }
 
     getMembers(): ApiArray<Nameable | null> {
-        return new ApiArray<Nameable | null>(callNum(487, this.handle, []), 'handle', Nameable);
+        return new ApiArray<Nameable | null>(callNum(485, this.handle, []), 'handle', Nameable);
     }
 
     getPendingLogins(): Deque | null {
-        return wrap(488, this.handle, [], Deque);
+        return wrap(486, this.handle, [], Deque);
     }
 
     getSize(): number {
-        return callNum(489, this.handle, []);
+        return callNum(487, this.handle, []);
     }
 
 }

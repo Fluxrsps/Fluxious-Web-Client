@@ -3,19 +3,19 @@ import { ApiObject, callNum, callStr, callVoid } from './runtime';
 
 export class ResizeableChanged extends ApiObject {
     hashCode(): number {
-        return callNum(1871, this.handle, []);
+        return callNum(1869, this.handle, []);
     }
 
     isResized(): boolean {
-        return callNum(1872, this.handle, []) !== 0;
+        return callNum(1870, this.handle, []) !== 0;
     }
 
     setResized(a0: boolean): void {
-        callVoid(1873, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(1871, this.handle, [(a0 ? 1 : 0)]);
     }
 
     toString(): string | null {
-        return callStr(1874, this.handle, []);
+        return callStr(1872, this.handle, []);
     }
 
 }

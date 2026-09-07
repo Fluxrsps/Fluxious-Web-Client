@@ -4,15 +4,15 @@ import { Animation } from './Animation';
 
 export class PostAnimation extends ApiObject {
     getAnimation(): Animation | null {
-        return wrap(1839, this.handle, [], Animation);
+        return wrap(1837, this.handle, [], Animation);
     }
 
     hashCode(): number {
-        return callNum(1840, this.handle, []);
+        return callNum(1838, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1841, this.handle, []);
+        return callStr(1839, this.handle, []);
     }
 
 }

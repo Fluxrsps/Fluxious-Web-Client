@@ -4,15 +4,15 @@ import { Nameable } from './Nameable';
 
 export class NameableNameChanged extends ApiObject {
     getNameable(): Nameable | null {
-        return wrap(1805, this.handle, [], Nameable);
+        return wrap(1803, this.handle, [], Nameable);
     }
 
     hashCode(): number {
-        return callNum(1806, this.handle, []);
+        return callNum(1804, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1807, this.handle, []);
+        return callStr(1805, this.handle, []);
     }
 
 }

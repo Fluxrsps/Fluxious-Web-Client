@@ -3,15 +3,15 @@ import { ApiArray, ApiObject, callNum } from './runtime';
 
 export class MainBufferProvider extends ApiObject {
     getHeight(): number {
-        return callNum(722, this.handle, []);
+        return callNum(720, this.handle, []);
     }
 
     getPixels(): ApiArray<number> {
-        return new ApiArray<number>(callNum(723, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(721, this.handle, []), 'num', null);
     }
 
     getWidth(): number {
-        return callNum(724, this.handle, []);
+        return callNum(722, this.handle, []);
     }
 
 }

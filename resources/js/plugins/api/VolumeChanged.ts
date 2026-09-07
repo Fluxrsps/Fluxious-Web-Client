@@ -3,15 +3,15 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class VolumeChanged extends ApiObject {
     getType(): string | null {
-        return callStr(1920, this.handle, []);
+        return callStr(1918, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1921, this.handle, []);
+        return callNum(1919, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1922, this.handle, []);
+        return callStr(1920, this.handle, []);
     }
 
 }

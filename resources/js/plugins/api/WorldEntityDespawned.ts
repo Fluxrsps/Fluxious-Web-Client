@@ -4,15 +4,15 @@ import { WorldEntity } from './WorldEntity';
 
 export class WorldEntityDespawned extends ApiObject {
     getWorldEntity(): WorldEntity | null {
-        return wrap(1944, this.handle, [], WorldEntity);
+        return wrap(1942, this.handle, [], WorldEntity);
     }
 
     hashCode(): number {
-        return callNum(1945, this.handle, []);
+        return callNum(1943, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1946, this.handle, []);
+        return callStr(1944, this.handle, []);
     }
 
 }

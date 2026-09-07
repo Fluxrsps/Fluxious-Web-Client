@@ -4,12 +4,12 @@ import { ApiObject, callStr, callStrArg, callVoid } from './runtime';
 export class ClientConfiguration extends ApiObject {
     getParameter(a0: string): string | null {
         callStrArg(0, a0);
-        return callStr(422, this.handle, [0]);
+        return callStr(420, this.handle, [0]);
     }
 
     onError(a0: string): void {
         callStrArg(0, a0);
-        callVoid(423, this.handle, [0]);
+        callVoid(421, this.handle, [0]);
     }
 
 }

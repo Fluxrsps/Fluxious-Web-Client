@@ -3,7 +3,7 @@ import { ApiObject, callNum } from './runtime';
 
 export class WorldMapData extends ApiObject {
     surfaceContainsPosition(a0: number, a1: number): boolean {
-        return callNum(2165, this.handle, [a0, a1]) !== 0;
+        return callNum(2163, this.handle, [a0, a1]) !== 0;
     }
 
 }

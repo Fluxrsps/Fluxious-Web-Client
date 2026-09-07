@@ -3,15 +3,15 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class FriendsChatChanged extends ApiObject {
     hashCode(): number {
-        return callNum(1686, this.handle, []);
+        return callNum(1684, this.handle, []);
     }
 
     isJoined(): boolean {
-        return callNum(1687, this.handle, []) !== 0;
+        return callNum(1685, this.handle, []) !== 0;
     }
 
     toString(): string | null {
-        return callStr(1688, this.handle, []);
+        return callStr(1686, this.handle, []);
     }
 
 }

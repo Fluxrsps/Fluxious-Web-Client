@@ -5,19 +5,19 @@ import { Nameable } from './Nameable';
 export class NameableContainer extends ApiObject {
     findByName(a0: string): Nameable | null {
         callStrArg(0, a0);
-        return wrap(989, this.handle, [0], Nameable);
+        return wrap(987, this.handle, [0], Nameable);
     }
 
     getCount(): number {
-        return callNum(990, this.handle, []);
+        return callNum(988, this.handle, []);
     }
 
     getMembers(): ApiArray<Nameable | null> {
-        return new ApiArray<Nameable | null>(callNum(991, this.handle, []), 'handle', Nameable);
+        return new ApiArray<Nameable | null>(callNum(989, this.handle, []), 'handle', Nameable);
     }
 
     getSize(): number {
-        return callNum(992, this.handle, []);
+        return callNum(990, this.handle, []);
     }
 
 }

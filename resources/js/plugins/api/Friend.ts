@@ -3,15 +3,15 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class Friend extends ApiObject {
     getName(): string | null {
-        return callStr(482, this.handle, []);
+        return callStr(480, this.handle, []);
     }
 
     getPrevName(): string | null {
-        return callStr(483, this.handle, []);
+        return callStr(481, this.handle, []);
     }
 
     getWorld(): number {
-        return callNum(484, this.handle, []);
+        return callNum(482, this.handle, []);
     }
 
 }

@@ -5,35 +5,35 @@ import { Nameable } from './Nameable';
 export class FriendsChatManager extends ApiObject {
     findByName(a0: string): Nameable | null {
         callStrArg(0, a0);
-        return wrap(490, this.handle, [0], Nameable);
+        return wrap(488, this.handle, [0], Nameable);
     }
 
     getCount(): number {
-        return callNum(491, this.handle, []);
+        return callNum(489, this.handle, []);
     }
 
     getKickRank(): string | null {
-        return callStr(492, this.handle, []);
+        return callStr(490, this.handle, []);
     }
 
     getMembers(): ApiArray<Nameable | null> {
-        return new ApiArray<Nameable | null>(callNum(493, this.handle, []), 'handle', Nameable);
+        return new ApiArray<Nameable | null>(callNum(491, this.handle, []), 'handle', Nameable);
     }
 
     getMyRank(): string | null {
-        return callStr(494, this.handle, []);
+        return callStr(492, this.handle, []);
     }
 
     getName(): string | null {
-        return callStr(495, this.handle, []);
+        return callStr(493, this.handle, []);
     }
 
     getOwner(): string | null {
-        return callStr(496, this.handle, []);
+        return callStr(494, this.handle, []);
     }
 
     getSize(): number {
-        return callNum(497, this.handle, []);
+        return callNum(495, this.handle, []);
     }
 
 }

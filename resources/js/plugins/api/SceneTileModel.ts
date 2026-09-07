@@ -3,87 +3,87 @@ import { ApiArray, ApiObject, callNum, callVoid } from './runtime';
 
 export class SceneTileModel extends ApiObject {
     getBufferLen(): number {
-        return callNum(1295, this.handle, []);
+        return callNum(1293, this.handle, []);
     }
 
     getBufferOffset(): number {
-        return callNum(1296, this.handle, []);
+        return callNum(1294, this.handle, []);
     }
 
     getFaceX(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1297, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(1295, this.handle, []), 'num', null);
     }
 
     getFaceY(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1298, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(1296, this.handle, []), 'num', null);
     }
 
     getFaceZ(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1299, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(1297, this.handle, []), 'num', null);
     }
 
     getModelOverlay(): number {
-        return callNum(1300, this.handle, []);
+        return callNum(1298, this.handle, []);
     }
 
     getModelUnderlay(): number {
-        return callNum(1301, this.handle, []);
+        return callNum(1299, this.handle, []);
     }
 
     getRotation(): number {
-        return callNum(1302, this.handle, []);
+        return callNum(1300, this.handle, []);
     }
 
     getShape(): number {
-        return callNum(1303, this.handle, []);
+        return callNum(1301, this.handle, []);
     }
 
     getTriangleColorA(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1304, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(1302, this.handle, []), 'num', null);
     }
 
     getTriangleColorB(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1305, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(1303, this.handle, []), 'num', null);
     }
 
     getTriangleColorC(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1306, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(1304, this.handle, []), 'num', null);
     }
 
     getTriangleTextureId(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1307, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(1305, this.handle, []), 'num', null);
     }
 
     getUvBufferOffset(): number {
-        return callNum(1308, this.handle, []);
+        return callNum(1306, this.handle, []);
     }
 
     getVertexX(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1309, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(1307, this.handle, []), 'num', null);
     }
 
     getVertexY(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1310, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(1308, this.handle, []), 'num', null);
     }
 
     getVertexZ(): ApiArray<number> {
-        return new ApiArray<number>(callNum(1311, this.handle, []), 'num', null);
+        return new ApiArray<number>(callNum(1309, this.handle, []), 'num', null);
     }
 
     isFlat(): boolean {
-        return callNum(1312, this.handle, []) !== 0;
+        return callNum(1310, this.handle, []) !== 0;
     }
 
     setBufferLen(a0: number): void {
-        callVoid(1313, this.handle, [a0]);
+        callVoid(1311, this.handle, [a0]);
     }
 
     setBufferOffset(a0: number): void {
-        callVoid(1314, this.handle, [a0]);
+        callVoid(1312, this.handle, [a0]);
     }
 
     setUvBufferOffset(a0: number): void {
-        callVoid(1315, this.handle, [a0]);
+        callVoid(1313, this.handle, [a0]);
     }
 
 }

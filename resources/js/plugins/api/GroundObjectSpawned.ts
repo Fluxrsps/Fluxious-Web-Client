@@ -5,27 +5,27 @@ import { Tile } from './Tile';
 
 export class GroundObjectSpawned extends ApiObject {
     getGroundObject(): GroundObject | null {
-        return wrap(1736, this.handle, [], GroundObject);
+        return wrap(1734, this.handle, [], GroundObject);
     }
 
     getTile(): Tile | null {
-        return wrap(1737, this.handle, [], Tile);
+        return wrap(1735, this.handle, [], Tile);
     }
 
     hashCode(): number {
-        return callNum(1738, this.handle, []);
+        return callNum(1736, this.handle, []);
     }
 
     setGroundObject(a0: ApiObject | null): void {
-        callVoid(1739, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1737, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setTile(a0: ApiObject | null): void {
-        callVoid(1740, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1738, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     toString(): string | null {
-        return callStr(1741, this.handle, []);
+        return callStr(1739, this.handle, []);
     }
 
 }

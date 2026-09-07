@@ -4,32 +4,32 @@ import { IterableHashTable } from './IterableHashTable';
 
 export class ParamHolder extends ApiObject {
     getIntValue(a0: number): number {
-        return callNum(1022, this.handle, [a0]);
+        return callNum(1020, this.handle, [a0]);
     }
 
     getLongValue(a0: number): number {
-        return callNum(1023, this.handle, [a0]);
+        return callNum(1021, this.handle, [a0]);
     }
 
     getParams(): IterableHashTable | null {
-        return wrap(1024, this.handle, [], IterableHashTable);
+        return wrap(1022, this.handle, [], IterableHashTable);
     }
 
     getStringValue(a0: number): string | null {
-        return callStr(1025, this.handle, [a0]);
+        return callStr(1023, this.handle, [a0]);
     }
 
     setValue(a0: number, a1: number): void {
-        callVoid(1026, this.handle, [a0, a1]);
+        callVoid(1024, this.handle, [a0, a1]);
     }
 
     setValue$int_String(a0: number, a1: string): void {
         callStrArg(1, a1);
-        callVoid(1027, this.handle, [a0, 0]);
+        callVoid(1025, this.handle, [a0, 0]);
     }
 
     setValue$int_long(a0: number, a1: number): void {
-        callVoid(1028, this.handle, [a0, a1]);
+        callVoid(1026, this.handle, [a0, a1]);
     }
 
 }

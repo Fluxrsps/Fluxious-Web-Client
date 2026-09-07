@@ -3,23 +3,23 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class WidgetClosed extends ApiObject {
     getGroupId(): number {
-        return callNum(1935, this.handle, []);
+        return callNum(1933, this.handle, []);
     }
 
     getModalMode(): number {
-        return callNum(1936, this.handle, []);
+        return callNum(1934, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1937, this.handle, []);
+        return callNum(1935, this.handle, []);
     }
 
     isUnload(): boolean {
-        return callNum(1938, this.handle, []) !== 0;
+        return callNum(1936, this.handle, []) !== 0;
     }
 
     toString(): string | null {
-        return callStr(1939, this.handle, []);
+        return callStr(1937, this.handle, []);
     }
 
 }

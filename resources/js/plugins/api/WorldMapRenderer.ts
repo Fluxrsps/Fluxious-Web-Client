@@ -3,11 +3,11 @@ import { ApiArray, ApiObject, callNum } from './runtime';
 
 export class WorldMapRenderer extends ApiObject {
     getMapRegions(): ApiArray<number> {
-        return new ApiArray<number>(callNum(2168, this.handle, []), 'none', null);
+        return new ApiArray<number>(callNum(2166, this.handle, []), 'none', null);
     }
 
     isLoaded(): boolean {
-        return callNum(2169, this.handle, []) !== 0;
+        return callNum(2167, this.handle, []) !== 0;
     }
 
 }

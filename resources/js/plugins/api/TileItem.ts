@@ -5,59 +5,59 @@ import { Node } from './Node';
 
 export class TileItem extends ApiObject {
     getAnimationHeightOffset(): number {
-        return callNum(1418, this.handle, []);
+        return callNum(1416, this.handle, []);
     }
 
     getDespawnTime(): number {
-        return callNum(1419, this.handle, []);
+        return callNum(1417, this.handle, []);
     }
 
     getHash(): number {
-        return callNum(1420, this.handle, []);
+        return callNum(1418, this.handle, []);
     }
 
     getId(): number {
-        return callNum(1421, this.handle, []);
+        return callNum(1419, this.handle, []);
     }
 
     getModel(): Model | null {
-        return wrap(1422, this.handle, [], Model);
+        return wrap(1420, this.handle, [], Model);
     }
 
     getModelHeight(): number {
-        return callNum(1423, this.handle, []);
+        return callNum(1421, this.handle, []);
     }
 
     getNext(): Node | null {
-        return wrap(1424, this.handle, [], Node);
+        return wrap(1422, this.handle, [], Node);
     }
 
     getOwnership(): number {
-        return callNum(1425, this.handle, []);
+        return callNum(1423, this.handle, []);
     }
 
     getPrevious(): Node | null {
-        return wrap(1426, this.handle, [], Node);
+        return wrap(1424, this.handle, [], Node);
     }
 
     getQuantity(): number {
-        return callNum(1427, this.handle, []);
+        return callNum(1425, this.handle, []);
     }
 
     getRenderMode(): number {
-        return callNum(1428, this.handle, []);
+        return callNum(1426, this.handle, []);
     }
 
     getVisibleTime(): number {
-        return callNum(1429, this.handle, []);
+        return callNum(1427, this.handle, []);
     }
 
     isPrivate(): boolean {
-        return callNum(1430, this.handle, []) !== 0;
+        return callNum(1428, this.handle, []) !== 0;
     }
 
     setModelHeight(a0: number): void {
-        callVoid(1431, this.handle, [a0]);
+        callVoid(1429, this.handle, [a0]);
     }
 
 }

@@ -5,27 +5,27 @@ import { WallObject } from './WallObject';
 
 export class WallObjectDespawned extends ApiObject {
     getTile(): Tile | null {
-        return wrap(1923, this.handle, [], Tile);
+        return wrap(1921, this.handle, [], Tile);
     }
 
     getWallObject(): WallObject | null {
-        return wrap(1924, this.handle, [], WallObject);
+        return wrap(1922, this.handle, [], WallObject);
     }
 
     hashCode(): number {
-        return callNum(1925, this.handle, []);
+        return callNum(1923, this.handle, []);
     }
 
     setTile(a0: ApiObject | null): void {
-        callVoid(1926, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1924, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setWallObject(a0: ApiObject | null): void {
-        callVoid(1927, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1925, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     toString(): string | null {
-        return callStr(1928, this.handle, []);
+        return callStr(1926, this.handle, []);
     }
 
 }

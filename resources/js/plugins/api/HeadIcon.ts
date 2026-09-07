@@ -3,19 +3,19 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class HeadIcon extends ApiObject {
     hashCode(): number {
-        return callNum(584, this.handle, []);
+        return callNum(582, this.handle, []);
     }
 
     name(): string | null {
-        return callStr(585, this.handle, []);
+        return callStr(583, this.handle, []);
     }
 
     ordinal(): number {
-        return callNum(586, this.handle, []);
+        return callNum(584, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(587, this.handle, []);
+        return callStr(585, this.handle, []);
     }
 
 }

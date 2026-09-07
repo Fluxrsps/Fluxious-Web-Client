@@ -4,67 +4,67 @@ import { Actor } from './Actor';
 
 export class AreaSoundEffectPlayed extends ApiObject {
     consume(): void {
-        callVoid(1615, this.handle, []);
+        callVoid(1613, this.handle, []);
     }
 
     getDelay(): number {
-        return callNum(1616, this.handle, []);
+        return callNum(1614, this.handle, []);
     }
 
     getRange(): number {
-        return callNum(1617, this.handle, []);
+        return callNum(1615, this.handle, []);
     }
 
     getSceneX(): number {
-        return callNum(1618, this.handle, []);
+        return callNum(1616, this.handle, []);
     }
 
     getSceneY(): number {
-        return callNum(1619, this.handle, []);
+        return callNum(1617, this.handle, []);
     }
 
     getSoundId(): number {
-        return callNum(1620, this.handle, []);
+        return callNum(1618, this.handle, []);
     }
 
     getSource(): Actor | null {
-        return wrap(1621, this.handle, [], Actor);
+        return wrap(1619, this.handle, [], Actor);
     }
 
     hashCode(): number {
-        return callNum(1622, this.handle, []);
+        return callNum(1620, this.handle, []);
     }
 
     isConsumed(): boolean {
-        return callNum(1623, this.handle, []) !== 0;
+        return callNum(1621, this.handle, []) !== 0;
     }
 
     setConsumed(a0: boolean): void {
-        callVoid(1624, this.handle, [(a0 ? 1 : 0)]);
+        callVoid(1622, this.handle, [(a0 ? 1 : 0)]);
     }
 
     setDelay(a0: number): void {
-        callVoid(1625, this.handle, [a0]);
+        callVoid(1623, this.handle, [a0]);
     }
 
     setRange(a0: number): void {
-        callVoid(1626, this.handle, [a0]);
+        callVoid(1624, this.handle, [a0]);
     }
 
     setSceneX(a0: number): void {
-        callVoid(1627, this.handle, [a0]);
+        callVoid(1625, this.handle, [a0]);
     }
 
     setSceneY(a0: number): void {
-        callVoid(1628, this.handle, [a0]);
+        callVoid(1626, this.handle, [a0]);
     }
 
     setSoundId(a0: number): void {
-        callVoid(1629, this.handle, [a0]);
+        callVoid(1627, this.handle, [a0]);
     }
 
     toString(): string | null {
-        return callStr(1630, this.handle, []);
+        return callStr(1628, this.handle, []);
     }
 
 }

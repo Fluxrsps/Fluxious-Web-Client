@@ -5,47 +5,47 @@ import { Node } from './Node';
 
 export class ItemContainer extends ApiObject {
     contains(a0: number): boolean {
-        return callNum(691, this.handle, [a0]) !== 0;
+        return callNum(689, this.handle, [a0]) !== 0;
     }
 
     count(): number {
-        return callNum(692, this.handle, []);
+        return callNum(690, this.handle, []);
     }
 
     count$int(a0: number): number {
-        return callNum(693, this.handle, [a0]);
+        return callNum(691, this.handle, [a0]);
     }
 
     find(a0: number): number {
-        return callNum(694, this.handle, [a0]);
+        return callNum(692, this.handle, [a0]);
     }
 
     getHash(): number {
-        return callNum(695, this.handle, []);
+        return callNum(693, this.handle, []);
     }
 
     getId(): number {
-        return callNum(696, this.handle, []);
+        return callNum(694, this.handle, []);
     }
 
     getItem(a0: number): Item | null {
-        return wrap(697, this.handle, [a0], Item);
+        return wrap(695, this.handle, [a0], Item);
     }
 
     getItems(): ApiArray<Item | null> {
-        return new ApiArray<Item | null>(callNum(698, this.handle, []), 'handle', Item);
+        return new ApiArray<Item | null>(callNum(696, this.handle, []), 'handle', Item);
     }
 
     getNext(): Node | null {
-        return wrap(699, this.handle, [], Node);
+        return wrap(697, this.handle, [], Node);
     }
 
     getPrevious(): Node | null {
-        return wrap(700, this.handle, [], Node);
+        return wrap(698, this.handle, [], Node);
     }
 
     size(): number {
-        return callNum(701, this.handle, []);
+        return callNum(699, this.handle, []);
     }
 
 }

@@ -4,15 +4,15 @@ import { FriendsChatMember } from './FriendsChatMember';
 
 export class FriendsChatMemberJoined extends ApiObject {
     getMember(): FriendsChatMember | null {
-        return wrap(1689, this.handle, [], FriendsChatMember);
+        return wrap(1687, this.handle, [], FriendsChatMember);
     }
 
     hashCode(): number {
-        return callNum(1690, this.handle, []);
+        return callNum(1688, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1691, this.handle, []);
+        return callStr(1689, this.handle, []);
     }
 
 }

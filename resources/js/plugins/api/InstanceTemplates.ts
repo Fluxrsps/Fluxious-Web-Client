@@ -3,39 +3,39 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class InstanceTemplates extends ApiObject {
     getBaseX(): number {
-        return callNum(621, this.handle, []);
+        return callNum(619, this.handle, []);
     }
 
     getBaseY(): number {
-        return callNum(622, this.handle, []);
+        return callNum(620, this.handle, []);
     }
 
     getHeight(): number {
-        return callNum(623, this.handle, []);
+        return callNum(621, this.handle, []);
     }
 
     getPlane(): number {
-        return callNum(624, this.handle, []);
+        return callNum(622, this.handle, []);
     }
 
     getWidth(): number {
-        return callNum(625, this.handle, []);
+        return callNum(623, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(626, this.handle, []);
+        return callNum(624, this.handle, []);
     }
 
     name(): string | null {
-        return callStr(627, this.handle, []);
+        return callStr(625, this.handle, []);
     }
 
     ordinal(): number {
-        return callNum(628, this.handle, []);
+        return callNum(626, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(629, this.handle, []);
+        return callStr(627, this.handle, []);
     }
 
 }

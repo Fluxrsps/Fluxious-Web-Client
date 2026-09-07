@@ -8,91 +8,91 @@ import { WorldView } from './WorldView';
 
 export class GameObject extends ApiObject {
     getCanvasLocation(): Point | null {
-        return wrap(512, this.handle, [], Point);
+        return wrap(510, this.handle, [], Point);
     }
 
     getCanvasLocation$int(a0: number): Point | null {
-        return wrap(513, this.handle, [a0], Point);
+        return wrap(511, this.handle, [a0], Point);
     }
 
     getConfig(): number {
-        return callNum(514, this.handle, []);
+        return callNum(512, this.handle, []);
     }
 
     getHash(): number {
-        return callNum(515, this.handle, []);
+        return callNum(513, this.handle, []);
     }
 
     getId(): number {
-        return callNum(516, this.handle, []);
+        return callNum(514, this.handle, []);
     }
 
     getLocalLocation(): LocalPoint | null {
-        return wrap(517, this.handle, [], LocalPoint);
+        return wrap(515, this.handle, [], LocalPoint);
     }
 
     getMinimapLocation(): Point | null {
-        return wrap(518, this.handle, [], Point);
+        return wrap(516, this.handle, [], Point);
     }
 
     getModelOrientation(): number {
-        return callNum(519, this.handle, []);
+        return callNum(517, this.handle, []);
     }
 
     getOpOverride(a0: number): string | null {
-        return callStr(520, this.handle, [a0]);
+        return callStr(518, this.handle, [a0]);
     }
 
     getOrientation(): number {
-        return callNum(521, this.handle, []);
+        return callNum(519, this.handle, []);
     }
 
     getPlane(): number {
-        return callNum(522, this.handle, []);
+        return callNum(520, this.handle, []);
     }
 
     getRenderable(): Renderable | null {
-        return wrap(523, this.handle, [], Renderable);
+        return wrap(521, this.handle, [], Renderable);
     }
 
     getSceneMaxLocation(): Point | null {
-        return wrap(524, this.handle, [], Point);
+        return wrap(522, this.handle, [], Point);
     }
 
     getSceneMinLocation(): Point | null {
-        return wrap(525, this.handle, [], Point);
+        return wrap(523, this.handle, [], Point);
     }
 
     getWorldLocation(): WorldPoint | null {
-        return wrap(526, this.handle, [], WorldPoint);
+        return wrap(524, this.handle, [], WorldPoint);
     }
 
     getWorldView(): WorldView | null {
-        return wrap(527, this.handle, [], WorldView);
+        return wrap(525, this.handle, [], WorldView);
     }
 
     getX(): number {
-        return callNum(528, this.handle, []);
+        return callNum(526, this.handle, []);
     }
 
     getY(): number {
-        return callNum(529, this.handle, []);
+        return callNum(527, this.handle, []);
     }
 
     getZ(): number {
-        return callNum(530, this.handle, []);
+        return callNum(528, this.handle, []);
     }
 
     isOpShown(a0: number): boolean {
-        return callNum(531, this.handle, [a0]) !== 0;
+        return callNum(529, this.handle, [a0]) !== 0;
     }
 
     sizeX(): number {
-        return callNum(532, this.handle, []);
+        return callNum(530, this.handle, []);
     }
 
     sizeY(): number {
-        return callNum(533, this.handle, []);
+        return callNum(531, this.handle, []);
     }
 
 }

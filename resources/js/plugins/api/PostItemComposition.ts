@@ -4,15 +4,15 @@ import { ItemComposition } from './ItemComposition';
 
 export class PostItemComposition extends ApiObject {
     getItemComposition(): ItemComposition | null {
-        return wrap(1846, this.handle, [], ItemComposition);
+        return wrap(1844, this.handle, [], ItemComposition);
     }
 
     hashCode(): number {
-        return callNum(1847, this.handle, []);
+        return callNum(1845, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1848, this.handle, []);
+        return callStr(1846, this.handle, []);
     }
 
 }

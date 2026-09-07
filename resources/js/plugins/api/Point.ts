@@ -3,23 +3,23 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class Point extends ApiObject {
     distanceTo(a0: ApiObject | null): number {
-        return callNum(1115, this.handle, [(a0 ? a0.handle : -1)]);
+        return callNum(1113, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     getX(): number {
-        return callNum(1116, this.handle, []);
+        return callNum(1114, this.handle, []);
     }
 
     getY(): number {
-        return callNum(1117, this.handle, []);
+        return callNum(1115, this.handle, []);
     }
 
     hashCode(): number {
-        return callNum(1118, this.handle, []);
+        return callNum(1116, this.handle, []);
     }
 
     toString(): string | null {
-        return callStr(1119, this.handle, []);
+        return callStr(1117, this.handle, []);
     }
 
 }

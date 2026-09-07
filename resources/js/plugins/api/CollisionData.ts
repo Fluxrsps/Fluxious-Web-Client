@@ -3,7 +3,7 @@ import { ApiArray, ApiObject, callNum } from './runtime';
 
 export class CollisionData extends ApiObject {
     getFlags(): ApiArray<number> {
-        return new ApiArray<number>(callNum(424, this.handle, []), 'none', null);
+        return new ApiArray<number>(callNum(422, this.handle, []), 'none', null);
     }
 
 }

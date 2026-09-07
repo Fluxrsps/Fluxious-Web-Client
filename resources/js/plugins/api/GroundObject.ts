@@ -8,67 +8,67 @@ import { WorldView } from './WorldView';
 
 export class GroundObject extends ApiObject {
     getCanvasLocation(): Point | null {
-        return wrap(567, this.handle, [], Point);
+        return wrap(565, this.handle, [], Point);
     }
 
     getCanvasLocation$int(a0: number): Point | null {
-        return wrap(568, this.handle, [a0], Point);
+        return wrap(566, this.handle, [a0], Point);
     }
 
     getConfig(): number {
-        return callNum(569, this.handle, []);
+        return callNum(567, this.handle, []);
     }
 
     getHash(): number {
-        return callNum(570, this.handle, []);
+        return callNum(568, this.handle, []);
     }
 
     getId(): number {
-        return callNum(571, this.handle, []);
+        return callNum(569, this.handle, []);
     }
 
     getLocalLocation(): LocalPoint | null {
-        return wrap(572, this.handle, [], LocalPoint);
+        return wrap(570, this.handle, [], LocalPoint);
     }
 
     getMinimapLocation(): Point | null {
-        return wrap(573, this.handle, [], Point);
+        return wrap(571, this.handle, [], Point);
     }
 
     getOpOverride(a0: number): string | null {
-        return callStr(574, this.handle, [a0]);
+        return callStr(572, this.handle, [a0]);
     }
 
     getPlane(): number {
-        return callNum(575, this.handle, []);
+        return callNum(573, this.handle, []);
     }
 
     getRenderable(): Renderable | null {
-        return wrap(576, this.handle, [], Renderable);
+        return wrap(574, this.handle, [], Renderable);
     }
 
     getWorldLocation(): WorldPoint | null {
-        return wrap(577, this.handle, [], WorldPoint);
+        return wrap(575, this.handle, [], WorldPoint);
     }
 
     getWorldView(): WorldView | null {
-        return wrap(578, this.handle, [], WorldView);
+        return wrap(576, this.handle, [], WorldView);
     }
 
     getX(): number {
-        return callNum(579, this.handle, []);
+        return callNum(577, this.handle, []);
     }
 
     getY(): number {
-        return callNum(580, this.handle, []);
+        return callNum(578, this.handle, []);
     }
 
     getZ(): number {
-        return callNum(581, this.handle, []);
+        return callNum(579, this.handle, []);
     }
 
     isOpShown(a0: number): boolean {
-        return callNum(582, this.handle, [a0]) !== 0;
+        return callNum(580, this.handle, [a0]) !== 0;
     }
 
 }

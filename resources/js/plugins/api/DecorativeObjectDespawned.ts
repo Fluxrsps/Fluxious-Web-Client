@@ -5,27 +5,27 @@ import { Tile } from './Tile';
 
 export class DecorativeObjectDespawned extends ApiObject {
     getDecorativeObject(): DecorativeObject | null {
-        return wrap(1666, this.handle, [], DecorativeObject);
+        return wrap(1664, this.handle, [], DecorativeObject);
     }
 
     getTile(): Tile | null {
-        return wrap(1667, this.handle, [], Tile);
+        return wrap(1665, this.handle, [], Tile);
     }
 
     hashCode(): number {
-        return callNum(1668, this.handle, []);
+        return callNum(1666, this.handle, []);
     }
 
     setDecorativeObject(a0: ApiObject | null): void {
-        callVoid(1669, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1667, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     setTile(a0: ApiObject | null): void {
-        callVoid(1670, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(1668, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
     toString(): string | null {
-        return callStr(1671, this.handle, []);
+        return callStr(1669, this.handle, []);
     }
 
 }

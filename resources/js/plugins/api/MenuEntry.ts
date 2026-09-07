@@ -8,117 +8,117 @@ import { Widget } from './Widget';
 
 export class MenuEntry extends ApiObject {
     createSubMenu(): Menu | null {
-        return wrap(737, this.handle, [], Menu);
+        return wrap(735, this.handle, [], Menu);
     }
 
     deleteSubMenu(): void {
-        callVoid(738, this.handle, []);
+        callVoid(736, this.handle, []);
     }
 
     getActor(): Actor | null {
-        return wrap(739, this.handle, [], Actor);
+        return wrap(737, this.handle, [], Actor);
     }
 
     getIdentifier(): number {
-        return callNum(740, this.handle, []);
+        return callNum(738, this.handle, []);
     }
 
     getItemId(): number {
-        return callNum(741, this.handle, []);
+        return callNum(739, this.handle, []);
     }
 
     getItemOp(): number {
-        return callNum(742, this.handle, []);
+        return callNum(740, this.handle, []);
     }
 
     getNpc(): NPC | null {
-        return wrap(743, this.handle, [], NPC);
+        return wrap(741, this.handle, [], NPC);
     }
 
     getOption(): string | null {
-        return callStr(744, this.handle, []);
+        return callStr(742, this.handle, []);
     }
 
     getParam0(): number {
-        return callNum(745, this.handle, []);
+        return callNum(743, this.handle, []);
     }
 
     getParam1(): number {
-        return callNum(746, this.handle, []);
+        return callNum(744, this.handle, []);
     }
 
     getPlayer(): Player | null {
-        return wrap(747, this.handle, [], Player);
+        return wrap(745, this.handle, [], Player);
     }
 
     getSubMenu(): Menu | null {
-        return wrap(748, this.handle, [], Menu);
+        return wrap(746, this.handle, [], Menu);
     }
 
     getTarget(): string | null {
-        return callStr(749, this.handle, []);
+        return callStr(747, this.handle, []);
     }
 
     getType(): string | null {
-        return callStr(750, this.handle, []);
+        return callStr(748, this.handle, []);
     }
 
     getWidget(): Widget | null {
-        return wrap(751, this.handle, [], Widget);
+        return wrap(749, this.handle, [], Widget);
     }
 
     getWorldViewId(): number {
-        return callNum(752, this.handle, []);
+        return callNum(750, this.handle, []);
     }
 
     isDeprioritized(): boolean {
-        return callNum(753, this.handle, []) !== 0;
+        return callNum(751, this.handle, []) !== 0;
     }
 
     isForceLeftClick(): boolean {
-        return callNum(754, this.handle, []) !== 0;
+        return callNum(752, this.handle, []) !== 0;
     }
 
     isItemOp(): boolean {
-        return callNum(755, this.handle, []) !== 0;
+        return callNum(753, this.handle, []) !== 0;
     }
 
     setDeprioritized(a0: boolean): MenuEntry | null {
-        return wrap(756, this.handle, [(a0 ? 1 : 0)], MenuEntry);
+        return wrap(754, this.handle, [(a0 ? 1 : 0)], MenuEntry);
     }
 
     setForceLeftClick(a0: boolean): MenuEntry | null {
-        return wrap(757, this.handle, [(a0 ? 1 : 0)], MenuEntry);
+        return wrap(755, this.handle, [(a0 ? 1 : 0)], MenuEntry);
     }
 
     setIdentifier(a0: number): MenuEntry | null {
-        return wrap(758, this.handle, [a0], MenuEntry);
+        return wrap(756, this.handle, [a0], MenuEntry);
     }
 
     setItemId(a0: number): MenuEntry | null {
-        return wrap(759, this.handle, [a0], MenuEntry);
+        return wrap(757, this.handle, [a0], MenuEntry);
     }
 
     setOption(a0: string): MenuEntry | null {
         callStrArg(0, a0);
-        return wrap(760, this.handle, [0], MenuEntry);
+        return wrap(758, this.handle, [0], MenuEntry);
     }
 
     setParam0(a0: number): MenuEntry | null {
-        return wrap(761, this.handle, [a0], MenuEntry);
+        return wrap(759, this.handle, [a0], MenuEntry);
     }
 
     setParam1(a0: number): MenuEntry | null {
-        return wrap(762, this.handle, [a0], MenuEntry);
+        return wrap(760, this.handle, [a0], MenuEntry);
     }
 
     setTarget(a0: string): MenuEntry | null {
         callStrArg(0, a0);
-        return wrap(763, this.handle, [0], MenuEntry);
+        return wrap(761, this.handle, [0], MenuEntry);
     }
 
     setWorldViewId(a0: number): MenuEntry | null {
-        return wrap(764, this.handle, [a0], MenuEntry);
+        return wrap(762, this.handle, [a0], MenuEntry);
     }
 
 }

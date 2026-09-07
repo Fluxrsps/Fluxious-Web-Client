@@ -4,31 +4,31 @@ import { MenuEntry } from './MenuEntry';
 
 export class Menu extends ApiObject {
     createMenuEntry(a0: number): MenuEntry | null {
-        return wrap(725, this.handle, [a0], MenuEntry);
+        return wrap(723, this.handle, [a0], MenuEntry);
     }
 
     getMenuEntries(): ApiArray<MenuEntry | null> {
-        return new ApiArray<MenuEntry | null>(callNum(726, this.handle, []), 'handle', MenuEntry);
+        return new ApiArray<MenuEntry | null>(callNum(724, this.handle, []), 'handle', MenuEntry);
     }
 
     getMenuHeight(): number {
-        return callNum(727, this.handle, []);
+        return callNum(725, this.handle, []);
     }
 
     getMenuWidth(): number {
-        return callNum(728, this.handle, []);
+        return callNum(726, this.handle, []);
     }
 
     getMenuX(): number {
-        return callNum(729, this.handle, []);
+        return callNum(727, this.handle, []);
     }
 
     getMenuY(): number {
-        return callNum(730, this.handle, []);
+        return callNum(728, this.handle, []);
     }
 
     removeMenuEntry(a0: ApiObject | null): void {
-        callVoid(731, this.handle, [(a0 ? a0.handle : -1)]);
+        callVoid(729, this.handle, [(a0 ? a0.handle : -1)]);
     }
 
 }
