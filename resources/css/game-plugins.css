@@ -1,0 +1,520 @@
+/* Plugin sidebar, plugin list and settings panel for the /play client.
+
+   Styled after RuneLite's own config panel, using net.runelite.client.ui.ColorScheme verbatim.
+   The login screen has a palette of its own and keeps it: this is the client's chrome and should
+   read as the client, not as the site around it.
+
+   The star, switch, cog and back arrow are RuneLite's own images. Their "off" variants are derived
+   rather than shipped, exactly as PluginToggleButton and PluginListItem derive them in Java — a
+   grayscale plus a luminance scale, and for the switch a horizontal flip. */
+
+/* The client's own typeface, as shipped with RuneLite, so overlays match the game rather than the
+   page. The family names are declared here and are independent of the names inside the files.
+
+   Bitmap faces: they are designed at one size and must not be hinted or smoothed into something
+   else, which is why overlays draw them at 16px with image smoothing off. */
+@font-face {
+    font-family: 'RuneScape';
+    src: url('/assets/fonts/runescape.ttf') format('truetype');
+    font-weight: normal;
+    font-display: block;
+}
+
+@font-face {
+    font-family: 'RuneScape';
+    src: url('/assets/fonts/runescape_bold.ttf') format('truetype');
+    font-weight: bold;
+    font-display: block;
+}
+
+@font-face {
+    font-family: 'RuneScape Small';
+    src: url('/assets/fonts/runescape_small.ttf') format('truetype');
+    font-weight: normal;
+    font-display: block;
+}
+
+:root {
+    /* net.runelite.client.ui.ColorScheme, verbatim — this project's copy, not upstream's. The
+       brand colour is the one thing that differs: it is teal here, despite the field name. */
+    --rl-brand: #01a0a0; /* BRAND_ORANGE 1,160,160 */
+    --rl-brand-transparent: rgba(1, 160, 160, 0.47); /* BRAND_ORANGE_TRANSPARENT, alpha 120/255 */
+    --rl-darker-gray: #1e1e1e; /* DARKER_GRAY_COLOR 30,30,30 */
+    --rl-dark-gray: #282828; /* DARK_GRAY_COLOR 40,40,40 */
+    --rl-medium-gray: #4d4d4d; /* MEDIUM_GRAY_COLOR 77,77,77 */
+    --rl-light-gray: #a5a5a5; /* LIGHT_GRAY_COLOR 165,165,165 */
+    --rl-text: #c6c6c6; /* TEXT_COLOR 198,198,198 */
+    --rl-border: #171717; /* BORDER_COLOR 23,23,23 */
+    --rl-darker-gray-hover: #3c3c3c; /* DARKER_GRAY_HOVER_COLOR 60,60,60 */
+    --rl-dark-gray-hover: #232323; /* DARK_GRAY_HOVER_COLOR 35,35,35 */
+    --rl-scroll-track: #191919; /* SCROLL_TRACK_COLOR 25,25,25 */
+
+    --flx-plugin-bar-w: 40px;
+    --flx-plugin-panel-w: 240px;
+}
+
+.flx-plugins {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    display: flex;
+    /* Panel first, bar pinned to the screen edge. */
+    flex-direction: row;
+    font-family: Inter, sans-serif;
+    color: var(--rl-text);
+}
+
+/* --- tab strip --- */
+
+.flx-plugins__bar {
+    width: var(--flx-plugin-bar-w);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 4px 0;
+    background: var(--rl-dark-gray);
+    border-left: 1px solid var(--rl-border);
+}
+
+.flx-plugins__tab {
+    width: 100%;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-left: 2px solid transparent;
+    color: var(--rl-light-gray);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+.flx-plugins__tab:hover {
+    color: var(--rl-text);
+    background: var(--rl-darker-gray-hover);
+}
+
+.flx-plugins__tab--active {
+    color: var(--rl-brand);
+    border-left-color: var(--rl-brand);
+    background: var(--rl-darker-gray);
+}
+
+.flx-plugins__icon {
+    width: 16px;
+    height: 16px;
+    image-rendering: pixelated;
+}
+
+/* Separates panel buttons from action buttons: the latter sit at the foot of the strip, where a
+   desktop client would put them in its title bar. */
+.flx-plugins__spacer {
+    flex: 1;
+}
+
+/* --- panel --- */
+
+.flx-plugins__panel {
+    width: var(--flx-plugin-panel-w);
+    display: flex;
+    flex-direction: column;
+    background: var(--rl-darker-gray);
+    border-left: 1px solid var(--rl-border);
+    overflow: hidden;
+}
+
+.flx-plugins__header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: var(--rl-dark-gray);
+    border-bottom: 1px solid var(--rl-border);
+}
+
+.flx-plugins__title {
+    flex: 1;
+    min-width: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--rl-brand);
+    /* A long plugin name must not push the switch off the edge. */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.flx-backarrow {
+    width: 16px;
+    height: 16px;
+    flex: none;
+    background: url('/assets/plugins/config_back_icon.png') center/contain no-repeat;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    /* The source icon is dark; lift it to the panel's text weight. */
+    filter: brightness(2.2);
+}
+
+.flx-backarrow:hover {
+    filter: brightness(3);
+}
+
+.flx-plugins__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 6px;
+}
+
+.flx-plugins__body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.flx-plugins__body::-webkit-scrollbar-track {
+    background: var(--rl-scroll-track);
+}
+
+.flx-plugins__body::-webkit-scrollbar-thumb {
+    background: var(--rl-medium-gray);
+}
+
+/* --- search --- */
+
+.flx-search {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 6px;
+    margin-bottom: 6px;
+    background: var(--rl-dark-gray);
+    border: 1px solid var(--rl-border);
+}
+
+.flx-search__icon {
+    color: var(--rl-light-gray);
+    font-size: 13px;
+    line-height: 1;
+}
+
+.flx-search__input {
+    flex: 1;
+    min-width: 0;
+    background: none;
+    border: none;
+    color: var(--rl-text);
+    font-family: inherit;
+    font-size: 12px;
+    outline: none;
+}
+
+.flx-search__input::placeholder {
+    color: var(--rl-medium-gray);
+}
+
+/* --- plugin list --- */
+
+.flx-plugin-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    padding: 5px 6px;
+    background: var(--rl-dark-gray);
+    margin-bottom: 3px;
+}
+
+.flx-plugin-row:hover {
+    background: var(--rl-darker-gray-hover);
+}
+
+.flx-plugin-row__name {
+    flex: 1;
+    min-width: 0;
+    font-size: 12px;
+    /* One line per plugin: the description is the row's tooltip, so the list stays scannable. */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- star, switch, cog: RuneLite's images ---
+
+   The off states are filtered rather than separate files, mirroring how the Java derives them:
+   star_off is grayscale at 0.77 luminance, switcher_off grayscale at 0.61 and flipped. */
+
+.flx-star {
+    width: 14px;
+    height: 14px;
+    flex: none;
+    background: url('/assets/plugins/star_on.png') center/contain no-repeat;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.flx-star--off {
+    filter: grayscale(1) brightness(0.77);
+}
+
+.flx-star--off:hover {
+    filter: grayscale(1) brightness(1.1);
+}
+
+.flx-cog {
+    width: 14px;
+    height: 14px;
+    flex: none;
+    background: url('/assets/plugins/config_edit_icon.png') center/contain no-repeat;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    filter: brightness(1.8);
+}
+
+.flx-cog:hover {
+    filter: brightness(2.6);
+}
+
+.flx-switch {
+    width: 26px;
+    height: 14px;
+    flex: none;
+    background: url('/assets/plugins/switcher_on.png') center/contain no-repeat;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.flx-switch--off {
+    /* Flipped as well as dimmed: the knob has to move to the other end. */
+    filter: grayscale(1) brightness(0.61);
+    transform: scaleX(-1);
+}
+
+/* --- settings --- */
+
+.flx-setting {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 6px;
+    background: var(--rl-dark-gray);
+    margin-bottom: 3px;
+}
+
+.flx-setting__name {
+    flex: 1;
+    min-width: 0;
+    font-size: 12px;
+}
+
+.flx-setting__input {
+    width: 74px;
+    flex: none;
+    background: var(--rl-darker-gray);
+    border: 1px solid var(--rl-border);
+    color: var(--rl-text);
+    font-family: inherit;
+    font-size: 12px;
+    padding: 3px 4px;
+    outline: none;
+}
+
+.flx-setting__input:focus {
+    border-color: var(--rl-brand);
+}
+
+/* Keybind capture: a button, since it is armed by clicking and set by pressing. */
+.flx-setting__keybind {
+    width: auto;
+    min-width: 74px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.flx-setting__keybind--capturing {
+    border-color: var(--rl-brand);
+    color: var(--rl-brand);
+}
+
+/* Checkbox, matching the square check in the desktop config panel. */
+.flx-check {
+    width: 16px;
+    height: 16px;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--rl-darker-gray);
+    border: 1px solid var(--rl-border);
+    color: var(--rl-text);
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 1;
+    padding: 0;
+}
+
+.flx-check:hover {
+    border-color: var(--rl-medium-gray);
+}
+
+.flx-setting__range {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: none;
+}
+
+.flx-setting__range input[type='range'] {
+    width: 84px;
+    accent-color: var(--rl-brand);
+}
+
+.flx-setting__value {
+    width: 26px;
+    text-align: right;
+    font-size: 12px;
+    color: var(--rl-light-gray);
+}
+
+/* --- config footer --- */
+
+.flx-configfoot {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: 6px;
+}
+
+.flx-configbtn {
+    background: var(--rl-dark-gray);
+    border: 1px solid var(--rl-border);
+    color: var(--rl-text);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    padding: 5px;
+}
+
+.flx-configbtn:hover {
+    background: var(--rl-darker-gray-hover);
+}
+
+/* --- plugin-owned panels --- */
+
+.flx-plugins__host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.flx-plugins__empty {
+    padding: 10px 8px;
+    font-size: 12px;
+    color: var(--rl-medium-gray);
+}
+
+/* --- right-click menu --- */
+
+/* Catches the click that dismisses the menu, without blocking anything else. */
+.flx-plugins__popupveil {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+}
+
+.flx-plugins__popup {
+    position: fixed;
+    z-index: 51;
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+    background: var(--rl-dark-gray);
+    border: 1px solid var(--rl-border);
+    /* Anchored at the pointer, which is near the right edge; shift it back into view. */
+    transform: translateX(-100%);
+}
+
+.flx-plugins__popupitem {
+    background: none;
+    border: none;
+    color: var(--rl-text);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    padding: 6px 10px;
+    text-align: left;
+}
+
+.flx-plugins__popupitem:hover {
+    background: var(--rl-darker-gray-hover);
+    color: var(--rl-brand);
+}
+
+/* --- how much width the game gets ---
+
+   The chrome is fixed to the viewport edge, so anything it occupies has to come out of #game-host
+   or it simply covers the canvas. The client sizes itself from that element (WebJs.gameHostWidth),
+   so insetting it makes the game resize rather than being obscured, and the overlay canvas follows
+   through the runtime's ResizeObserver.
+
+   Only when it has to, though. In fixed mode the canvas is centred with black either side, and on a
+   wide screen the chrome sits in that gap covering nothing — insetting then would shove the game
+   left for no reason. `flx-game-inset` is set by ui/gameInset.ts only when the chrome would reach
+   the canvas, so the game holds its place until it genuinely cannot fit beside the strip. */
+html.flx-game-inset #game-host {
+    right: var(--flx-plugin-bar-w);
+}
+
+html.flx-game-inset.flx-panel-open #game-host {
+    right: calc(var(--flx-plugin-bar-w) + var(--flx-plugin-panel-w));
+}
+
+html.flx-sidebar-hidden #game-host {
+    right: 0;
+}
+
+/* A narrow hover target at the screen edge. Wide enough to find with the pointer, narrow enough
+   not to swallow clicks meant for the game. */
+.flx-plugins__reveal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 12px;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.flx-plugins__revealbtn {
+    /* Overhangs the strip so it is a comfortable click once revealed. */
+    width: 22px;
+    height: 54px;
+    background: var(--rl-dark-gray);
+    border: 1px solid var(--rl-border);
+    border-right: none;
+    color: var(--rl-light-gray);
+    cursor: pointer;
+    font-family: Inter, sans-serif;
+    font-size: 16px;
+    line-height: 1;
+    padding: 0;
+}
+
+.flx-plugins__revealbtn:hover {
+    color: var(--rl-brand);
+}
+
+/* The overlay never takes input: clicks belong to the game canvas underneath it, except while Alt
+   is held to move overlays, which OverlayRenderer toggles. Position and size are written by the
+   plugin runtime from #game's own box. */
+#game-overlay {
+    position: absolute;
+    pointer-events: none;
+}

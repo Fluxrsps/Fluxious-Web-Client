@@ -1,0 +1,137 @@
+/* Notes panel styling, kept with the plugin rather than in the shared chrome stylesheet: nothing
+   outside this plugin draws a note editor, so nothing outside it should have to know these rules
+   exist. Imported by notesPanel.ts, so it ships only when the plugin does.
+
+   Tokens are the sidebar's, with fallbacks, so the panel matches the surrounding chrome without
+   depending on load order between the two stylesheets. */
+
+.flx-notes {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    height: 100%;
+    min-height: 0;
+}
+
+.flx-notes__editorwrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-height: 0;
+}
+
+/* --- formatting toolbar --- */
+
+.flx-notes__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    padding: 3px;
+    background: var(--flx-row-bg, #202020);
+    border: 1px solid var(--flx-row-border, #383838);
+}
+
+.flx-notes__tool {
+    min-width: 22px;
+    height: 22px;
+    background: none;
+    border: 1px solid transparent;
+    color: var(--flx-muted, #99b3b3);
+    cursor: pointer;
+    font-family: Inter, sans-serif;
+    font-size: 11px;
+    line-height: 1;
+    padding: 0 4px;
+}
+
+.flx-notes__tool:hover {
+    color: var(--flx-text, #e8e2d6);
+    border-color: var(--flx-field-border-hover, #565656);
+}
+
+.flx-notes__tool--active {
+    color: var(--rl-brand, #01a0a0);
+    border-color: var(--rl-brand, #01a0a0);
+}
+
+.flx-notes__select {
+    height: 22px;
+    background: var(--flx-field-bg, #1d1d1d);
+    border: 1px solid var(--flx-field-border, #3f3f3f);
+    color: var(--flx-muted, #99b3b3);
+    font-family: Inter, sans-serif;
+    font-size: 11px;
+    outline: none;
+}
+
+/* --- the note itself --- */
+
+.flx-notes__surface {
+    flex: 1;
+    min-height: 180px;
+    overflow-y: auto;
+    background: var(--flx-field-bg, #1d1d1d);
+    border: 1px solid var(--flx-field-border, #3f3f3f);
+    box-shadow: var(--flx-shadow-field, 0 0 10px rgba(0, 0, 0, 0.5) inset);
+}
+
+.flx-notes__surface:focus-within {
+    border-color: var(--flx-field-border-focus, #7fa8a8);
+}
+
+/* ProseMirror owns the inner element; these are the editable area's own rules. */
+.flx-notes__surface .ProseMirror {
+    min-height: 100%;
+    padding: 6px;
+    outline: none;
+    color: var(--flx-text, #e8e2d6);
+    font-family: Inter, sans-serif;
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.flx-notes__surface .ProseMirror p {
+    margin: 0 0 6px;
+}
+
+.flx-notes__surface .ProseMirror h1 {
+    font-size: 16px;
+    margin: 0 0 6px;
+    color: var(--rl-brand, #01a0a0);
+}
+
+.flx-notes__surface .ProseMirror h2 {
+    font-size: 14px;
+    margin: 0 0 6px;
+    color: var(--rl-brand, #01a0a0);
+}
+
+.flx-notes__surface .ProseMirror ul,
+.flx-notes__surface .ProseMirror ol {
+    margin: 0 0 6px;
+    padding-left: 18px;
+}
+
+.flx-notes__surface .ProseMirror blockquote {
+    margin: 0 0 6px;
+    padding-left: 8px;
+    border-left: 2px solid var(--flx-field-border, #3f3f3f);
+    color: var(--flx-muted, #99b3b3);
+}
+
+.flx-notes__surface .ProseMirror pre {
+    background: #151515;
+    padding: 6px;
+    overflow-x: auto;
+    font-family: 'Courier New', monospace;
+}
+
+/* Placeholder, shown only while the note is genuinely empty. */
+.flx-notes__surface .ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    color: var(--flx-dim, #6d7d7d);
+    float: left;
+    height: 0;
+    pointer-events: none;
+}

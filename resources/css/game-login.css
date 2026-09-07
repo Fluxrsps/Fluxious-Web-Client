@@ -1,0 +1,964 @@
+/* Fluxious game-client login screen.
+   Imported only by the /play page, alongside loading-screen.css.
+
+   Square corners everywhere except the online dot: the tactile work is done by inset shadows, not
+   radii. Every piece of text on the dark background carries a 1px black shadow so it stays legible
+   over the painted backdrop.
+
+   The mobile rules key off viewport *height*, not width: the phone case this has to serve is
+   forced landscape (see web/orientation.js), which is wide and short. */
+
+:root {
+    --flx-panel-bg: rgba(22, 22, 22, 0.94);
+    --flx-panel-border: #3a3a3a;
+    --flx-field-bg: #1d1d1d;
+    --flx-field-border: #3f3f3f;
+    --flx-field-border-hover: #565656;
+    --flx-field-border-focus: #7fa8a8;
+    --flx-field-bg-focus: #212727;
+    --flx-row-bg: #202020;
+    --flx-row-border: #383838;
+    --flx-row-hover: #262e2e;
+    --flx-row-selected: #243232;
+    --flx-green: #54844e;
+    --flx-gold: #f0d75c;
+    --flx-text: #e8e2d6;
+    --flx-muted: #99b3b3;
+    --flx-dim: #6d7d7d;
+    --flx-error: #e0a3a3;
+    --flx-destructive: #a84444;
+    --flx-avatar: #7fd4d4;
+    --flx-shadow-panel: 0 0 5px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 0, 0, 0.25) inset;
+    --flx-shadow-field: 0 0 10px rgba(0, 0, 0, 0.5) inset;
+    --flx-shadow-row: 0 0 10px rgba(0, 0, 0, 0.35) inset;
+    --flx-text-shadow: 1px 1px 1px #000;
+}
+
+@keyframes flx-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes flx-fade-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes flx-slide-left {
+    from { opacity: 0; transform: translateX(150px); }
+    to { opacity: 1; transform: none; }
+}
+
+.flx-login {
+    position: fixed;
+    inset: 0;
+    z-index: 7000;
+    display: flex;
+    flex-direction: column;
+    font-family: Inter, sans-serif;
+    background-image: linear-gradient(rgba(10, 12, 14, 0.72), rgba(10, 12, 14, 0.85)),
+        url('/assets/game/login/body-bg-lg.webp');
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+
+.flx-login__logo-bar {
+    display: flex;
+    justify-content: center;
+    padding: 28px 16px 10px;
+    flex: 0 0 auto;
+}
+
+.flx-login__logo {
+    height: 132px;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
+    animation: flx-fade-in 0.8s ease both;
+}
+
+/* Shown only in the landscape-phone layout, where the header logo bar is dropped. */
+.flx-login__logo--inline {
+    display: none;
+}
+
+.flx-login__main {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    justify-content: center;
+    align-content: center;
+    padding: 16px;
+    min-height: 0;
+}
+
+/* Panels ------------------------------------------------------------------ */
+
+.flx-panel {
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--flx-panel-bg);
+    border: 2px solid var(--flx-panel-border);
+    box-shadow: var(--flx-shadow-panel);
+    min-height: 0;
+}
+
+.flx-panel__header {
+    flex: 0 0 auto;
+    background-image: url('/assets/game/login/grunge-texture.webp'), linear-gradient(#2c3e3e, #253434);
+    background-size: cover;
+    padding: 10px 14px;
+    border-bottom: 2px solid #101010;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.9) inset, 0 1px 0 rgba(255, 255, 255, 0.12) inset;
+    text-align: center;
+}
+
+.flx-panel__title {
+    font-family: Fraunces, serif;
+    font-weight: 700;
+    font-size: 19px;
+    color: var(--flx-gold);
+    text-shadow: var(--flx-text-shadow), 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.flx-panel__body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 20px 22px 22px;
+}
+
+/* Saved players ----------------------------------------------------------- */
+
+.flx-saves {
+    width: 300px;
+    animation: flx-fade-in 0.5s ease 0.4s both;
+    background: rgba(22, 22, 22, 0.92);
+}
+
+.flx-saves .flx-panel__title {
+    font-size: 17px;
+}
+
+.flx-saves .flx-panel__header {
+    padding: 9px 14px;
+}
+
+.flx-saves__list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px;
+    overflow-y: auto;
+    min-height: 0;
+}
+
+.flx-saves__footer {
+    padding: 0 10px 10px;
+    margin-top: auto;
+    color: var(--flx-dim);
+    font-size: 11px;
+    text-align: center;
+    text-shadow: var(--flx-text-shadow);
+}
+
+.flx-save {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    flex: 0 0 auto;
+    background: var(--flx-row-bg);
+    border: 1px solid var(--flx-row-border);
+    box-shadow: var(--flx-shadow-row);
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+}
+
+.flx-save:hover {
+    background: var(--flx-row-hover);
+}
+
+.flx-save--selected {
+    background: var(--flx-row-selected);
+    border-color: var(--flx-green);
+}
+
+.flx-save__avatar {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 auto;
+    background: linear-gradient(#2a2a2a, #1a1a1a);
+    border: 1px solid #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Fraunces, serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--flx-avatar);
+    text-shadow: var(--flx-text-shadow);
+}
+
+.flx-save__text {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Both are spans inside a span, so without this the name and the meta line run together. */
+.flx-save__name,
+.flx-save__meta {
+    display: block;
+}
+
+.flx-save__name {
+    color: var(--flx-text);
+    font-weight: 600;
+    font-size: 14px;
+    text-shadow: var(--flx-text-shadow);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.flx-save__meta {
+    color: var(--flx-muted);
+    font-size: 12px;
+    text-shadow: var(--flx-text-shadow);
+}
+
+.flx-save__btn {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    background: var(--flx-field-bg);
+    border: 1px solid var(--flx-panel-border);
+    color: var(--flx-dim);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.flx-save__btn--fav:hover {
+    background: var(--flx-row-hover);
+    border-color: var(--flx-gold);
+}
+
+.flx-save__btn--fav-on {
+    color: var(--flx-gold);
+}
+
+.flx-save__btn--forget {
+    color: var(--flx-destructive);
+}
+
+.flx-save__btn--forget:hover {
+    background: #2a1c1c;
+    border-color: var(--flx-destructive);
+}
+
+/* Login form -------------------------------------------------------------- */
+
+.flx-login__form {
+    width: 360px;
+}
+
+.flx-login__form--with-saves {
+    animation: flx-slide-left 0.6s ease both;
+}
+
+.flx-login__form--alone {
+    animation: flx-fade-up 0.6s ease both;
+}
+
+.flx-msg {
+    text-align: center;
+    color: var(--flx-gold);
+    font-size: 13px;
+    line-height: 1.5;
+    text-shadow: var(--flx-text-shadow);
+}
+
+.flx-msg--error {
+    color: var(--flx-error);
+}
+
+.flx-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--flx-field-bg);
+    border: 1px solid var(--flx-field-border);
+    box-shadow: var(--flx-shadow-field);
+    padding: 10px 12px;
+}
+
+/* The border sits on the wrapper, not the input, so both states key off the label: hover on the
+   whole field, focus through :focus-within because the input itself carries `outline: none`. */
+.flx-field:hover {
+    border-color: var(--flx-field-border-hover);
+}
+
+.flx-field:focus-within {
+    border-color: var(--flx-field-border-focus);
+    background: var(--flx-field-bg-focus);
+}
+
+.flx-field__input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--flx-text);
+    font-size: 14px;
+    font-family: Inter, sans-serif;
+}
+
+.flx-field__input::placeholder {
+    color: var(--flx-dim);
+}
+
+/* Autofilled fields.
+   Both engines paint their own highlight over a filled field and both ignore `background`:
+   Firefox applies a filter, Chrome an !important background-color that only a large inset shadow
+   can cover. Kept as two rules because a selector list is dropped whole if any part of it is
+   unknown to the browser reading it. */
+.flx-field__input:autofill,
+.flx-2fa__code:autofill {
+    filter: none;
+    box-shadow: 0 0 0 1000px var(--flx-field-bg) inset;
+    -webkit-text-fill-color: var(--flx-text);
+    caret-color: var(--flx-text);
+}
+
+.flx-field__input:-webkit-autofill,
+.flx-field__input:-webkit-autofill:hover,
+.flx-field__input:-webkit-autofill:focus,
+.flx-2fa__code:-webkit-autofill,
+.flx-2fa__code:-webkit-autofill:hover,
+.flx-2fa__code:-webkit-autofill:focus {
+    box-shadow: 0 0 0 1000px var(--flx-field-bg) inset;
+    -webkit-text-fill-color: var(--flx-text);
+    caret-color: var(--flx-text);
+    /* Chrome re-applies its yellow on focus changes; outrunning the transition is the only hook. */
+    transition: background-color 100000s ease-in-out 0s;
+}
+
+.flx-remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    color: var(--flx-text);
+    font-size: 13px;
+    text-shadow: var(--flx-text-shadow);
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    align-self: flex-start;
+}
+
+.flx-check {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+    background: var(--flx-field-bg);
+    border: 1px solid var(--flx-field-border);
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.5) inset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--flx-gold);
+}
+
+.flx-imgbtn {
+    margin-top: 4px;
+    align-self: center;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    width: 175px;
+    height: 72px;
+}
+
+.flx-imgbtn img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.flx-imgbtn__hover {
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.flx-imgbtn:hover .flx-imgbtn__hover {
+    opacity: 1;
+}
+
+.flx-imgbtn:disabled {
+    cursor: default;
+    filter: grayscale(0.6) brightness(0.7);
+}
+
+.flx-imgbtn:disabled:hover .flx-imgbtn__hover {
+    opacity: 0;
+}
+
+/* Two-factor -------------------------------------------------------------- */
+
+.flx-2fa {
+    width: 360px;
+    animation: flx-fade-up 0.5s ease both;
+}
+
+.flx-2fa .flx-panel__body {
+    gap: 16px;
+    padding: 22px;
+}
+
+.flx-2fa__code {
+    align-self: center;
+    width: 220px;
+    background: var(--flx-field-bg);
+    border: 1px solid var(--flx-field-border);
+    box-shadow: var(--flx-shadow-field);
+    outline: none;
+    color: var(--flx-text);
+    font-size: 26px;
+    letter-spacing: 12px;
+    text-align: center;
+    padding: 12px 0 12px 12px;
+    font-family: Inter, sans-serif;
+}
+
+.flx-2fa__code:hover {
+    border-color: var(--flx-field-border-hover);
+}
+
+.flx-2fa__code:focus {
+    border-color: var(--flx-field-border-focus);
+    background: var(--flx-field-bg-focus);
+}
+
+.flx-2fa__code::placeholder {
+    color: var(--flx-dim);
+}
+
+.flx-link {
+    align-self: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--flx-muted);
+    font-size: 13px;
+    cursor: pointer;
+    text-shadow: var(--flx-text-shadow);
+    font-family: Inter, sans-serif;
+}
+
+.flx-link:hover {
+    color: #b6cece;
+}
+
+/* Bottom bar -------------------------------------------------------------- */
+
+.flx-bar {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    background: rgba(16, 16, 16, 0.85);
+    border-top: 1px solid #333;
+    animation: flx-fade-in 0.8s ease 0.2s both;
+}
+
+.flx-bar__world {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--flx-field-bg);
+    border: 1px solid var(--flx-field-border);
+    padding: 7px 12px;
+    color: #c9d6d6;
+    font-size: 13px;
+    text-shadow: var(--flx-text-shadow);
+    cursor: pointer;
+    font-family: Inter, sans-serif;
+    white-space: nowrap;
+}
+
+.flx-bar__world:hover {
+    background: var(--flx-row-hover);
+    border-color: var(--flx-green);
+}
+
+.flx-bar__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--flx-green);
+    box-shadow: 0 0 6px var(--flx-green);
+}
+
+.flx-bar__tip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+    padding: 0 12px;
+    font-size: 13px;
+    text-shadow: var(--flx-text-shadow);
+}
+
+.flx-bar__tip-label {
+    color: var(--flx-gold);
+    font-weight: 600;
+    flex: 0 0 auto;
+}
+
+.flx-bar__tip-text {
+    color: var(--flx-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.flx-bar__music {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 auto;
+    background: var(--flx-field-bg);
+    border: 1px solid var(--flx-field-border);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.flx-bar__music:hover {
+    background: #262626;
+}
+
+/* World select ------------------------------------------------------------ */
+
+.flx-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 20px;
+}
+
+.flx-modal__panel {
+    width: 760px;
+    max-width: 100%;
+    max-height: 100%;
+    background: rgba(22, 22, 22, 0.97);
+}
+
+.flx-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    text-align: left;
+}
+
+.flx-modal__titles {
+    text-align: center;
+}
+
+.flx-modal__subtitle {
+    display: block;
+    font-size: 11px;
+    color: var(--flx-muted);
+    text-shadow: var(--flx-text-shadow);
+}
+
+.flx-modal__body {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.flx-iconbtn {
+    background: transparent;
+    border: none;
+    color: var(--flx-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0;
+    font-size: 12px;
+    font-family: Inter, sans-serif;
+    text-shadow: var(--flx-text-shadow);
+}
+
+.flx-iconbtn:hover {
+    color: #b6cece;
+}
+
+.flx-worlds__head,
+.flx-worlds__row {
+    display: grid;
+    grid-template-columns: 100px 110px 1fr 70px;
+    gap: 8px;
+}
+
+.flx-worlds__head {
+    padding: 6px 10px;
+    color: var(--flx-gold);
+    font-size: 12px;
+    font-weight: 600;
+    text-shadow: var(--flx-text-shadow);
+}
+
+.flx-worlds__head-cell {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    position: relative;
+}
+
+.flx-sort {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--flx-gold);
+    font-size: 12px;
+    font-weight: 600;
+    text-shadow: var(--flx-text-shadow);
+    cursor: pointer;
+    font-family: Inter, sans-serif;
+}
+
+.flx-sort__arrows {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    font-size: 8px;
+}
+
+.flx-sort__arrow {
+    color: var(--flx-dim);
+}
+
+.flx-sort__arrow--on {
+    color: var(--flx-gold);
+}
+
+.flx-funnel {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--flx-dim);
+    cursor: pointer;
+}
+
+.flx-funnel--on {
+    color: var(--flx-gold);
+}
+
+.flx-funnel:hover {
+    color: #f7e388;
+}
+
+.flx-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 20;
+    width: 210px;
+    background: #1b1b1b;
+    border: 1px solid var(--flx-field-border);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    padding: 4px;
+}
+
+.flx-dropdown__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: none;
+    color: var(--flx-muted);
+    cursor: pointer;
+    padding: 7px 10px;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: left;
+    font-family: Inter, sans-serif;
+    text-shadow: var(--flx-text-shadow);
+}
+
+.flx-dropdown__item:hover {
+    background: var(--flx-row-hover);
+}
+
+.flx-dropdown__item--on {
+    background: var(--flx-row-selected);
+    color: var(--flx-text);
+}
+
+.flx-dropdown__check {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 auto;
+    background: #111;
+    border: 1px solid var(--flx-field-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--flx-gold);
+    font-size: 10px;
+}
+
+.flx-dropdown__item--on .flx-dropdown__check {
+    border-color: var(--flx-green);
+}
+
+.flx-flag {
+    width: 16px;
+    height: 11px;
+    flex: 0 0 auto;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6);
+}
+
+.flx-worlds__list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0;
+    max-height: 340px;
+}
+
+.flx-worlds__row {
+    align-items: center;
+    padding: 8px 10px;
+    flex: 0 0 auto;
+    background: var(--flx-row-bg);
+    border: 1px solid var(--flx-row-border);
+    box-shadow: var(--flx-shadow-row);
+    cursor: pointer;
+    color: var(--flx-text);
+    font-size: 13px;
+    text-shadow: var(--flx-text-shadow);
+    text-align: left;
+    font-family: inherit;
+}
+
+.flx-worlds__row:hover {
+    background: var(--flx-row-hover);
+}
+
+.flx-worlds__row--selected {
+    background: var(--flx-row-selected);
+    border-color: var(--flx-green);
+}
+
+.flx-worlds__id {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-weight: 600;
+}
+
+.flx-worlds__muted {
+    color: var(--flx-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.flx-worlds__empty {
+    padding: 24px 10px;
+    text-align: center;
+    color: var(--flx-dim);
+    font-size: 13px;
+    text-shadow: var(--flx-text-shadow);
+}
+
+/* Landscape phone --------------------------------------------------------- */
+
+@media (max-height: 500px) {
+    .flx-login__main {
+        flex-wrap: nowrap;
+        gap: 18px;
+        padding: 14px 18px;
+        align-items: stretch;
+        justify-content: center;
+    }
+
+    .flx-login__logo-bar {
+        display: none;
+    }
+
+    .flx-login__centre {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 0;
+    }
+
+    .flx-login__logo--inline {
+        display: block;
+        height: 48px;
+    }
+
+    .flx-saves {
+        width: 250px;
+        flex: 0 0 auto;
+    }
+
+    .flx-saves .flx-panel__header {
+        padding: 6px 10px;
+    }
+
+    .flx-saves .flx-panel__title {
+        font-size: 14px;
+    }
+
+    .flx-saves__list {
+        gap: 5px;
+        padding: 8px;
+    }
+
+    .flx-save {
+        gap: 8px;
+        padding: 6px 8px;
+    }
+
+    .flx-save__avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 15px;
+    }
+
+    .flx-save__name {
+        font-size: 12px;
+    }
+
+    .flx-save__meta {
+        font-size: 10px;
+    }
+
+    .flx-save__btn {
+        width: 24px;
+        height: 24px;
+    }
+
+    .flx-login__form,
+    .flx-2fa {
+        width: 340px;
+        flex: 0 0 auto;
+    }
+
+    .flx-panel__header {
+        padding: 6px 12px;
+    }
+
+    .flx-panel__title {
+        font-size: 15px;
+    }
+
+    .flx-panel__body {
+        gap: 10px;
+        padding: 12px 14px 14px;
+    }
+
+    .flx-2fa .flx-panel__body {
+        gap: 10px;
+        padding: 14px;
+    }
+
+    .flx-msg {
+        font-size: 12px;
+    }
+
+    .flx-field {
+        padding: 7px 10px;
+    }
+
+    .flx-field__input {
+        font-size: 13px;
+    }
+
+    .flx-remember {
+        font-size: 12px;
+    }
+
+    .flx-check {
+        width: 16px;
+        height: 16px;
+    }
+
+    .flx-imgbtn {
+        width: 121px;
+        height: 50px;
+        margin-top: 0;
+    }
+
+    .flx-2fa__code {
+        width: 190px;
+        font-size: 22px;
+        letter-spacing: 10px;
+        padding: 8px 0 8px 10px;
+    }
+
+    .flx-bar {
+        padding: 6px 14px;
+    }
+
+    .flx-bar__world {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    .flx-bar__tip {
+        font-size: 11px;
+    }
+
+    .flx-bar__music {
+        width: 30px;
+        height: 30px;
+    }
+
+    .flx-modal__panel {
+        width: 680px;
+    }
+
+    .flx-worlds__list {
+        max-height: 220px;
+    }
+}

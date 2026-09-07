@@ -1,0 +1,206 @@
+/* Fluxious loading screen — "Ashfall" (1b)
+   Imported only by the /play page, so these two families are not pulled in site-wide alongside
+   the Inter/Fraunces pair the rest of the site uses. */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+.flx-loading {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: hidden;
+  background: #04080a;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  user-select: none;
+}
+
+/* background art with slow drift */
+.flx-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: flx-zoom 26s ease-in-out infinite alternate;
+}
+@keyframes flx-zoom {
+  from { transform: scale(1); }
+  to   { transform: scale(1.12); }
+}
+
+/* darken top + bottom for legibility */
+.flx-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(5, 9, 11, 0.35) 0%,
+    transparent 30%,
+    transparent 55%,
+    rgba(4, 8, 10, 0.92) 92%
+  );
+}
+
+/* drifting teal mist above the bottom bar */
+.flx-fog {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: 12%;
+  height: 28%;
+  background: radial-gradient(
+    ellipse 60% 100% at 50% 100%,
+    rgba(120, 200, 195, 0.14),
+    transparent 70%
+  );
+  animation: flx-fog 14s ease-in-out infinite;
+}
+@keyframes flx-fog {
+  0%, 100% { transform: translateX(-8%); }
+  50%      { transform: translateX(8%); }
+}
+
+.flx-logo {
+  position: absolute;
+  top: 6vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(240px, 26vw, 420px);
+  filter: drop-shadow(0 6px 24px rgba(0, 0, 0, 0.85));
+}
+
+/* bottom cluster */
+.flx-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 5vw 4.5vh;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.flx-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+.flx-left {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+.flx-status {
+  font: 700 14px "Cinzel", serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8df5ec;
+}
+.flx-tip {
+  font: 400 13px/1.4 "IBM Plex Sans", system-ui, sans-serif;
+  color: rgba(214, 240, 237, 0.6);
+  animation: flx-tip-in 5s linear;
+}
+@keyframes flx-tip-in {
+  0%       { opacity: 0; transform: translateY(6px); }
+  8%, 88%  { opacity: 1; transform: translateY(0); }
+  96%,100% { opacity: 0; transform: translateY(-6px); }
+}
+.flx-pct {
+  font: 700 clamp(36px, 4.5vw, 56px)/1 "Cinzel", serif;
+  color: #eafcfa;
+  text-shadow: 0 0 24px rgba(63, 217, 204, 0.5);
+  flex: none;
+}
+.flx-pct-sign {
+  font-size: 0.5em;
+  color: #5ceadd;
+}
+
+/* progress line */
+.flx-track {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.flx-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3fd9cc, #8df5ec);
+  box-shadow: 0 0 12px rgba(63, 217, 204, 0.9);
+  transition: width 0.3s ease-out;
+}
+
+/* ---- failure state -------------------------------------------------------
+   Sits where the bottom cluster would be, using the same backdrop so a failed
+   load reads as the loading screen resolving badly, not a different page. */
+.flx-error {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(560px, 88vw);
+  text-align: center;
+  padding: 28px 32px 26px;
+  background: rgba(4, 8, 10, 0.82);
+  border: 1px solid rgba(120, 200, 195, 0.22);
+  border-radius: 10px;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+}
+
+.flx-error-title {
+  margin: 0 0 10px;
+  font: 700 clamp(20px, 2.6vw, 28px)/1.2 'Cinzel', serif;
+  letter-spacing: 0.06em;
+  color: #eafcfa;
+  text-shadow: 0 0 24px rgba(63, 217, 204, 0.35);
+}
+
+.flx-error-message {
+  margin: 0 0 16px;
+  font: 400 14px/1.55 'IBM Plex Sans', system-ui, sans-serif;
+  color: rgba(214, 240, 237, 0.72);
+}
+
+.flx-error-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.flx-btn {
+  display: inline-block;
+  padding: 10px 22px;
+  font: 700 12px 'Cinzel', serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #04080a;
+  background: linear-gradient(90deg, #3fd9cc, #8df5ec);
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: filter 0.15s ease-out;
+}
+
+.flx-btn:hover {
+  filter: brightness(1.12);
+}
+
+.flx-btn--ghost {
+  color: #8df5ec;
+  background: transparent;
+  border: 1px solid rgba(120, 200, 195, 0.35);
+}
+
+/* The bottom-weighted scrim exists to keep the progress bar and status legible. The error panel
+   is centred instead, so that gradient reads as a stray dark band across the foot of the page. */
+.flx-loading--error .flx-scrim {
+  background: radial-gradient(
+    ellipse 80% 70% at 50% 50%,
+    rgba(4, 8, 10, 0.55) 0%,
+    rgba(4, 8, 10, 0.78) 100%
+  );
+}
