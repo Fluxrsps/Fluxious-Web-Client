@@ -1,6 +1,3 @@
-/**
- * RS login SHA-256 proof-of-work (matches deob.ProofOfWork / rsprot leading-zero-bits).
- */
 const WebLoginPow = (function () {
   const K = new Uint32Array([
     0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
@@ -113,15 +110,6 @@ const WebLoginPow = (function () {
     return total;
   }
 
-  // --- fast path -----------------------------------------------------------
-  //
-  // solveRange is the hot loop: difficulty 18 needs ~262k hashes on average, and the generic
-  // sha256Utf8 above allocates a TextEncoder, three arrays and two DataViews on every one of
-  // them. That made the solve time swing from 0.1s to 9s, and the slow end was long enough for
-  // the login to fail. This path allocates nothing per attempt: the prefix is encoded once, the
-  // nonce's hex digits are written into a reusable buffer, and only the first word of the digest
-  // is examined, which is all a difficulty below 32 can depend on.
-
   const HEX_CODES = new Uint8Array(
     "0123456789abcdef".split("").map((c) => c.charCodeAt(0))
   );
@@ -134,13 +122,11 @@ const WebLoginPow = (function () {
   const scratchView = new DataView(scratch.buffer);
   const w = new Uint32Array(64);
 
-  /** Writes Long.toHexString(n) into scratch at offset; returns the new offset. */
   function writeHex(offset, n) {
     if (n === 0) {
-      scratch[offset] = 48; // '0'
+      scratch[offset] = 48;
       return offset + 1;
     }
-    // Nonces stay well below 2^32 in practice, so keep that case free of any 64-bit arithmetic.
     if (n < 0x100000000) {
       let started = false;
       for (let shift = 28; shift >= 0; shift -= 4) {
@@ -167,9 +153,6 @@ const WebLoginPow = (function () {
     return offset;
   }
 
-  // SHA-256 state after the whole blocks the prefix occupies. The challenge prefix is ~1kB, so
-  // fifteen of the sixteen blocks per hash are identical for every nonce; hashing them once and
-  // resuming from the midstate is worth more than every other optimisation here combined.
   const midstate = new Uint32Array(8);
   let midstateBlocks = 0;
 
@@ -182,7 +165,6 @@ const WebLoginPow = (function () {
     compress(0, midstateBlocks * 64, midstate);
   }
 
-  /** Compresses scratch[from..to) into `state`; `to - from` must be a multiple of 64. */
   function compress(from, to, state) {
     let h0 = state[0], h1 = state[1], h2 = state[2], h3 = state[3];
     let h4 = state[4], h5 = state[5], h6 = state[6], h7 = state[7];
@@ -219,7 +201,6 @@ const WebLoginPow = (function () {
 
   const working = new Uint32Array(8);
 
-  /** First word of SHA-256 over scratch[0..len), padded in place, resuming from the midstate. */
   function digestFirstWord(len) {
     const bitLen = len * 8;
     const padLen = ((56 - ((len + 1) % 64)) + 64) % 64;
@@ -270,9 +251,6 @@ const WebLoginPow = (function () {
   let cachedPrefix = null;
   let cachedPrefixLen = 0;
 
-  /**
-   * @returns {string} decimal nonce as string, or "" if not found in range
-   */
   function solveRange(prefix, difficulty, startNonce, maxAttempts) {
     if (difficulty <= 0 || difficulty > 32) {
       return solveRangeGeneric(prefix, difficulty, startNonce, maxAttempts);
@@ -290,7 +268,6 @@ const WebLoginPow = (function () {
       computeMidstate(bytes.length);
     }
 
-    // A hash has `difficulty` leading zero bits exactly when its first word is below this.
     const limit = Math.pow(2, 32 - difficulty);
     const end = startNonce + maxAttempts;
     for (let n = startNonce; n < end; n++) {
@@ -302,7 +279,6 @@ const WebLoginPow = (function () {
     return "";
   }
 
-  /** Original path, kept for difficulties the fast path cannot express. */
   function solveRangeGeneric(prefix, difficulty, startNonce, maxAttempts) {
     let n = startNonce;
     const end = startNonce + maxAttempts;

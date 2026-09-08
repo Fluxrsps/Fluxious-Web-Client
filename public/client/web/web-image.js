@@ -83,7 +83,6 @@ const WebImage = (function () {
     return u8;
   }
 
-  /** Strip Jagex / archive prefix before the real image file. */
   function findImagePayload(u8) {
     if (!u8 || u8.length < 4) {
       return u8;
@@ -218,10 +217,6 @@ const WebImage = (function () {
     return null;
   }
 
-  /**
-   * Decode into a Java int[] (TeaVM): [w, h, argb...] at offset.
-   * destLen is required because TeaVM arrays may not expose .length in JS.
-   */
   function decodeJpegInto(bytes, dest, offset, destLen) {
     try {
       const packed = decodeJpeg(bytes);
@@ -287,7 +282,6 @@ const WebImage = (function () {
     return loginTitleRgba;
   }
 
-  /** Paint login title into RGBA canvas buffer (after Java framebuffer is unpacked). */
   function compositeLoginTitleIntoImageData(data, screenW, screenH) {
     if (!loginTitleArgb || loginTitleW <= 0 || loginTitleH <= 0 || !data) {
       return;
@@ -360,23 +354,8 @@ const WebImage = (function () {
     return decodeRaster(u8);
   }
 
-  /**
-   * Assets decoded up front by the browser itself.
-   *
-   * <p>The decoders above only handle JPEG and PNG; the login background is a GIF.
-   * `createImageBitmap` handles every format the browser does, but it is asynchronous, so assets
-   * are decoded during boot and read synchronously afterwards.
-   */
   const assets = new Map();
 
-  /**
-   * Pack RGBA into the client's sprite format.
-   *
-   * <p>Unlike `packArgb`, which forces every pixel opaque because JPEG has no alpha, this keeps
-   * the colour-key convention SpritePixels uses: fully transparent becomes 0, and everything else
-   * drops its alpha byte. Without it the login border's transparent centre paints over the
-   * background instead of showing it through.
-   */
   function packSpriteArgb(w, h, rgba) {
     const pixels = new Int32Array(w * h);
     for (let i = 0, p = 0; i < pixels.length; i++, p += 4) {
@@ -411,7 +390,6 @@ const WebImage = (function () {
     }
   }
 
-  /** Draws a decoded frame and packs it into sprite pixels. */
   function packFrame(source, w, h) {
     const canvas = document.createElement("canvas");
     canvas.width = w;
@@ -421,12 +399,6 @@ const WebImage = (function () {
     return packSpriteArgb(w, h, ctx.getImageData(0, 0, w, h).data);
   }
 
-  /**
-   * Every frame of an animation, via the ImageDecoder API.
-   *
-   * <p>`createImageBitmap` only ever yields the first frame of a GIF. ImageDecoder exposes the
-   * rest along with their durations; where it is unavailable the caller falls back to a still.
-   */
   async function decodeAnimated(blob, type) {
     if (typeof ImageDecoder === "undefined") {
       console.warn("[WebImage] ImageDecoder unavailable; animations will show a still frame");
@@ -434,8 +406,6 @@ const WebImage = (function () {
     }
     try {
       const decoder = new ImageDecoder({ data: await blob.arrayBuffer(), type: type || blob.type });
-      // Track metadata is only populated once tracks.ready settles; selectedTrack is null before
-      // that, which reads as a single-frame image.
       await decoder.tracks.ready;
       await decoder.completed;
       const track = decoder.tracks.selectedTrack;
@@ -458,7 +428,6 @@ const WebImage = (function () {
           height = image.displayHeight | 0;
         }
         frames.push(packFrame(image, width, height));
-        // Durations are microseconds; GIFs commonly report 0, which browsers render as 100ms.
         const delay = Math.max(20, Math.round((image.duration || 100000) / 1000));
         delays.push(delay);
         total += delay;
@@ -485,7 +454,6 @@ const WebImage = (function () {
     return { width: w, height: h, frames: [pixels], delays: [0], total: 0 };
   }
 
-  /** Index of the frame that should be showing now. */
   function assetFrameIndex(name) {
     const a = assets.get(name);
     if (!a || a.frames.length < 2 || a.total <= 0) {
@@ -516,7 +484,6 @@ const WebImage = (function () {
     return a ? a.height : 0;
   }
 
-  /** Sprite pixels for the frame showing now, or null when the asset is missing. */
   function assetPixels(name) {
     const a = assets.get(name);
     return a ? a.frames[assetFrameIndex(name)] : null;

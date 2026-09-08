@@ -26,7 +26,7 @@ const WebCanvas = (function () {
   }
 
   function setSize(w, h) {
-    if (!canvas || !ctx) {
+    if (!canvas) {
       return;
     }
     w = Math.max(1, w | 0);
@@ -43,7 +43,12 @@ const WebCanvas = (function () {
     }
     canvas.width = w;
     canvas.height = h;
-    imageData = ctx.createImageData(w, h);
+
+    if (ctx) {
+      imageData = ctx.createImageData(w, h);
+    } else if (window.WebGpu) {
+      window.WebGpu.resize(w, h);
+    }
   }
 
   function attach(canvasId) {
@@ -51,8 +56,15 @@ const WebCanvas = (function () {
     if (!canvas) {
       throw new Error("Canvas not found: " + canvasId);
     }
-    ctx = canvas.getContext("2d", { alpha: false });
-    imageData = ctx.createImageData(canvas.width, canvas.height);
+    // A canvas has one kind of context for its lifetime, so the GPU has to have been asked first;
+    // boot does that before the client starts. When it took the canvas, there is no 2D context to
+    // get and every frame goes through WebGpu.blit instead.
+    if (window.WebGpu && window.WebGpu.ready) {
+      ctx = null;
+    } else {
+      ctx = canvas.getContext("2d", { alpha: false });
+      imageData = ctx.createImageData(canvas.width, canvas.height);
+    }
     const host = document.getElementById("game-host");
     if (host && typeof ResizeObserver !== "undefined") {
       const ro = new ResizeObserver(function () {
@@ -65,9 +77,6 @@ const WebCanvas = (function () {
   let out32 = null;
 
   function blit(pixels, width, height, dstX, dstY) {
-    if (!ctx) {
-      return;
-    }
     if (window.FluxLoading) {
       window.FluxLoading.frame();
     }
@@ -78,6 +87,16 @@ const WebCanvas = (function () {
     height = height | 0;
     dstX = dstX | 0;
     dstY = dstY | 0;
+
+    // The GPU takes the frame whole: no swizzle pass, no ImageData, no putImageData. The client's
+    // bytes are already in the layout the texture wants.
+    if (window.WebGpu && window.WebGpu.blit(pixels, width, height)) {
+      return;
+    }
+
+    if (!ctx) {
+      return;
+    }
     if (imageData.width !== width || imageData.height !== height) {
       imageData = ctx.createImageData(width, height);
       out32 = null;
@@ -108,8 +127,6 @@ const WebCanvas = (function () {
         data[p++] = a;
       }
     } else {
-      // One 32-bit store per pixel instead of four 8-bit ones. ImageData is RGBA in memory
-      // order, which on a little-endian host reads back as 0xAABBGGRR.
       if (!out32 || out32.buffer !== data.buffer) {
         out32 = new Uint32Array(data.buffer);
       }
@@ -155,13 +172,6 @@ const WebCanvas = (function () {
     ctx.fillText(text, centerX, centerY);
   }
 
-  /**
-   * Reports loading progress to the HTML overlay.
-   *
-   * <p>Both the boot sequence and the client itself funnel through here, so this is the one place
-   * that has to know where loading is displayed. Nothing is drawn on the canvas: the overlay sits
-   * above it and is styled with CSS.
-   */
   function drawLoadingBar(progress, message, clearBackground, alternateLayout) {
     if (window.FluxLoading) {
       window.FluxLoading.report(progress, message);

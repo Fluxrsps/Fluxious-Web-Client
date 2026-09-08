@@ -48,6 +48,17 @@ declare global {
             ensureCacheBootstrap(): Promise<void>;
         };
         WebCanvas: { attach(id: string): void };
+        /**
+         * The GPU renderer, from `web/gpu/*.js`.
+         *
+         * `init` decides the backend and must run before the canvas is attached; `ready` is false
+         * when neither WebGPU nor WebGL2 was available and the client is rendering in software.
+         */
+        WebGpu: {
+            init(canvasId: string): Promise<boolean>;
+            readonly ready: boolean;
+            readonly backend: string | null;
+        };
         WebInput: { attach(id: string): void };
         WebImage: {
             /** Decodes an image (every frame, if animated) and files it under `name` for the client. */

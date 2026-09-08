@@ -1,10 +1,29 @@
+# What is not pushed.
+#
+# Worth being thorough here rather than relying on nothing stray ever appearing: the release stages
+# this repository with `git add -A`, so anything sitting in the working tree at publish time goes to
+# the deploy. Note what is deliberately absent — `public/client` is build output and IS committed,
+# because Vercel builds from the pushed commit and never runs the client's Gradle build.
+
 /node_modules
 /dist
 /.vercel
+
+# Local configuration and credentials.
 .env
 .env.*
 !.env.example
-npm-debug.log
-yarn-error.log
+
+# Editors and tooling.
 /.idea
 /.vscode
+*.swp
+*.tsbuildinfo
+
+# Logs.
+*.log
+
+# Operating system leavings.
+.DS_Store
+Thumbs.db
+desktop.ini

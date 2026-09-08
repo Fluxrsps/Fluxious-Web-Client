@@ -167,7 +167,17 @@
 .flx-plugins__body {
     flex: 1;
     overflow-y: auto;
+    /* Nothing in the panel is meant to scroll sideways. Rows are full width and carry padding and a
+       border, so without border-box sizing they overflow by those few pixels and the browser offers
+       a horizontal bar for them. */
+    overflow-x: hidden;
     padding: 6px;
+}
+
+.flx-plugins__body *,
+.flx-plugins__body *::before,
+.flx-plugins__body *::after {
+    box-sizing: border-box;
 }
 
 .flx-plugins__body::-webkit-scrollbar {
@@ -185,19 +195,36 @@
 /* --- search --- */
 
 .flx-search {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 4px 6px;
-    margin-bottom: 6px;
-    background: var(--rl-dark-gray);
+    gap: 7px;
+    padding: 0 8px;
+    height: 30px;
+    margin-bottom: 8px;
+    background: var(--rl-darker-gray);
     border: 1px solid var(--rl-border);
+    border-radius: 3px;
+    transition: border-color 0.12s ease, background 0.12s ease;
+}
+
+.flx-search:hover {
+    border-color: var(--rl-medium-gray);
+}
+
+/* The whole bar reacts to the field inside it having focus, so the target looks like the target. */
+.flx-search:focus-within {
+    background: var(--rl-dark-gray);
+    border-color: var(--rl-brand);
 }
 
 .flx-search__icon {
-    color: var(--rl-light-gray);
-    font-size: 13px;
-    line-height: 1;
+    flex: none;
+    color: var(--rl-medium-gray);
+}
+
+.flx-search:focus-within .flx-search__icon {
+    color: var(--rl-brand);
 }
 
 .flx-search__input {
@@ -213,6 +240,98 @@
 
 .flx-search__input::placeholder {
     color: var(--rl-medium-gray);
+}
+
+.flx-search__clear {
+    flex: none;
+    background: none;
+    border: none;
+    padding: 0;
+    width: 14px;
+    height: 14px;
+    line-height: 1;
+    font-size: 14px;
+    color: var(--rl-medium-gray);
+    cursor: pointer;
+}
+
+.flx-search__clear:hover {
+    color: var(--rl-text);
+}
+
+/* --- filter, sharing the world list's funnel --- */
+
+.flx-funnel {
+    flex: none;
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--rl-medium-gray);
+    cursor: pointer;
+}
+
+.flx-funnel:hover {
+    color: var(--rl-text);
+}
+
+.flx-funnel--on {
+    color: var(--rl-brand);
+}
+
+.flx-filtermenu {
+    position: absolute;
+    top: calc(100% + 5px);
+    right: -1px;
+    left: -1px;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    padding: 3px;
+    background: var(--rl-dark-gray);
+    border: 1px solid var(--rl-border);
+    border-radius: 3px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+.flx-filtermenu__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: none;
+    color: var(--rl-light-gray);
+    cursor: pointer;
+    padding: 6px 8px;
+    font-family: inherit;
+    font-size: 12px;
+    text-align: left;
+}
+
+.flx-filtermenu__item:hover {
+    background: var(--rl-darker-gray-hover);
+}
+
+.flx-filtermenu__item--on {
+    color: var(--rl-text);
+}
+
+.flx-filtermenu__check {
+    width: 14px;
+    height: 14px;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--rl-darker-gray);
+    border: 1px solid var(--rl-border);
+    color: var(--rl-brand);
+    font-size: 10px;
+}
+
+.flx-filtermenu__item--on .flx-filtermenu__check {
+    border-color: var(--rl-brand);
 }
 
 /* --- plugin list --- */
@@ -362,23 +481,71 @@
     border-color: var(--rl-medium-gray);
 }
 
-.flx-setting__range {
+/* --- number spinner --- */
+
+.flx-spin {
     display: flex;
-    align-items: center;
-    gap: 6px;
+    align-items: stretch;
     flex: none;
+    height: 22px;
+    border: 1px solid var(--rl-border);
+    background: var(--rl-darker-gray);
 }
 
-.flx-setting__range input[type='range'] {
-    width: 84px;
-    accent-color: var(--rl-brand);
+.flx-spin:focus-within {
+    border-color: var(--rl-brand);
 }
 
-.flx-setting__value {
-    width: 26px;
-    text-align: right;
-    font-size: 12px;
+.flx-spin__btn {
+    width: 20px;
+    flex: none;
+    background: var(--rl-dark-gray);
+    border: none;
     color: var(--rl-light-gray);
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1;
+    padding: 0;
+    cursor: pointer;
+}
+
+.flx-spin__btn:hover:not(:disabled) {
+    background: var(--rl-darker-gray-hover);
+    color: var(--rl-text);
+}
+
+.flx-spin__btn:disabled {
+    color: var(--rl-medium-gray);
+    cursor: default;
+}
+
+.flx-spin__input {
+    width: 44px;
+    flex: none;
+    background: none;
+    border: none;
+    color: var(--rl-text);
+    font-family: inherit;
+    font-size: 12px;
+    text-align: center;
+    outline: none;
+    /* The browser's own arrows would sit inside the field, beside the ones on either side of it. */
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.flx-spin__input::-webkit-outer-spin-button,
+.flx-spin__input::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+}
+
+/* A dropdown is as wide as its longest option needs, up to the point where the setting's own name
+   would be squeezed out. "Bicubic (Catmull-Rom)" and "None" are both labels in the same panel. */
+.flx-setting__select {
+    width: auto;
+    max-width: 62%;
+    padding-right: 2px;
 }
 
 /* --- config footer --- */
@@ -517,4 +684,40 @@ html.flx-sidebar-hidden #game-host {
 #game-overlay {
     position: absolute;
     pointer-events: none;
+}
+
+/* --- developer tools --- */
+
+.flx-devtools {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.flx-devtools__toggle {
+    background: var(--rl-dark-gray);
+    border: 1px solid var(--rl-border);
+    border-left: 2px solid transparent;
+    color: var(--rl-text);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    padding: 6px 8px;
+    text-align: left;
+}
+
+.flx-devtools__toggle:hover {
+    background: var(--rl-darker-gray-hover);
+}
+
+/* On is marked by the same brand edge the active sidebar tab uses, so the two read alike. */
+.flx-devtools__toggle--on {
+    border-left-color: var(--rl-brand);
+    color: var(--rl-brand);
+}
+
+.flx-devtools__note {
+    margin: 8px 2px 0;
+    font-size: 11px;
+    color: var(--rl-medium-gray);
 }

@@ -46,12 +46,40 @@ function set(item: ConfigItem, value: boolean | number | string): void {
     writeValue(props.config, item.keyName, value);
 }
 
+/** The declared bounds of a number setting, or undefined where it has none. */
+function bounds(item: ConfigItem): { min?: number; max?: number } {
+    return item.type === 'number' ? { min: item.min, max: item.max } : {};
+}
+
+function clamp(item: ConfigItem, value: number): number {
+    const { min, max } = bounds(item);
+
+    return Math.min(max ?? Infinity, Math.max(min ?? -Infinity, value));
+}
+
 function onNumber(item: ConfigItem, raw: string): void {
     const parsed = Number(raw);
 
     if (Number.isFinite(parsed)) {
-        set(item, parsed);
+        set(item, clamp(item, parsed));
     }
+}
+
+/**
+ * Nudges a number setting by one.
+ *
+ * The desktop panel uses a spinner for these rather than a slider, and so does this: at the width of
+ * a sidebar a slider is a dozen pixels wide per unit, which makes an exact value a matter of luck.
+ */
+function step(item: ConfigItem, direction: number): void {
+    set(item, clamp(item, Number(valueOf(item)) + direction));
+}
+
+function atBound(item: ConfigItem, direction: number): boolean {
+    const { min, max } = bounds(item);
+    const value = Number(valueOf(item));
+
+    return direction < 0 ? min !== undefined && value <= min : max !== undefined && value >= max;
 }
 
 /** Key name of the bind currently listening for a press, or null. */
@@ -113,33 +141,43 @@ function onKeybind(event: KeyboardEvent, item: ConfigItem): void {
                 {{ valueOf(item) ? '✓' : '' }}
             </button>
 
-            <!-- A declared range renders as a slider with its value alongside; without one, a
-                 plain number field, since there is no sensible span to drag over. -->
-            <span
-                v-else-if="item.type === 'number' && item.min !== undefined && item.max !== undefined"
-                class="flx-setting__range"
-            >
+            <!-- Every number is a spinner, range declared or not. A slider in a sidebar this wide
+                 gives a couple of pixels per unit, so a value picked by dragging is never the value
+                 that was wanted; the arrows step exactly one and the field takes a typed number. -->
+            <span v-else-if="item.type === 'number'" class="flx-spin">
+                <button
+                    type="button"
+                    class="flx-spin__btn"
+                    title="Decrease"
+                    :disabled="atBound(item, -1)"
+                    @click="step(item, -1)"
+                >
+                    −
+                </button>
                 <input
-                    type="range"
+                    class="flx-spin__input"
+                    type="number"
                     :min="item.min"
                     :max="item.max"
                     :value="valueOf(item)"
                     @input="onNumber(item, ($event.target as HTMLInputElement).value)"
                 />
-                <span class="flx-setting__value">{{ valueOf(item) }}</span>
+                <button
+                    type="button"
+                    class="flx-spin__btn"
+                    title="Increase"
+                    :disabled="atBound(item, 1)"
+                    @click="step(item, 1)"
+                >
+                    +
+                </button>
             </span>
 
-            <input
-                v-else-if="item.type === 'number'"
-                class="flx-setting__input"
-                type="number"
-                :value="valueOf(item)"
-                @input="onNumber(item, ($event.target as HTMLInputElement).value)"
-            />
-
+            <!-- Sized to its longest option rather than to a fixed width: "Bicubic (Catmull-Rom)"
+                 and "None" are both option labels here, and one width cannot suit both. -->
             <select
                 v-else-if="item.type === 'enum'"
-                class="flx-setting__input"
+                class="flx-setting__input flx-setting__select"
                 :value="valueOf(item)"
                 @change="set(item, ($event.target as HTMLSelectElement).value)"
             >

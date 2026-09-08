@@ -1,15 +1,8 @@
-/**
- * Virtual filesystem: OPFS (sync access handles when available) with IndexedDB fallback.
- * Loaded before TeaVM; exposes global WebVfs.
- */
 const WebVfs = (function () {
   const CACHE_PREFIX = "cache/";
   let ready = false;
-  /** idb | opfs-sync | opfs-mem */
   let backend = "idb";
   let rootDir = null;
-  // key -> { buf, len }. Capacity is grown geometrically and `len` is the real file size, so an
-  // append does not reallocate and copy the whole file every time it extends it.
   const memoryFiles = new Map();
 
   function setFile(key, data) {
@@ -21,7 +14,6 @@ const WebVfs = (function () {
     f.dirtyTo = f.dirtyTo < 0 ? to : Math.max(f.dirtyTo, to);
   }
 
-  /** The file's bytes, without the spare capacity past `len`. */
   function fileBytes(key) {
     const f = memoryFiles.get(key);
     if (!f) {
@@ -29,7 +21,6 @@ const WebVfs = (function () {
     }
     return f.len === f.buf.length ? f.buf : f.buf.subarray(0, f.len);
   }
-  /** key -> { access?, fileHandle } for opfs-sync; { fileHandle } for opfs-mem */
   const syncHandles = new Map();
   const pendingFlush = new Map();
 
@@ -55,7 +46,6 @@ const WebVfs = (function () {
           try {
             await dir.removeEntry("__webvfs_probe");
           } catch (_) {
-            /* removeEntry optional */
           }
           rootDir = dir;
           backend = "opfs-sync";
@@ -110,13 +100,6 @@ const WebVfs = (function () {
     }
   }
 
-  /**
-   * Writes only the bytes that changed.
-   *
-   * <p>Rewriting the whole file was costing O(size) per flush, so as the cache grew past tens of
-   * megabytes the flushes alone saturated the main thread and JS5 throughput collapsed. Cache
-   * writes are almost all appends, so a single dirty range covers them cheaply.
-   */
   async function persistOpfsMemory(key, fileHandle, from, to, data) {
     const writable = await fileHandle.createWritable({ keepExistingData: true });
     await writable.write({ type: "write", position: from, data: data.subarray(from, to) });
@@ -192,14 +175,6 @@ const WebVfs = (function () {
     return names;
   }
 
-  /**
-   * Opens the local cache files, seeding them from the server's cache when they are empty.
-   *
-   * <p>Without a seed the client pulls every archive over JS5 � tens of thousands of round trips
-   * for a few hundred megabytes, which takes many minutes before the login can even finish. The
-   * proxy serves the same cache over HTTP, so a handful of bulk downloads replaces all of it.
-   * Falls back to empty files (and therefore to JS5) when the seed is not configured.
-   */
   async function ensureCacheBootstrap() {
     if (!ready) {
       await init();
@@ -210,8 +185,6 @@ const WebVfs = (function () {
     }
 
     let seeded = 0;
-    // Most of the 259 candidate names are index files the cache does not have. Probing every one
-    // costs a few hundred 404s, so give up on the index range after a run of misses.
     let consecutiveMisses = 0;
     for (const name of names) {
       if (consecutiveMisses >= 4 && name.startsWith("main_file_cache.idx")) {
@@ -221,8 +194,6 @@ const WebVfs = (function () {
       const existing = memoryFiles.get(key);
       const localLength = existing ? existing.len : 0;
 
-      // Size, not mere presence, decides. A partially downloaded cache left over from an earlier
-      // session is non-empty but wrong, and skipping it there would keep the broken copy forever.
       const remoteLength = await seedLength(name);
       if (remoteLength < 0) {
         consecutiveMisses++;
@@ -239,22 +210,12 @@ const WebVfs = (function () {
       if (!bytes) {
         continue;
       }
-      // Deliberately not marked dirty: the seed came from the proxy over HTTP, which the browser
-      // already caches, so writing all of it back to OPFS would cost far more than re-fetching it.
-      // Only what JS5 adds afterwards needs persisting.
       setFile(key, bytes);
       seeded++;
     }
     return { files: names.length, seeded: seeded };
   }
 
-  /**
-   * Size of the seed on the server, or -1 when it does not offer one.
-   *
-   * <p>Asks for a single byte rather than using HEAD: static file handlers commonly serve GET and
-   * not HEAD, and a failed probe is indistinguishable from a missing file, which would silently
-   * skip seeding entirely. The Content-Range of a one-byte request carries the full length.
-   */
   async function seedLength(name) {
     try {
       const response = await fetch(cacheUrl(name), {
@@ -271,7 +232,6 @@ const WebVfs = (function () {
           return parseInt(total, 10);
         }
       }
-      // Range was ignored and the whole file came back; its length is the answer.
       const length = response.headers.get("Content-Length");
       return length === null ? -1 : parseInt(length, 10);
     } catch (e) {
@@ -279,13 +239,6 @@ const WebVfs = (function () {
     }
   }
 
-  /**
-   * Where the cache seed lives.
-   *
-   * <p>The client is served by the website but the seed comes from the game server, which is the
-   * only thing that knows the cache the server is actually running. Falls back to the page's own
-   * origin so a self-hosted build still works.
-   */
   function cacheUrl(name) {
     const base = window.__webConfig && window.__webConfig.cacheBaseUrl;
     return (base ? base.replace(/\/$/, "") + "/cache/" : "cache/") + name;
@@ -368,8 +321,6 @@ const WebVfs = (function () {
     }
     const need = position + data.length;
     if (need > f.buf.length) {
-      // Double the capacity rather than fitting exactly: JS5 fills the cache with a long run of
-      // appends, and growing to fit each time makes that quadratic.
       let capacity = Math.max(f.buf.length * 2, need, 64 * 1024);
       const grown = new Uint8Array(capacity);
       grown.set(f.buf.subarray(0, f.len));
@@ -404,9 +355,6 @@ const WebVfs = (function () {
     }
   }
 
-  // Persisting rewrites the whole file, and the client flushes after each archive it writes.
-  // Doing that inline turns a cache download into repeated full-file writes, so flushes are
-  // coalesced onto a timer instead. A crash costs at most the last window; the client refetches.
   const FLUSH_DEBOUNCE_MS = 5000;
   const dirtyFiles = new Map();
   let flushTimer = null;
@@ -426,7 +374,6 @@ const WebVfs = (function () {
       const key = work[i][0];
       const fileHandle = work[i][1];
       if (pendingFlush.has(key)) {
-        // Still writing the previous snapshot; pick it up on the next pass.
         dirtyFiles.set(key, fileHandle);
         continue;
       }
@@ -459,7 +406,6 @@ const WebVfs = (function () {
   }
 
   if (typeof window !== "undefined") {
-    // Last chance to get the pending window on disk before the tab goes away.
     window.addEventListener("pagehide", runPendingFlushes);
   }
 

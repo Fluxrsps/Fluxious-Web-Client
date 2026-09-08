@@ -22,6 +22,14 @@ const RUNTIME_SCRIPTS = [
     'web/websocket.js',
     // Ahead of input.js, which reads the rotation it publishes on `window` to map pointer events.
     'web/orientation.js',
+    // The renderer, ahead of canvas.js: which context the canvas gets is decided before it attaches.
+    'web/gpu/stats.js',
+    'web/gpu/regions.js',
+    'web/gpu/shaders.js',
+    'web/gpu/scene.js',
+    'web/gpu/webgpu.js',
+    'web/gpu/webgl2.js',
+    'web/gpu/gpu.js',
     'web/canvas.js',
     'web/input.js',
     // Before canvas.js would be wrong: canvas.js only calls into it, and it must exist by the time
@@ -84,6 +92,26 @@ async function isBridgeReachable(origin: string): Promise<boolean> {
     } catch {
         return false;
     }
+}
+
+/**
+ * Where the client reads the world list from.
+ *
+ * Central publishes it beside `jav_config.ws`, so the two come from one server: point the config at
+ * a local central and the worlds follow. `worldslist.ws` is the binary form the client parses;
+ * `worlds.js` next to it is the same data as JSON, for anything reading it from the page.
+ */
+function worldListUrl(javConfigUrl: string, bridgeOrigin: string, params: URLSearchParams): string {
+    const override = params.get('worldListUrl') || import.meta.env.VITE_WORLD_LIST_URL;
+
+    if (override) {
+        return override;
+    }
+
+    // Relative config URLs are a dev-proxy path, and resolve against the page.
+    const base = new URL(javConfigUrl, window.location.href);
+
+    return new URL('worldslist.ws', base).href;
 }
 
 /** Whether this page is a developer's own machine rather than a deployed site. */
@@ -279,6 +307,11 @@ export async function bootGameClient(): Promise<BootFailure | null> {
             }
         }
 
+        // Before the canvas is attached: a canvas keeps one kind of context for its lifetime, so
+        // whether the frame goes to the GPU or to a 2D context is settled here, once.
+        easing.set(10, 'Starting renderer');
+        await window.WebGpu.init('game');
+
         window.WebCanvas.attach('game');
         window.WebInput.attach('game');
 
@@ -351,8 +384,10 @@ export async function bootGameClient(): Promise<BootFailure | null> {
             revision: parseInt(params.get('rev') || String(DEFAULT_REVISION), 10),
             // The bridge serves the cache seed as well as the sockets.
             cacheBaseUrl: bridgeOrigin,
-            worldListUrl: params.get('worldListUrl') || `${bridgeOrigin}/worldlist`,
+            worldListUrl: worldListUrl(javConfigUrl, bridgeOrigin, params),
             worldListPrimaryUrl: '',
+            // The bridge relays central's list on the origin the client already talks to, which is
+            // the way out when central itself cannot be read from the page.
             worldListFallbackProxy: `${bridgeOrigin}/worldlist`,
             jxAccessToken: params.get('jxAccessToken') || '',
         };

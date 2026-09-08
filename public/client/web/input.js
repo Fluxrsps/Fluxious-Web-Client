@@ -50,9 +50,6 @@ const WebInput = (function () {
     let u;
     let v;
     if (window.FluxOrientation && window.FluxOrientation.rotation === 90) {
-      // Forced landscape rotates the host a quarter turn clockwise, so getBoundingClientRect
-      // reports the rotated bounding box: its width is the canvas's laid-out height and vice
-      // versa. Rotate the point back about the shared centre before normalising it.
       const boxW = rect.height;
       const boxH = rect.width;
       const dx = clientX - (rect.left + rect.width / 2);
@@ -123,8 +120,6 @@ const WebInput = (function () {
       e.preventDefault();
     });
 
-    // Both listeners fire for a release over the canvas, and the window one catches releases
-    // that happen outside it. Only report a release when a press is actually outstanding.
     function releaseOnce() {
       if (pressed) {
         pressed = false;

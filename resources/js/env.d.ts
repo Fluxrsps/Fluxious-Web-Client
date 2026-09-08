@@ -15,6 +15,13 @@ interface ImportMetaEnv {
      */
     readonly VITE_JAV_CONFIG_URL?: string;
     /**
+     * Where the world list lives.
+     *
+     * Empty takes `worldslist.ws` from the same server as the config, which is where central puts
+     * it. Set only when the two are served from different places.
+     */
+    readonly VITE_WORLD_LIST_URL?: string;
+    /**
      * Force `wss`/`https` on or off. Empty follows the page, which is what a site and bridge served
      * the same way want; set it to `false` only for a plain-HTTP bridge behind an HTTPS site, and
      * expect the browser to block that as mixed content.

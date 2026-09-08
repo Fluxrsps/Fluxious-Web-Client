@@ -4,9 +4,11 @@
  * Registering here rather than scanning a directory keeps the list something you read rather than
  * infer, and keeps Vite's bundling static — a plugin that is not in this file is not shipped.
  */
+import { devToolsPlugin } from './devtools/devToolsPlugin';
 import { fluxiousPlugin } from './fluxious/fluxiousPlugin';
 import { fpsPlugin } from './fps/fpsPlugin';
 import { fullscreenPlugin } from './fullscreen/fullscreenPlugin';
+import { gpuPlugin } from './gpu/gpuPlugin';
 import { notesPlugin } from './notes/notesPlugin';
 import { registerPlugin } from './runtime';
 
@@ -23,7 +25,9 @@ export function registerBuiltinPlugins(): void {
 
     // The client's own plugin first, so it heads the list before anything optional.
     registerPlugin(fluxiousPlugin);
+    registerPlugin(gpuPlugin);
     registerPlugin(fpsPlugin);
     registerPlugin(notesPlugin);
     registerPlugin(fullscreenPlugin);
+    registerPlugin(devToolsPlugin);
 }

@@ -1,6 +1,3 @@
-/**
- * HTTP for TeaVM: cross-origin uses async prefetch + cache; same-origin can use sync XHR.
- */
 const WebHttp = (function () {
   let lastStatus = -2;
   let lastBody = new Uint8Array(0);
@@ -69,7 +66,6 @@ const WebHttp = (function () {
     }
   }
 
-  /** Copy cached response from {@code sourceUrl} so {@code canonicalUrl} (param 17) still works. */
   function aliasCache(canonicalUrl, sourceUrl) {
     const c = cache();
     if (!c[sourceUrl] || !c[sourceUrl].body || c[sourceUrl].body.length === 0) {
@@ -99,8 +95,6 @@ const WebHttp = (function () {
       try {
         xhr.overrideMimeType("text/plain; charset=x-user-defined");
       } catch (_) {}
-      // User-Agent and Connection are forbidden header names: the browser refuses them and
-      // logs a warning for every request. It sets both itself anyway.
       xhr.send(null);
       const code = xhr.status;
       lastStatus = code === 0 ? 200 : code;
@@ -109,7 +103,6 @@ const WebHttp = (function () {
       }
       cache()[url] = { status: lastStatus, body: lastBody };
     } catch (e) {
-      /* ignore */
     }
   }
 

@@ -53,26 +53,59 @@ const stopToolbar = onToolbarChanged(() => (version.value += 1));
 /** Search text for the plugin list. */
 const query = ref('');
 
+/**
+ * Filters on the plugin list, and whether the funnel's menu is open.
+ *
+ * None selected means everything, as it does on the world list: a filter is something a player adds,
+ * not something they have to clear before the list is complete.
+ */
+const FILTERS = ['Enabled', 'Disabled', 'Pinned', 'Configurable'] as const;
+
+const filters = ref<string[]>([]);
+const showFilters = ref(false);
+
+function toggleFilter(name: string): void {
+    filters.value = filters.value.includes(name)
+        ? filters.value.filter((entry) => entry !== name)
+        : [...filters.value, name];
+}
+
 const plugins = computed(() => {
     void version.value;
 
     return listPlugins();
 });
 
+/** Whether a plugin is one of the things a given filter selects for. */
+function matchesFilter(plugin: ReturnType<typeof listPlugins>[number], filter: string): boolean {
+    if (filter === 'Enabled') return plugin.enabled;
+    if (filter === 'Disabled') return !plugin.enabled;
+    if (filter === 'Pinned') return plugin.favourite;
+
+    return plugin.hasSettings;
+}
+
 /** Matches on name, description or tags — the three things a plugin describes itself by. */
 const visiblePlugins = computed(() => {
     const needle = query.value.trim().toLowerCase();
+    const chosen = filters.value;
 
-    if (!needle) {
-        return plugins.value;
-    }
+    return plugins.value.filter((plugin) => {
+        // Several filters read as "any of these", so a plugin needs to satisfy only one of them.
+        if (chosen.length > 0 && !chosen.some((filter) => matchesFilter(plugin, filter))) {
+            return false;
+        }
 
-    return plugins.value.filter(
-        (plugin) =>
+        if (!needle) {
+            return true;
+        }
+
+        return (
             plugin.name.toLowerCase().includes(needle) ||
             plugin.description.toLowerCase().includes(needle) ||
-            plugin.tags.some((tag) => tag.toLowerCase().includes(needle)),
-    );
+            plugin.tags.some((tag) => tag.toLowerCase().includes(needle))
+        );
+    });
 });
 
 /** Panel buttons: the top group, each opening its panel. */
@@ -142,6 +175,9 @@ const title = computed(() => {
 
     return activeNavigation.value?.tooltip ?? '';
 });
+
+/** The plugin list labels itself; everything else needs its name at the top. */
+const showHeader = computed(() => panel.value !== 'plugins' || settingsFor.value !== null);
 
 let mounted: NavigationButton | null = null;
 
@@ -224,7 +260,10 @@ function toggleFavourite(name: string, favourite: boolean): void {
 
     <div v-else class="flx-plugins">
         <div v-if="panel !== 'none'" class="flx-plugins__panel">
-            <div class="flx-plugins__header">
+            <!-- No header over the plugin list: the tab strip already says which panel is open, and
+                 a bar reading "Plugins" over a list of plugins is a row of height spent on nothing.
+                 A plugin's own settings do need one, for the name and the way back. -->
+            <div v-if="showHeader" class="flx-plugins__header">
                 <!-- In a plugin's config the header is its way out, so the arrow leads the title. -->
                 <button
                     v-if="settingsFor"
@@ -265,13 +304,78 @@ function toggleFavourite(name: string, favourite: boolean): void {
 
                     <template v-else>
                         <div class="flx-search">
-                            <span class="flx-search__icon">⌕</span>
+                            <svg
+                                class="flx-search__icon"
+                                width="13"
+                                height="13"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <circle cx="11" cy="11" r="7" />
+                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                            </svg>
+
                             <input
                                 v-model="query"
-                                type="search"
+                                type="text"
                                 class="flx-search__input"
                                 placeholder="Search"
                             />
+
+                            <button
+                                v-if="query"
+                                type="button"
+                                class="flx-search__clear"
+                                title="Clear"
+                                @click="query = ''"
+                            >
+                                ×
+                            </button>
+
+                            <!-- The world list's funnel, doing the same job on a different list. -->
+                            <button
+                                type="button"
+                                class="flx-funnel"
+                                :class="{ 'flx-funnel--on': filters.length > 0 || showFilters }"
+                                title="Filter plugins"
+                                @click.stop="showFilters = !showFilters"
+                            >
+                                <svg
+                                    width="12"
+                                    height="12"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                                </svg>
+                            </button>
+
+                            <template v-if="showFilters">
+                                <div class="flx-plugins__popupveil" @click="showFilters = false"></div>
+                                <div class="flx-filtermenu" @click.stop>
+                                    <button
+                                        v-for="option in FILTERS"
+                                        :key="option"
+                                        type="button"
+                                        class="flx-filtermenu__item"
+                                        :class="{ 'flx-filtermenu__item--on': filters.includes(option) }"
+                                        @click="toggleFilter(option)"
+                                    >
+                                        <span class="flx-filtermenu__check">{{
+                                            filters.includes(option) ? '✓' : ''
+                                        }}</span>
+                                        {{ option }}
+                                    </button>
+                                </div>
+                            </template>
                         </div>
 
                         <!-- The description is the row's tooltip rather than a second line: the

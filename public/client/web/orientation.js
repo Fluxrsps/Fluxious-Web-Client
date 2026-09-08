@@ -1,23 +1,3 @@
-/**
- * Keeps the game landscape on phones and tablets.
- *
- * <p>Two mechanisms, in order of preference:
- *
- * <ol>
- *   <li>The Screen Orientation API. Chrome on Android honours {@code lock("landscape")} once the
- *       page is fullscreen, which is the real thing: the OS rotates and the status bar follows.
- *       It needs a user gesture, so the attempt is deferred to the first tap.
- *   <li>A CSS fallback that rotates {@code #game-host} and {@code #shell-root} 90 degrees while the
- *       viewport is portrait. iOS Safari has no orientation lock at all, so without this the client
- *       would be stuck in a tall, unusable box there.
- * </ol>
- *
- * <p>The fallback only changes how the host is painted; its layout box is swapped to
- * {@code width: 100vh / height: 100vw}, so {@code clientWidth}/{@code clientHeight} — what the
- * client reads to size itself — already report landscape dimensions. Input is the one thing that
- * does not follow automatically: {@code web/input.js} reads {@link #rotation} and un-rotates
- * pointer coordinates itself.
- */
 const FluxOrientation = (function () {
   const ROTATE_CLASS = "flux-rotate-landscape";
 
@@ -51,7 +31,6 @@ const FluxOrientation = (function () {
     } else {
       root.classList.remove(ROTATE_CLASS);
     }
-    // The client sizes itself from #game-host, and the host's layout box just changed.
     window.dispatchEvent(new Event("resize"));
   }
 
@@ -79,10 +58,6 @@ const FluxOrientation = (function () {
     }
   }
 
-  /**
-   * Best-effort native lock. Every step here is allowed to fail — iOS has no lock, and desktop
-   * browsers reject it outright — so a rejection just leaves the CSS fallback in charge.
-   */
   function tryNativeLock() {
     if (state.locked || !isTouchDevice()) {
       return;
@@ -98,7 +73,6 @@ const FluxOrientation = (function () {
       });
     };
     lock().catch(function () {
-      // Chrome refuses to lock outside fullscreen; take the page fullscreen and retry once.
       requestFullscreen(document.documentElement)
         .then(lock)
         .catch(function () {});
@@ -114,8 +88,6 @@ const FluxOrientation = (function () {
       window.screen.orientation.addEventListener("change", refresh);
     }
 
-    // The lock needs a user gesture. Keep trying until one succeeds: the first gesture is often
-    // spent on a permission-style prompt, and fullscreen can be exited at any time.
     const onGesture = function () {
       tryNativeLock();
     };
@@ -131,7 +103,6 @@ const FluxOrientation = (function () {
   }
 
   return {
-    /** 0 when the page is upright, 90 when the CSS fallback has rotated the host clockwise. */
     get rotation() {
       return state.rotation;
     },
