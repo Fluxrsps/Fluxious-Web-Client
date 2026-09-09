@@ -58,6 +58,17 @@ const LOGIN_ASSETS: Array<[string, string]> = [
  * host to play against — has no field for a port. `?wsPort=` overrides it for testing.
  */
 const DEFAULT_BRIDGE_PORT = '8091';
+
+/**
+ * Suffix added to the first label of the codebase host to reach the bridge.
+ *
+ * `codebase` in `jav_config.ws` names the world as the desktop client connects to it —
+ * `world1.fluxious-rsps.com`, a raw game port on a DNS-only record. The browser needs the same world
+ * over TLS, which is a separate record in front of the bridge, so the host is derived rather than
+ * configured: a new world is still one edit on the server plus its DNS entry.
+ */
+const BRIDGE_HOST_SUFFIX = '-proxy';
+
 const DEFAULT_GAME_PORT = 43594;
 /** Matches the major revision the client puts in its login block; see `revision` in game.yml. */
 const DEFAULT_REVISION = 240;
@@ -116,6 +127,27 @@ function worldListUrl(javConfigUrl: string, bridgeOrigin: string, params: URLSea
 }
 
 /** Whether this page is a developer's own machine rather than a deployed site. */
+/**
+ * The bridge's host for a world named by `codebase`.
+ *
+ * Only a real domain is rewritten. An address literal has no labels to put a subdomain in front of,
+ * and a single-label name is a machine on the local network — both are development, where the
+ * bridge is the same host the game port is on.
+ */
+function bridgeHost(codebaseHost: string): string {
+    const labels = codebaseHost.split('.');
+
+    if (labels.length < 2 || /^[\d[]/.test(codebaseHost)) {
+        return codebaseHost;
+    }
+
+    if (labels[0].endsWith(BRIDGE_HOST_SUFFIX)) {
+        return codebaseHost;
+    }
+
+    return [`${labels[0]}${BRIDGE_HOST_SUFFIX}`, ...labels.slice(1)].join('.');
+}
+
 function isLocal(): boolean {
     const host = window.location.hostname;
 
@@ -362,7 +394,13 @@ export async function bootGameClient(): Promise<BootFailure | null> {
             }
         }
 
-        const wsHost = params.get('wsHost') || codebaseHost || window.location.hostname || '127.0.0.1';
+        // `?wsHost=` is a tester naming the bridge outright, so it is taken as written; the
+        // published config names the world rather than the bridge, so that one is derived.
+        const wsHost =
+            params.get('wsHost') ||
+            (codebaseHost && bridgeHost(codebaseHost)) ||
+            window.location.hostname ||
+            '127.0.0.1';
         // 8091 is the bridge's own port. Behind TLS it is whatever the terminator listens on —
         // 443 for a Cloudflare tunnel, 8443 for a proxy on a Cloudflare-proxied port — so the
         // deploy sets it rather than the client assuming.

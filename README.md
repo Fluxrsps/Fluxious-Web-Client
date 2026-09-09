@@ -49,6 +49,13 @@ browser and desktop alike. The port is always 8091.
 Only the hostname is taken from `codebase`. It is written for the launcher and says `http://`, which
 a page served over HTTPS may not fetch at all, so the scheme is decided from the page instead.
 
+The browser does not connect to that host directly. `codebase` names the world as the desktop client
+reaches it — a raw game port on a DNS-only record — while the browser needs the bridge over TLS,
+which is a record of its own. So the first label gets a `-proxy` suffix: `world1.fluxious-rsps.com`
+in the config becomes `world1-proxy.fluxious-rsps.com` in the browser. Every world therefore needs
+both records. Address literals and single-label names are left alone, so a bridge on the local
+network still works without one.
+
 Two build-time settings, both optional, in `.env` locally and project environment variables on
 Vercel:
 
