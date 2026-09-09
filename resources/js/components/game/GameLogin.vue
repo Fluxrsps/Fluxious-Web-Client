@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
-import { connectionInfo } from '@/lib/game/connectionState';
 import {
     GAME_STATE_LOGGING_IN,
     SCREEN_LOGIN_ERROR,
@@ -102,14 +101,6 @@ const muted = computed(() => snapshot.value?.muted === true);
 // Left unannotated on purpose: the snapshot is a readonly ref, so its world array is deeply
 // readonly, and pinning it to LoginWorld[] would be a lie the compiler rejects.
 const worlds = computed(() => snapshot.value?.worlds ?? []);
-
-const endpoint = computed(() => {
-    const info = connectionInfo.value;
-    if (!info) {
-        return '';
-    }
-    return `${info.secure ? 'wss' : 'ws'}://${info.host}:${info.port}/game · rev ${info.revision} · ${info.source}`;
-});
 
 const saves = computed(() => savedPlayers.value.slice(0, MAX_SAVES));
 const showSaves = computed(() => saves.value.length > 0 && !twoFactor.value);
@@ -642,7 +633,6 @@ onUnmounted(() => {
                 </svg>
             </button>
 
-            <span v-if="endpoint" class="flx-bar__endpoint" :title="endpoint">{{ endpoint }}</span>
 
             <div class="flx-bar__tip">
                 <span class="flx-bar__tip-label">Tip:</span>
