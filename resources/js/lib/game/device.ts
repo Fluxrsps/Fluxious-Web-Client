@@ -8,7 +8,9 @@
  * ratio both move those numbers far enough to make any threshold wrong somewhere. What is left is
  * the pointer, which is the thing actually being asked about.
  *
- * `?mobile=1` and `?mobile=0` override it and are remembered.
+ * `?mobile=1` and `?mobile=0` override it and are remembered. `?mobile=android` and `?mobile=ios`
+ * do the same and additionally tell the client which mobile OS to report, which is what makes it
+ * pick the resizable display mode and the android/ios client type rather than the browser one.
  */
 
 const MOBILE_CLASS = 'flx-mobile';
@@ -21,25 +23,33 @@ const OVERRIDE_KEY = 'flx.mobile';
 
 const COMPACT_LOGIN_HEIGHT = 500;
 
-function readOverride(): boolean | null {
+/** The values `?mobile=` accepts, mapped to what they mean. */
+const OVERRIDES: Record<string, { mobile: boolean; os: MobileOs | null }> = {
+    '0': { mobile: false, os: null },
+    '1': { mobile: true, os: null },
+    android: { mobile: true, os: 'android' },
+    ios: { mobile: true, os: 'ios' },
+};
+
+export type MobileOs = 'android' | 'ios';
+
+function readOverride(): { mobile: boolean; os: MobileOs | null } | null {
     const param = new URLSearchParams(window.location.search).get('mobile');
 
-    if (param === '1' || param === '0') {
-        const value = param === '1';
-
+    if (param !== null && param in OVERRIDES) {
         try {
             window.localStorage.setItem(OVERRIDE_KEY, param);
         } catch {
             // Private browsing; the query param still applies for this page load.
         }
 
-        return value;
+        return OVERRIDES[param];
     }
 
     try {
         const stored = window.localStorage.getItem(OVERRIDE_KEY);
 
-        return stored === null ? null : stored === '1';
+        return stored !== null && stored in OVERRIDES ? OVERRIDES[stored] : null;
     } catch {
         return null;
     }
@@ -47,9 +57,19 @@ function readOverride(): boolean | null {
 
 const override = readOverride();
 
+/**
+ * The mobile OS to claim, when the override names one.
+ *
+ * `null` means "do not claim anything" — either there is no override or it only said mobile — and
+ * leaves the client on its own user-agent check.
+ */
+export function mobileOsOverride(): MobileOs | null {
+    return override?.os ?? null;
+}
+
 export function isMobileDevice(): boolean {
     if (override !== null) {
-        return override;
+        return override.mobile;
     }
 
     // A touch device that says so.

@@ -20,6 +20,10 @@ declare global {
         worldListPrimaryUrl: string;
         worldListFallbackProxy: string;
         jxAccessToken: string;
+        /** Whether the client treats this as a phone or tablet, instead of sniffing for one itself. */
+        mobile: boolean;
+        /** Overrides the client's own OS detection; only set when `?mobile=` named an OS. */
+        osFamily?: string;
     }
 
     interface Window {

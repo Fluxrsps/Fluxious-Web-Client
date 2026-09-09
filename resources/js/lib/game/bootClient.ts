@@ -1,4 +1,5 @@
 import { reportConnection } from './connectionState';
+import { isMobileDevice, mobileOsOverride } from './device';
 import { DEFAULT_JAV_CONFIG_URL, hostFromCodebase, loadJavConfig } from './javConfig';
 import { reportLoading } from './loadingState';
 
@@ -435,6 +436,12 @@ export async function bootGameClient(): Promise<BootFailure | null> {
             // the way out when central itself cannot be read from the page.
             worldListFallbackProxy: `${bridgeOrigin}/worldlist`,
             jxAccessToken: params.get('jxAccessToken') || '',
+            // The page and the client must agree on this: the page lays the login screen out for a
+            // phone, the client picks its display mode and client type from it, and a disagreement
+            // shows up as a desktop-shaped client inside a phone-shaped page. The page's answer
+            // wins because it is the one `?mobile=` can override.
+            mobile: isMobileDevice(),
+            ...(mobileOsOverride() !== null ? { osFamily: mobileOsOverride() as string } : {}),
         };
 
         reportConnection({
