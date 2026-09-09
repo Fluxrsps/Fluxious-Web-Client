@@ -4,13 +4,18 @@ const FluxOrientation = (function () {
   const state = {
     rotation: 0,
     locked: false,
+    lockAttempted: false,
   };
 
+  // A touchscreen laptop reports touch points and still has a mouse, so requiring the absence of
+  // hover keeps the orientation lock — and the fullscreen fallback it triggers — off desktops.
   function isTouchDevice() {
-    if (typeof window.matchMedia === "function" && window.matchMedia("(pointer: coarse)").matches) {
-      return true;
+    if (typeof window.matchMedia !== "function") {
+      return "ontouchstart" in window || (navigator.maxTouchPoints | 0) > 0;
     }
-    return "ontouchstart" in window || (navigator.maxTouchPoints | 0) > 0;
+    return (
+      window.matchMedia("(pointer: coarse)").matches && window.matchMedia("(hover: none)").matches
+    );
   }
 
   function isPortrait() {
@@ -59,13 +64,16 @@ const FluxOrientation = (function () {
   }
 
   function tryNativeLock() {
-    if (state.locked || !isTouchDevice()) {
+    // Once per page load: the fallback below enters fullscreen, so a lock that keeps failing must
+    // not retry on every click.
+    if (state.locked || state.lockAttempted || !isTouchDevice() || !isPortrait()) {
       return;
     }
     const orientation = window.screen && window.screen.orientation;
     if (!orientation || typeof orientation.lock !== "function") {
       return;
     }
+    state.lockAttempted = true;
     const lock = function () {
       return orientation.lock("landscape").then(function () {
         state.locked = true;

@@ -1,3 +1,4 @@
+import { reportConnection } from './connectionState';
 import { DEFAULT_JAV_CONFIG_URL, hostFromCodebase, loadJavConfig } from './javConfig';
 import { reportLoading } from './loadingState';
 
@@ -395,6 +396,18 @@ export async function bootGameClient(): Promise<BootFailure | null> {
             worldListFallbackProxy: `${bridgeOrigin}/worldlist`,
             jxAccessToken: params.get('jxAccessToken') || '',
         };
+
+        reportConnection({
+            host: wsHost,
+            port: wsPort,
+            secure,
+            revision: window.__webConfig.revision,
+            source: params.get('wsHost')
+                ? 'url override'
+                : codebaseHost
+                  ? 'launcher config'
+                  : 'this page',
+        });
 
         easing.set(12, 'Contacting game server');
         if (!(await isBridgeReachable(bridgeOrigin))) {

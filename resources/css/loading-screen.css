@@ -132,6 +132,15 @@
   transition: width 0.3s ease-out;
 }
 
+/* connection details */
+.flx-connection {
+  display: block;
+  margin-top: 8px;
+  font: 400 11px/1.4 "IBM Plex Mono", ui-monospace, monospace;
+  color: rgba(214, 240, 237, 0.45);
+  word-break: break-all;
+}
+
 /* ---- failure state -------------------------------------------------------
    Sits where the bottom cluster would be, using the same backdrop so a failed
    load reads as the loading screen resolving badly, not a different page. */

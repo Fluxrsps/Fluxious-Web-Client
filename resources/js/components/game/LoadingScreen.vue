@@ -6,6 +6,7 @@ import bodyBgMd from '/resources/images/body-bg-md.webp';
 import bodyBgSm from '/resources/images/body-bg-sm.webp';
 import logo from '/resources/images/logo.webp';
 import tipData from '/resources/loading-tips.json';
+import { connectionInfo } from '@/lib/game/connectionState';
 import { loadingProgress, loadingStatus } from '@/lib/game/loadingState';
 
 /**
@@ -42,6 +43,16 @@ onBeforeUnmount(() => clearInterval(timer));
 
 const percent = computed(() => Math.max(0, Math.min(100, Math.round(loadingProgress.value))));
 const currentTip = computed(() => tips[tipIndex.value % Math.max(tips.length, 1)] ?? '');
+
+// Reads as one line so a player can quote it verbatim when reporting that they cannot connect.
+const connection = computed(() => {
+    const info = connectionInfo.value;
+    if (!info) {
+        return '';
+    }
+    const scheme = info.secure ? 'https' : 'http';
+    return `${scheme}://${info.host}:${info.port} · rev ${info.revision} · ${info.source}`;
+});
 </script>
 
 <template>
@@ -71,6 +82,7 @@ const currentTip = computed(() => tips[tipIndex.value % Math.max(tips.length, 1)
             <div class="flx-track">
                 <div class="flx-fill" :style="{ width: `${percent}%` }" />
             </div>
+            <span v-if="connection" class="flx-connection">{{ connection }}</span>
         </div>
     </div>
 </template>
