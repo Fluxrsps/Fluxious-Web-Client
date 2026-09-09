@@ -13,6 +13,8 @@
 import { computed, nextTick, onUnmounted, ref, watch } from 'vue';
 import PluginSettings from '@/components/game/PluginSettings.vue';
 import { isMobileDevice } from '@/lib/game/device';
+import { onConfigChanged, readValue } from '@/plugins/configStore';
+import { CONFIG_GROUP_KEY, fluxiousConfig, type RevealPosition } from '@/plugins/fluxious/fluxiousConfig';
 import { resetValue } from '@/plugins/configStore';
 import { listPlugins, onRegistryChanged, pluginConfig, setEnabled, setFavourite } from '@/plugins/runtime';
 import {
@@ -45,6 +47,15 @@ const revealing = ref(false);
  * would flash the button and take it away, leaving no way back to a sidebar hidden by default.
  */
 const touch = isMobileDevice();
+
+/** Where the reveal button sits; a player setting, so it follows the store rather than the device. */
+const revealPosition = ref(readValue(fluxiousConfig, 'revealPosition') as RevealPosition);
+
+const stopConfig = onConfigChanged((group, keyName) => {
+    if (group === CONFIG_GROUP_KEY && keyName === 'revealPosition') {
+        revealPosition.value = readValue(fluxiousConfig, 'revealPosition') as RevealPosition;
+    }
+});
 
 /** Set while a plugin's settings are open; null shows the list. */
 const settingsFor = ref<string | null>(null);
@@ -228,6 +239,7 @@ onUnmounted(() => {
     stopRegistry();
     stopToolbar();
     stopVisibility();
+    stopConfig();
 });
 
 function togglePanel(next: Panel): void {
@@ -250,6 +262,7 @@ function toggleFavourite(name: string, favourite: boolean): void {
     <template v-if="hidden">
         <div
             class="flx-plugins__reveal"
+            :class="`flx-plugins__reveal--${revealPosition}`"
             @pointerenter="revealing = true"
             @pointerleave="revealing = false"
         >

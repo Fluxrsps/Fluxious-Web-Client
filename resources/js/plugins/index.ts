@@ -4,6 +4,7 @@
  * Registering here rather than scanning a directory keeps the list something you read rather than
  * infer, and keeps Vite's bundling static — a plugin that is not in this file is not shipped.
  */
+import { isMobileDevice } from '@/lib/game/device';
 import { devToolsPlugin } from './devtools/devToolsPlugin';
 import { fluxiousPlugin } from './fluxious/fluxiousPlugin';
 import { fpsPlugin } from './fps/fpsPlugin';
@@ -28,6 +29,12 @@ export function registerBuiltinPlugins(): void {
     registerPlugin(gpuPlugin);
     registerPlugin(fpsPlugin);
     registerPlugin(notesPlugin);
-    registerPlugin(fullscreenPlugin);
+
+    // Not on a phone: the page already goes fullscreen on the first tap, and there is no window
+    // to be fullscreen relative to, so the button is a control that does nothing a player wants.
+    if (!isMobileDevice()) {
+        registerPlugin(fullscreenPlugin);
+    }
+
     registerPlugin(devToolsPlugin);
 }

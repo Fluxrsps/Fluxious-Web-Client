@@ -659,6 +659,30 @@ html.flx-sidebar-hidden #game-host {
     justify-content: flex-end;
 }
 
+/* Vertical placement along the same edge; the strip stays full height so the hover area does. */
+.flx-plugins__reveal--top {
+    align-items: flex-start;
+}
+
+.flx-plugins__reveal--bottom {
+    align-items: flex-end;
+}
+
+/* The opposite edge, for a phone: the right is where a thumb rests and where the game's own tabs
+   are, so a button there gets caught by accident. */
+.flx-plugins__reveal--left {
+    right: auto;
+    left: 0;
+    justify-content: flex-start;
+}
+
+.flx-plugins__reveal--left .flx-plugins__revealbtn {
+    border-right: 1px solid var(--rl-border);
+    border-left: none;
+    /* Points at the panel it opens, which is now across the screen rather than beside it. */
+    transform: scaleX(-1);
+}
+
 .flx-plugins__revealbtn {
     /* Overhangs the strip so it is a comfortable click once revealed. */
     width: 22px;
@@ -676,6 +700,14 @@ html.flx-sidebar-hidden #game-host {
 
 .flx-plugins__revealbtn:hover {
     color: var(--rl-brand);
+}
+
+/* Bigger on touch, where the button is always shown rather than revealed by a hover that cannot
+   happen, and where 22px is a miss more often than a hit. */
+html.flx-mobile .flx-plugins__revealbtn {
+    width: 32px;
+    height: 64px;
+    font-size: 20px;
 }
 
 /* The overlay never takes input: clicks belong to the game canvas underneath it, except while Alt
