@@ -52,7 +52,9 @@ jobs:
       - name: Build
         working-directory: android
         # Debug is signed with the standard debug key and installs as-is; release is unsigned.
+        # chmod because the wrapper is committed from Windows, which has no executable bit to keep.
         run: |
+          chmod +x ./gradlew
           ./gradlew --no-daemon \
             -Pflux.startUrl="${{ github.event.inputs.startUrl || 'https://play.fluxious-rsps.com' }}" \
             assembleDebug assembleRelease
