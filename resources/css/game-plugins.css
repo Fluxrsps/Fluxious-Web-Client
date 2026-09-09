@@ -657,39 +657,47 @@ html.flx-sidebar-hidden #game-host {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    /* The button's box, so the top and bottom edges can turn it on its side without every rule
+       below having to know which edge it is on. */
+    --flx-reveal-w: 22px;
+    --flx-reveal-h: 54px;
 }
 
-/* Vertical placement along the same edge; the strip stays full height so the hover area does. */
-.flx-plugins__reveal--top {
-    align-items: flex-start;
-}
-
-.flx-plugins__reveal--bottom {
-    align-items: flex-end;
-}
-
-/* The toggle only. The panel itself still comes out of the right edge; this moves the button that
-   summons it, because on a phone the right is where a thumb rests and where the game's own tabs
-   are, so a button there gets caught by accident. */
+/* Which screen edge the strip lies along. The panel itself is always `right: 0`; this only moves
+   the button that summons it, so it can be kept clear of wherever a player's hand rests. */
 .flx-plugins__reveal--left {
     right: auto;
     left: 0;
     justify-content: flex-start;
 }
 
-/* Mirrored rather than restyled: the flip carries the open edge and the chevron with it, so the
-   borderless side still faces the screen edge and the arrow still points at the panel. */
-.flx-plugins__reveal--left .flx-plugins__revealbtn {
-    transform: scaleX(-1);
+.flx-plugins__reveal--top,
+.flx-plugins__reveal--bottom {
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 12px;
+    justify-content: center;
+    --flx-reveal-w: 54px;
+    --flx-reveal-h: 22px;
+}
+
+.flx-plugins__reveal--top {
+    bottom: auto;
+    align-items: flex-start;
+}
+
+.flx-plugins__reveal--bottom {
+    top: auto;
+    align-items: flex-end;
 }
 
 .flx-plugins__revealbtn {
     /* Overhangs the strip so it is a comfortable click once revealed. */
-    width: 22px;
-    height: 54px;
+    width: var(--flx-reveal-w);
+    height: var(--flx-reveal-h);
     background: var(--rl-dark-gray);
     border: 1px solid var(--rl-border);
-    border-right: none;
     color: var(--rl-light-gray);
     cursor: pointer;
     font-family: Inter, sans-serif;
@@ -698,15 +706,59 @@ html.flx-sidebar-hidden #game-host {
     padding: 0;
 }
 
+/* The side against the screen edge is left open, so the button reads as attached to it. */
+.flx-plugins__reveal--right .flx-plugins__revealbtn {
+    border-right: none;
+}
+
+.flx-plugins__reveal--left .flx-plugins__revealbtn {
+    border-left: none;
+}
+
+.flx-plugins__reveal--top .flx-plugins__revealbtn {
+    border-top: none;
+}
+
+.flx-plugins__reveal--bottom .flx-plugins__revealbtn {
+    border-bottom: none;
+}
+
+/* Points away from its edge, at the panel it opens. Only the glyph turns; rotating the button
+   would turn its box with it and leave the border on the wrong side. */
+.flx-plugins__revealchevron {
+    display: inline-block;
+}
+
+.flx-plugins__reveal--left .flx-plugins__revealchevron {
+    transform: rotate(180deg);
+}
+
+.flx-plugins__reveal--top .flx-plugins__revealchevron {
+    transform: rotate(-90deg);
+}
+
+.flx-plugins__reveal--bottom .flx-plugins__revealchevron {
+    transform: rotate(90deg);
+}
+
 .flx-plugins__revealbtn:hover {
     color: var(--rl-brand);
 }
 
 /* Bigger on touch, where the button is always shown rather than revealed by a hover that cannot
    happen, and where 22px is a miss more often than a hit. */
+html.flx-mobile .flx-plugins__reveal {
+    --flx-reveal-w: 32px;
+    --flx-reveal-h: 64px;
+}
+
+html.flx-mobile .flx-plugins__reveal--top,
+html.flx-mobile .flx-plugins__reveal--bottom {
+    --flx-reveal-w: 64px;
+    --flx-reveal-h: 32px;
+}
+
 html.flx-mobile .flx-plugins__revealbtn {
-    width: 32px;
-    height: 64px;
     font-size: 20px;
 }
 

@@ -291,6 +291,12 @@ const WebInput = (function () {
       push(UP);
     }
 
+    // The point between two fingers, in game pixels. Rotating follows this rather than either
+    // finger, so spreading and pinching about a fixed centre does not drag the camera with it.
+    function touchMidpoint(a, b) {
+      return canvasCoords(canvas, (a.clientX + b.clientX) / 2, (a.clientY + b.clientY) / 2);
+    }
+
     function touchDistance(a, b) {
       const dx = a.clientX - b.clientX;
       const dy = a.clientY - b.clientY;
@@ -305,6 +311,13 @@ const WebInput = (function () {
         e.preventDefault();
 
         if (e.touches.length >= 2) {
+          // Another finger landing during a pinch only re-bases the measurements: the camera button
+          // is already held, and pressing it again would leave a press with no release.
+          if (gesture === GESTURE_PINCH) {
+            pinchDistance = touchDistance(e.touches[0], e.touches[1]);
+            return;
+          }
+
           // A second finger mid-gesture: release whatever the first one had already pressed.
           clearHold();
           if (gesture === GESTURE_CAMERA || gesture === GESTURE_HOLD) {
@@ -312,6 +325,11 @@ const WebInput = (function () {
           }
           gesture = GESTURE_PINCH;
           pinchDistance = touchDistance(e.touches[0], e.touches[1]);
+
+          // Held for as long as two fingers are down, so the midpoint's movement rotates the
+          // camera while the distance between them zooms it.
+          const start = touchMidpoint(e.touches[0], e.touches[1]);
+          push(CAMERA_DOWN, start.x, start.y);
           return;
         }
 
@@ -346,9 +364,19 @@ const WebInput = (function () {
         e.preventDefault();
 
         if (gesture === GESTURE_PINCH) {
-          if (!pinchZoom || e.touches.length < 2) {
+          if (e.touches.length < 2) {
             return;
           }
+
+          // Rotate and zoom off the same move: the camera button is already held, so the midpoint
+          // drives rotation while the distance drives the wheel, and neither waits for the other.
+          const mid = touchMidpoint(e.touches[0], e.touches[1]);
+          push(MOVE, mid.x, mid.y);
+
+          if (!pinchZoom) {
+            return;
+          }
+
           const distance = touchDistance(e.touches[0], e.touches[1]);
           const steps = (distance - pinchDistance) / PINCH_STEP;
           if (steps >= 1 || steps <= -1) {
@@ -394,7 +422,7 @@ const WebInput = (function () {
 
       clearHold();
 
-      if (gesture === GESTURE_CAMERA || gesture === GESTURE_HOLD) {
+      if (gesture === GESTURE_CAMERA || gesture === GESTURE_HOLD || gesture === GESTURE_PINCH) {
         push(UP);
       } else if (gesture === GESTURE_PENDING) {
         tap(startX, startY, singleTap ? BUTTON_RIGHT : BUTTON_LEFT);

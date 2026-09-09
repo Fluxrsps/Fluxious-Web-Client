@@ -6,18 +6,22 @@ import type { ConfigGroup } from '../types';
 
 export const CONFIG_GROUP_KEY = 'fluxious';
 
-/** Where the reveal button sits when the side panel is hidden. */
-export const REVEAL_POSITIONS = ['top', 'middle', 'bottom', 'left'] as const;
+/**
+ * Which screen edge the reveal button docks against, centred along it.
+ *
+ * The panel itself always comes out of the right; this is only the button that summons it.
+ */
+export const REVEAL_POSITIONS = ['top', 'right', 'bottom', 'left'] as const;
 
 export type RevealPosition = (typeof REVEAL_POSITIONS)[number];
 
 /**
- * Left on a phone, middle on a desktop.
+ * Left on a phone, right on a desktop.
  *
- * The right edge is where a thumb rests and where the game's own tabs are, so a button there is
+ * The right edge is where a thumb rests and where the game's own tabs are, so a button there gets
  * caught by accident. There is nothing along the left of the mobile layout to compete with.
  */
-const DEFAULT_REVEAL_POSITION: RevealPosition = isMobileDevice() ? 'left' : 'middle';
+const DEFAULT_REVEAL_POSITION: RevealPosition = isMobileDevice() ? 'left' : 'right';
 
 export const fluxiousConfig: ConfigGroup = {
     group: CONFIG_GROUP_KEY,
@@ -36,13 +40,13 @@ export const fluxiousConfig: ConfigGroup = {
         {
             type: 'enum',
             keyName: 'revealPosition',
-            name: 'Reveal button position',
-            description: 'Where the button that shows the side panel sits.',
+            name: 'Reveal button edge',
+            description: 'Which screen edge the button that shows the side panel sits against.',
             position: 3,
             defaultValue: DEFAULT_REVEAL_POSITION,
             options: [
                 { value: 'top', label: 'Top' },
-                { value: 'middle', label: 'Middle' },
+                { value: 'right', label: 'Right' },
                 { value: 'bottom', label: 'Bottom' },
                 { value: 'left', label: 'Left' },
             ],

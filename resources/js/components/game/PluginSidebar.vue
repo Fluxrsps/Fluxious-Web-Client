@@ -273,7 +273,9 @@ function toggleFavourite(name: string, favourite: boolean): void {
                 title="Show side panel"
                 @click="setSidebarHidden(false)"
             >
-                ‹
+                <!-- Wrapped so the edge styles can turn it to face the panel without rotating the
+                     button's own box. -->
+                <span class="flx-plugins__revealchevron">‹</span>
             </button>
         </div>
     </template>
