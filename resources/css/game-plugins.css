@@ -668,7 +668,8 @@ html.flx-sidebar-hidden #game-host {
     align-items: flex-end;
 }
 
-/* The opposite edge, for a phone: the right is where a thumb rests and where the game's own tabs
+/* The toggle only. The panel itself still comes out of the right edge; this moves the button that
+   summons it, because on a phone the right is where a thumb rests and where the game's own tabs
    are, so a button there gets caught by accident. */
 .flx-plugins__reveal--left {
     right: auto;
@@ -676,10 +677,9 @@ html.flx-sidebar-hidden #game-host {
     justify-content: flex-start;
 }
 
+/* Mirrored rather than restyled: the flip carries the open edge and the chevron with it, so the
+   borderless side still faces the screen edge and the arrow still points at the panel. */
 .flx-plugins__reveal--left .flx-plugins__revealbtn {
-    border-right: 1px solid var(--rl-border);
-    border-left: none;
-    /* Points at the panel it opens, which is now across the screen rather than beside it. */
     transform: scaleX(-1);
 }
 
