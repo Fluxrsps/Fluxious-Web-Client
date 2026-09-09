@@ -7,9 +7,20 @@ const FluxOrientation = (function () {
     lockAttempted: false,
   };
 
+  // The hosting page decides this, and publishes the answer as `data-flux-mobile` on the document,
+  // so the rotation, the login screen's layout and the plugin sidebar cannot disagree about what a
+  // phone is. The test below is the fallback for this script running without that page.
+  //
   // A touchscreen laptop reports touch points and still has a mouse, so requiring the absence of
   // hover keeps the orientation lock — and the fullscreen fallback it triggers — off desktops.
   function isTouchDevice() {
+    const decided = document.documentElement.getAttribute("data-flux-mobile");
+    if (decided === "1") {
+      return true;
+    }
+    if (decided === "0") {
+      return false;
+    }
     if (typeof window.matchMedia !== "function") {
       return "ontouchstart" in window || (navigator.maxTouchPoints | 0) > 0;
     }

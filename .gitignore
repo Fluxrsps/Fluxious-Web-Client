@@ -9,6 +9,15 @@
 /dist
 /.vercel
 
+# Android build output. The density mipmaps are generated from `android/art` by
+# `android/tools/make-icons.sh` on every build, so committing them would leave a second copy to keep
+# in step. `mipmap-anydpi-v26` is hand-written and stays.
+/android/.gradle
+/android/build
+/android/app/build
+/android/local.properties
+/android/app/src/main/res/mipmap-*dpi/
+
 # Local configuration and credentials.
 .env
 .env.*

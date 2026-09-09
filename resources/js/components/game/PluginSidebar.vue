@@ -12,6 +12,7 @@
  */
 import { computed, nextTick, onUnmounted, ref, watch } from 'vue';
 import PluginSettings from '@/components/game/PluginSettings.vue';
+import { isMobileDevice } from '@/lib/game/device';
 import { resetValue } from '@/plugins/configStore';
 import { listPlugins, onRegistryChanged, pluginConfig, setEnabled, setFavourite } from '@/plugins/runtime';
 import {
@@ -38,6 +39,12 @@ const stopVisibility = onSidebarVisibilityChanged((next) => (hidden.value = next
 
 /** True while the pointer is in the reveal strip at the screen edge. */
 const revealing = ref(false);
+
+/**
+ * Always shown on touch: a tap fires pointerenter and pointerleave back to back, so the hover strip
+ * would flash the button and take it away, leaving no way back to a sidebar hidden by default.
+ */
+const touch = isMobileDevice();
 
 /** Set while a plugin's settings are open; null shows the list. */
 const settingsFor = ref<string | null>(null);
@@ -247,7 +254,7 @@ function toggleFavourite(name: string, favourite: boolean): void {
             @pointerleave="revealing = false"
         >
             <button
-                v-show="revealing"
+                v-show="revealing || touch"
                 type="button"
                 class="flx-plugins__revealbtn"
                 title="Show side panel"

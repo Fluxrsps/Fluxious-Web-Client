@@ -5,8 +5,9 @@
    radii. Every piece of text on the dark background carries a 1px black shadow so it stays legible
    over the painted backdrop.
 
-   The mobile rules key off viewport *height*, not width: the phone case this has to serve is
-   forced landscape (see web/orientation.js), which is wide and short. */
+   The mobile rules hang off `html.flx-login-compact`, not a media query: the phone case this has to
+   serve is forced landscape (see web/orientation.js), and that rotation is a CSS transform, so the
+   viewport never reports the landscape dimensions the layout is actually laid out in. */
 
 :root {
     --flx-panel-bg: rgba(22, 22, 22, 0.94);
@@ -569,6 +570,7 @@
     background: #262626;
 }
 
+
 /* World select ------------------------------------------------------------ */
 
 .flx-modal {
@@ -824,7 +826,11 @@
 
 /* Landscape phone --------------------------------------------------------- */
 
-@media (max-height: 500px) {
+/* Nested under the class rather than written as a media query: the phone case this serves is forced
+   landscape, and that rotation is a CSS transform, so the viewport keeps reporting the phone's
+   portrait dimensions and no viewport query can see it. `lib/game/device.ts` sets the class from the
+   device and from the login box's real height. */
+html.flx-login-compact {
     .flx-login__main {
         flex-wrap: nowrap;
         gap: 18px;

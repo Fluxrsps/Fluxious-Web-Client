@@ -8,6 +8,24 @@ const WebInput = (function () {
   const KEY_UP = 7;
   const KEY_TYPED = 8;
   const FOCUS = 9;
+  const CAMERA_DOWN = 10;
+
+  const BUTTON_LEFT = 0;
+  const BUTTON_MIDDLE = 1;
+  const BUTTON_RIGHT = 2;
+
+  const DRAG_SLOP = 12;
+  const HOLD_MS = 500;
+  const PINCH_STEP = 40;
+
+  const GESTURE_NONE = 0;
+  const GESTURE_PENDING = 1;
+  const GESTURE_CAMERA = 2;
+  const GESTURE_HOLD = 3;
+  const GESTURE_PINCH = 4;
+
+  let singleTap = false;
+  let pinchZoom = true;
 
   const PREVENT_DEFAULT_KEYS = new Set([
     "Space",
@@ -18,8 +36,11 @@ const WebInput = (function () {
     "Tab",
   ]);
 
+  const VK_BACK_SPACE = 8;
+
   let queue = [];
   let attached = false;
+  let keyboard = null;
 
   function push() {
     for (let i = 0; i < arguments.length; i++) {
@@ -88,6 +109,100 @@ const WebInput = (function () {
     return 0;
   }
 
+  // A canvas cannot raise the keyboard, so a real text field is focused instead: transparent and a
+  // pixel across, because a hidden or zero-sized one is ignored. Keystrokes are read from
+  // `beforeinput` because Android IMEs report every character key as keycode 229.
+  function createSoftKeyboard(canvas, focusCanvas) {
+    const field = document.createElement("input");
+
+    field.type = "text";
+    field.setAttribute("autocomplete", "off");
+    field.setAttribute("autocorrect", "off");
+    field.setAttribute("autocapitalize", "off");
+    field.setAttribute("spellcheck", "false");
+    field.setAttribute("aria-hidden", "true");
+    field.tabIndex = -1;
+    field.style.cssText =
+      "position:fixed;bottom:0;left:0;width:1px;height:1px;padding:0;border:0;" +
+      "opacity:0;pointer-events:none;z-index:-1;";
+
+    (canvas.parentElement || document.body).appendChild(field);
+
+    let open = false;
+
+    function typeText(text) {
+      for (let i = 0; i < text.length; i++) {
+        const code = text.charCodeAt(i);
+        push(KEY_TYPED, code === 13 || code === 10 ? 10 : code);
+      }
+    }
+
+    function backspace() {
+      push(KEY_DOWN, VK_BACK_SPACE);
+      push(KEY_UP, VK_BACK_SPACE);
+    }
+
+    field.addEventListener("beforeinput", (e) => {
+      const type = e.inputType;
+
+      if (type === "insertText" || type === "insertCompositionText") {
+        if (e.data) {
+          typeText(e.data);
+        }
+      } else if (type === "insertLineBreak" || type === "insertParagraph") {
+        push(KEY_TYPED, 10);
+      } else if (type === "deleteContentBackward" || type === "deleteWordBackward") {
+        backspace();
+      }
+
+      e.preventDefault();
+    });
+
+    // Some IMEs commit regardless of the preventDefault above.
+    field.addEventListener("input", () => {
+      if (field.value !== "") {
+        typeText(field.value);
+        field.value = "";
+      }
+    });
+
+    field.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        push(KEY_TYPED, 10);
+        e.preventDefault();
+      } else if (e.key === "Backspace") {
+        backspace();
+        e.preventDefault();
+      }
+    });
+
+    field.addEventListener("blur", () => {
+      open = false;
+    });
+
+    return {
+      isOpen() {
+        return open;
+      },
+
+      show() {
+        field.value = "";
+        open = true;
+        try {
+          field.focus({ preventScroll: true });
+        } catch (err) {
+          field.focus();
+        }
+      },
+
+      hide() {
+        open = false;
+        field.blur();
+        focusCanvas();
+      },
+    };
+  }
+
   function attach(canvasId) {
     if (attached) {
       return true;
@@ -102,12 +217,18 @@ const WebInput = (function () {
     canvas.style.outline = "none";
 
     function focusCanvas() {
+      // Taking focus back would dismiss the keyboard on every tap while typing.
+      if (keyboard !== null && keyboard.isOpen()) {
+        return;
+      }
       try {
         canvas.focus({ preventScroll: true });
       } catch (err) {
         canvas.focus();
       }
     }
+
+    keyboard = createSoftKeyboard(canvas, focusCanvas);
 
     let pressed = false;
 
@@ -155,6 +276,143 @@ const WebInput = (function () {
       e.preventDefault();
     });
 
+    // Every touch handler calls preventDefault, which is also what stops the browser synthesising
+    // the mouse events the handlers above would otherwise see, delivering every gesture twice.
+
+    let gesture = GESTURE_NONE;
+    let holdTimer = 0;
+    let startX = 0;
+    let startY = 0;
+    let pinchDistance = 0;
+
+    function clearHold() {
+      if (holdTimer !== 0) {
+        window.clearTimeout(holdTimer);
+        holdTimer = 0;
+      }
+    }
+
+    function tap(x, y, button) {
+      push(MOVE, x, y);
+      push(DOWN, x, y, button, 0);
+      push(UP);
+    }
+
+    function touchDistance(a, b) {
+      const dx = a.clientX - b.clientX;
+      const dy = a.clientY - b.clientY;
+
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    canvas.addEventListener(
+      "touchstart",
+      (e) => {
+        focusCanvas();
+        e.preventDefault();
+
+        if (e.touches.length >= 2) {
+          // A second finger mid-gesture: release whatever the first one had already pressed.
+          clearHold();
+          if (gesture === GESTURE_CAMERA || gesture === GESTURE_HOLD) {
+            push(UP);
+          }
+          gesture = GESTURE_PINCH;
+          pinchDistance = touchDistance(e.touches[0], e.touches[1]);
+          return;
+        }
+
+        if (gesture === GESTURE_PINCH) {
+          return;
+        }
+
+        const p = canvasCoords(canvas, e.touches[0].clientX, e.touches[0].clientY);
+        startX = p.x;
+        startY = p.y;
+        gesture = GESTURE_PENDING;
+
+        // The client picks its menu from where the cursor is, so move before any press.
+        push(MOVE, p.x, p.y);
+
+        clearHold();
+        holdTimer = window.setTimeout(() => {
+          holdTimer = 0;
+          if (gesture !== GESTURE_PENDING) {
+            return;
+          }
+          gesture = GESTURE_HOLD;
+          push(DOWN, startX, startY, BUTTON_RIGHT, 0);
+        }, HOLD_MS);
+      },
+      { passive: false }
+    );
+
+    canvas.addEventListener(
+      "touchmove",
+      (e) => {
+        e.preventDefault();
+
+        if (gesture === GESTURE_PINCH) {
+          if (!pinchZoom || e.touches.length < 2) {
+            return;
+          }
+          const distance = touchDistance(e.touches[0], e.touches[1]);
+          const steps = (distance - pinchDistance) / PINCH_STEP;
+          if (steps >= 1 || steps <= -1) {
+            const notches = steps > 0 ? Math.floor(steps) : Math.ceil(steps);
+            for (let i = 0; i < Math.abs(notches); i++) {
+              push(WHEEL, notches > 0 ? -1 : 1);
+            }
+            pinchDistance += notches * PINCH_STEP;
+          }
+          return;
+        }
+
+        if (e.touches.length !== 1) {
+          return;
+        }
+
+        const p = canvasCoords(canvas, e.touches[0].clientX, e.touches[0].clientY);
+
+        if (gesture === GESTURE_PENDING) {
+          if (Math.abs(p.x - startX) < DRAG_SLOP && Math.abs(p.y - startY) < DRAG_SLOP) {
+            return;
+          }
+          // Pressed at the origin so the client's drag delta starts where the finger landed.
+          clearHold();
+          gesture = GESTURE_CAMERA;
+          push(CAMERA_DOWN, startX, startY);
+        }
+
+        if (gesture === GESTURE_CAMERA || gesture === GESTURE_HOLD) {
+          push(MOVE, p.x, p.y);
+        }
+      },
+      { passive: false }
+    );
+
+    function endTouch(e) {
+      e.preventDefault();
+
+      if (e.touches.length > 0) {
+        // Lifting one finger out of a pinch must not fire a tap.
+        return;
+      }
+
+      clearHold();
+
+      if (gesture === GESTURE_CAMERA || gesture === GESTURE_HOLD) {
+        push(UP);
+      } else if (gesture === GESTURE_PENDING) {
+        tap(startX, startY, singleTap ? BUTTON_RIGHT : BUTTON_LEFT);
+      }
+
+      gesture = GESTURE_NONE;
+    }
+
+    canvas.addEventListener("touchend", endTouch, { passive: false });
+    canvas.addEventListener("touchcancel", endTouch, { passive: false });
+
     canvas.addEventListener("keydown", (e) => {
       const code = domKeyCode(e);
       if (code !== 0) {
@@ -164,6 +422,9 @@ const WebInput = (function () {
         PREVENT_DEFAULT_KEYS.has(e.code) ||
         (e.code && e.code.startsWith("F") && e.code.length <= 3)
       ) {
+        if (!e.ctrlKey && !e.metaKey && !e.altKey && e.key && e.key.length === 1) {
+          push(KEY_TYPED, e.key.charCodeAt(0));
+        }
         e.preventDefault();
       }
     });
@@ -207,7 +468,46 @@ const WebInput = (function () {
     return true;
   }
 
-  return { attach, takeEventBatch };
+  return {
+    attach,
+    takeEventBatch,
+
+    setSingleTap(enabled) {
+      singleTap = !!enabled;
+    },
+
+    setPinchZoom(enabled) {
+      pinchZoom = !!enabled;
+    },
+
+    // Must be called from inside a user gesture, or the keyboard will not appear.
+    showKeyboard() {
+      if (keyboard !== null) {
+        keyboard.show();
+      }
+    },
+
+    hideKeyboard() {
+      if (keyboard !== null) {
+        keyboard.hide();
+      }
+    },
+
+    isKeyboardOpen() {
+      return keyboard !== null && keyboard.isOpen();
+    },
+
+    toggleKeyboard() {
+      if (keyboard === null) {
+        return;
+      }
+      if (keyboard.isOpen()) {
+        keyboard.hide();
+      } else {
+        keyboard.show();
+      }
+    },
+  };
 })();
 
 window.WebInput = WebInput;

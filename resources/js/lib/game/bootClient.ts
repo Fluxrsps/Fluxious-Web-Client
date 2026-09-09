@@ -23,6 +23,8 @@ const RUNTIME_SCRIPTS = [
     'web/websocket.js',
     // Ahead of input.js, which reads the rotation it publishes on `window` to map pointer events.
     'web/orientation.js',
+    // Battery and connection for the mobile interface; starts its one async read on load.
+    'web/device.js',
     // The renderer, ahead of canvas.js: which context the canvas gets is decided before it attaches.
     'web/gpu/stats.js',
     'web/gpu/regions.js',

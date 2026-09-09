@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Taken from the dark stone in the icon. -->
+    <color name="icon_background">#0E1719</color>
+    <color name="window_background">#000000</color>
+</resources>

@@ -43,6 +43,23 @@ declare global {
             refreshWorlds(): void;
             setMuted(muted: boolean): void;
         };
+        /** Installed by the page; `web/websocket.js` calls it when a live connection is lost. */
+        FluxConnection?: {
+            /** The socket's role, as websocket.js labels it: "GAME", "JS5" or "WS". */
+            dropped(label: string): void;
+        };
+        WebSocketBridge?: {
+            getStats(): Array<{
+                id: number;
+                label: string;
+                url: string;
+                /** "connecting", "open", "closed" or "error". */
+                state: string;
+                rxBytes: number;
+                txBytes: number;
+                lastRxAgoMs: number;
+            }>;
+        };
         WebVfs: {
             init(): Promise<void>;
             ensureCacheBootstrap(): Promise<void>;
@@ -59,7 +76,17 @@ declare global {
             readonly ready: boolean;
             readonly backend: string | null;
         };
-        WebInput: { attach(id: string): void };
+        WebInput: {
+            attach(id: string): void;
+            /** Single-tap mode: a tap becomes the right-click, with no hold. */
+            setSingleTap(enabled: boolean): void;
+            setPinchZoom(enabled: boolean): void;
+            /** Must be called from inside a user gesture, or the keyboard will not appear. */
+            showKeyboard(): void;
+            hideKeyboard(): void;
+            toggleKeyboard(): void;
+            isKeyboardOpen(): boolean;
+        };
         WebImage: {
             /** Decodes an image (every frame, if animated) and files it under `name` for the client. */
             preloadAsset(name: string, url: string): Promise<boolean>;

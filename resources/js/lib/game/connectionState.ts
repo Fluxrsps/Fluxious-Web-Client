@@ -27,3 +27,70 @@ export function reportConnection(value: ConnectionInfo): void {
             `(rev ${value.revision}, host from ${value.source})`,
     );
 }
+
+/**
+ * Whether the game connection was taken away and the client did not recover.
+ *
+ * Not raised the moment the socket closes: a drop normally puts the client back on its own login
+ * screen, which needs nothing from here. This fires only when that has not happened.
+ */
+const lost = ref(false);
+
+export const connectionLost = readonly(lost);
+
+const RECOVERY_GRACE_MS = 1500;
+
+let graceTimer = 0;
+let onLoginScreen: () => boolean = () => false;
+
+function cancelGrace(): void {
+    if (graceTimer !== 0) {
+        window.clearTimeout(graceTimer);
+        graceTimer = 0;
+    }
+}
+
+function giveUpUnlessRecovered(): void {
+    graceTimer = 0;
+    if (!onLoginScreen()) {
+        lost.value = true;
+    }
+}
+
+/**
+ * Watches for a game connection that went away and was not recovered from.
+ *
+ * `visibilitychange` matters as much as the socket event on a phone: a backgrounded page has its
+ * loop stalled, so the client can come back to a socket that died while it was not running.
+ */
+export function installConnectionBridge(isLoginVisible: () => boolean): () => void {
+    onLoginScreen = isLoginVisible;
+
+    window.FluxConnection = {
+        dropped: (label) => {
+            // JS5 is the cache stream; losing that is not a lost session.
+            if (label !== 'GAME' || lost.value || graceTimer !== 0) {
+                return;
+            }
+            graceTimer = window.setTimeout(giveUpUnlessRecovered, RECOVERY_GRACE_MS);
+        },
+    };
+
+    const onVisibilityChange = (): void => {
+        if (document.visibilityState !== 'visible' || lost.value || graceTimer !== 0) {
+            return;
+        }
+        const game = (window.WebSocketBridge?.getStats() ?? []).find((socket) => socket.label === 'GAME');
+        if (game !== undefined && game.state !== 'open') {
+            graceTimer = window.setTimeout(giveUpUnlessRecovered, RECOVERY_GRACE_MS);
+        }
+    };
+
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
+    return () => {
+        cancelGrace();
+        document.removeEventListener('visibilitychange', onVisibilityChange);
+        delete window.FluxConnection;
+    };
+}

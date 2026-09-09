@@ -5,6 +5,7 @@ import bodyBgMd from '/resources/images/body-bg-md.webp';
 import bodyBgSm from '/resources/images/body-bg-sm.webp';
 import logo from '/resources/images/logo.webp';
 import type { BootFailure } from '@/lib/game/bootClient';
+import { DISCORD_URL, SITE_URL } from '@/lib/game/links';
 
 /**
  * Shown when the client cannot start.
@@ -48,7 +49,10 @@ function retry(): void {
                 <button v-if="failure.retryable" class="flx-btn" type="button" @click="retry">
                     Try again
                 </button>
-                <a class="flx-btn flx-btn--ghost" href="/">Back to site</a>
+                <a class="flx-btn flx-btn--ghost" :href="DISCORD_URL" target="_blank" rel="noopener">
+                    Get help on Discord
+                </a>
+                <a class="flx-btn flx-btn--ghost" :href="SITE_URL">Back to site</a>
             </div>
         </div>
     </div>

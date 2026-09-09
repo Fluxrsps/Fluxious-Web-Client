@@ -44,8 +44,29 @@ const WebSocketBridge = (function () {
     };
     ws.onclose = () => {
       entry.closed = true;
+      // A socket that never opened failed to connect, and boot already reports that. A socket the
+      // client closed on purpose is a logout. Anything else is the connection being taken away —
+      // on a phone that is a wifi handoff or the browser reclaiming a backgrounded page.
+      if (entry.open && !entry.byClient) {
+        report(entry.label);
+      }
     };
     return id;
+  }
+
+  /**
+   * Tells the page a live connection went away.
+   *
+   * One-way and optional, like the loading and login bridges: the client cannot do anything with
+   * this — its session is gone either way — so the page is the only thing that can react.
+   */
+  function report(label) {
+    const sink = window.FluxConnection;
+    if (sink && typeof sink.dropped === "function") {
+      try {
+        sink.dropped(label);
+      } catch (ignored) {}
+    }
   }
 
   function isOpen(id) {
@@ -95,6 +116,8 @@ const WebSocketBridge = (function () {
   function close(id) {
     const e = sockets[id];
     if (e) {
+      // Marked before the close so the onclose handler above knows this was deliberate.
+      e.byClient = true;
       e.closed = true;
       try {
         e.ws.close();
