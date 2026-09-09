@@ -119,6 +119,38 @@ export function installWakeLock(): () => void {
     };
 }
 
+/**
+ * Takes the browser fullscreen on a phone, hiding the address bar and the system buttons.
+ *
+ * Cannot happen on load: fullscreen needs a user gesture, so the first tap is what triggers it and
+ * every later tap re-arms it in case the player left. Chromium only — WebKit allows fullscreen for
+ * video alone, so on iOS this does nothing and "Add to Home Screen" is the way to the same result.
+ */
+export function installFullscreen(): () => void {
+    const root = document.documentElement;
+
+    if (!isMobileDevice() || typeof root.requestFullscreen !== 'function') {
+        return () => {};
+    }
+
+    const enter = (): void => {
+        if (document.fullscreenElement !== null) {
+            return;
+        }
+        // navigationUI is honoured by Chromium and ignored elsewhere; either way the promise can
+        // reject when the gesture has already been spent, and a refusal is not worth reporting.
+        void root.requestFullscreen({ navigationUI: 'hide' }).catch(() => {});
+    };
+
+    window.addEventListener('pointerdown', enter, { passive: true });
+    window.addEventListener('touchend', enter, { passive: true });
+
+    return () => {
+        window.removeEventListener('pointerdown', enter);
+        window.removeEventListener('touchend', enter);
+    };
+}
+
 /** Publishes the device classes and keeps them current. Returns the function that stops. */
 export function installDeviceClasses(): () => void {
     apply();

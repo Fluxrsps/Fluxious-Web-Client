@@ -11,6 +11,17 @@
 
         <link rel="icon" href="/favicon.ico" sizes="any" />
 
+        <!-- Installed to a home screen the client launches with no browser chrome at all. On iOS
+             that is the only way to it: WebKit allows fullscreen for video and nothing else, so the
+             Fullscreen API the page requests on Android does nothing there. -->
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <meta name="theme-color" content="#0E1719" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Fluxious" />
+        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+
         <title>Fluxious - Play</title>
 
         <script type="module" src="/resources/js/app.ts"></script>

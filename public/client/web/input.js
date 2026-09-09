@@ -128,8 +128,6 @@ const WebInput = (function () {
 
     (canvas.parentElement || document.body).appendChild(field);
 
-    let open = false;
-
     function typeText(text) {
       for (let i = 0; i < text.length; i++) {
         const code = text.charCodeAt(i);
@@ -176,18 +174,16 @@ const WebInput = (function () {
       }
     });
 
-    field.addEventListener("blur", () => {
-      open = false;
-    });
-
     return {
+      // Read from the document rather than tracked: dismissing the keyboard with the system back
+      // gesture leaves the field focused without firing blur, so a flag of our own goes stale and
+      // the next tap re-raises the keyboard.
       isOpen() {
-        return open;
+        return document.activeElement === field;
       },
 
       show() {
         field.value = "";
-        open = true;
         try {
           field.focus({ preventScroll: true });
         } catch (err) {
@@ -196,7 +192,6 @@ const WebInput = (function () {
       },
 
       hide() {
-        open = false;
         field.blur();
         focusCanvas();
       },
@@ -216,11 +211,9 @@ const WebInput = (function () {
     canvas.tabIndex = 0;
     canvas.style.outline = "none";
 
+    // Also dismisses the keyboard, by taking focus off the hidden field: tapping the world is how
+    // the mobile client closes it, and leaving it up would cover the game with no way to reach it.
     function focusCanvas() {
-      // Taking focus back would dismiss the keyboard on every tap while typing.
-      if (keyboard !== null && keyboard.isOpen()) {
-        return;
-      }
       try {
         canvas.focus({ preventScroll: true });
       } catch (err) {

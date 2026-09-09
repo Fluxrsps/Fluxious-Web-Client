@@ -8,10 +8,12 @@ on:
     branches: [main, master]
     paths:
       - 'android/**'
+      - '!android/README.md'
       - '.github/workflows/android.yml'
   pull_request:
     paths:
       - 'android/**'
+      - '!android/README.md'
       - '.github/workflows/android.yml'
   workflow_dispatch:
     inputs:

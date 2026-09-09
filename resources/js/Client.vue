@@ -6,7 +6,7 @@ import LoadingScreen from '@/components/game/LoadingScreen.vue';
 import PluginSidebar from '@/components/game/PluginSidebar.vue';
 import { bootGameClient, type BootFailure } from '@/lib/game/bootClient';
 import { connectionLost, installConnectionBridge } from '@/lib/game/connectionState';
-import { installDeviceClasses, installWakeLock, isMobileDevice } from '@/lib/game/device';
+import { installDeviceClasses, installFullscreen, installWakeLock, isMobileDevice } from '@/lib/game/device';
 import { installLoadingBridge, loadingVisible } from '@/lib/game/loadingState';
 import { installLoginBridge, loginVisible } from '@/lib/game/loginState';
 import { registerBuiltinPlugins } from '@/plugins';
@@ -58,6 +58,7 @@ let stopGameInset: (() => void) | null = null;
 let stopDeviceClasses: (() => void) | null = null;
 let stopWakeLock: (() => void) | null = null;
 let stopConnectionBridge: (() => void) | null = null;
+let stopFullscreen: (() => void) | null = null;
 
 const mobile = isMobileDevice();
 
@@ -82,6 +83,7 @@ onMounted(async () => {
     }
 
     stopWakeLock = installWakeLock();
+    stopFullscreen = installFullscreen();
 
     // Before boot: the client starts raising BeforeRender as soon as it paints, and a runtime
     // installed afterwards would miss frames — and, more visibly, the plugins that draw on them.
@@ -116,6 +118,8 @@ onUnmounted(() => {
     stopWakeLock = null;
     stopConnectionBridge?.();
     stopConnectionBridge = null;
+    stopFullscreen?.();
+    stopFullscreen = null;
 });
 </script>
 
