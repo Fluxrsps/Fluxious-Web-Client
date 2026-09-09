@@ -1,12 +1,14 @@
 /**
  * Whether the player is on a phone or tablet, published as document classes.
  *
- * One predicate, because the forced-landscape rotation, the login screen's compact layout and the
- * plugin sidebar all need the same answer and must not disagree.
+ * One predicate, because the forced-landscape rotation, the login screen's compact layout, the
+ * on-screen keyboard button and the plugin sidebar all need the same answer and must not disagree.
  *
- * No user-agent test: Chrome for Android's "Desktop site" rewrites it and reports `pointer: fine`,
- * leaving touch hardware as the only signal that survives. `?mobile=1` and `?mobile=0` override the
- * heuristic, which can be wrong on a touchscreen laptop.
+ * No user-agent test, and deliberately no screen-size test either: browser scaling and device pixel
+ * ratio both move those numbers far enough to make any threshold wrong somewhere. What is left is
+ * the pointer, which is the thing actually being asked about.
+ *
+ * `?mobile=1` and `?mobile=0` override it and are remembered.
  */
 
 const MOBILE_CLASS = 'flx-mobile';
@@ -16,9 +18,6 @@ const COMPACT_LOGIN_CLASS = 'flx-login-compact';
 const ROTATED_CLASS = 'flux-rotate-landscape';
 
 const OVERRIDE_KEY = 'flx.mobile';
-
-/** Wide enough for a phone reporting a 980px desktop-mode viewport, below any laptop. */
-const HANDHELD_SHORT_SIDE = 1000;
 
 const COMPACT_LOGIN_HEIGHT = 500;
 
@@ -53,15 +52,18 @@ export function isMobileDevice(): boolean {
         return override;
     }
 
+    // A touch device that says so.
     if (window.matchMedia('(pointer: coarse)').matches && window.matchMedia('(hover: none)').matches) {
         return true;
     }
 
-    // Desktop mode, or any browser that lies about its pointer: trust the hardware and the screen.
-    const touch = 'ontouchstart' in window || (navigator.maxTouchPoints | 0) > 0;
-    const shortSide = Math.min(window.screen.width, window.screen.height);
-
-    return touch && shortSide <= HANDHELD_SHORT_SIDE;
+    // Otherwise: touch hardware with nothing precise also pointing at it. `any-pointer: fine` is
+    // what separates a tablet from a touchscreen laptop, because it reports every pointer present
+    // rather than only the primary one, so a mouse shows up even when a finger is being used.
+    //
+    // `ontouchstart` is not consulted: Chrome on Windows defines it whether or not the machine has
+    // a touchscreen, which made every desktop look like a phone.
+    return (navigator.maxTouchPoints | 0) > 0 && !window.matchMedia('(any-pointer: fine)').matches;
 }
 
 // Forced landscape rotates `.flx-login` by a transform, which does not affect layout: the viewport
@@ -122,9 +124,14 @@ export function installWakeLock(): () => void {
 /**
  * Takes the browser fullscreen on a phone, hiding the address bar and the system buttons.
  *
- * Cannot happen on load: fullscreen needs a user gesture, so the first tap is what triggers it and
- * every later tap re-arms it in case the player left. Chromium only — WebKit allows fullscreen for
- * video alone, so on iOS this does nothing and "Add to Home Screen" is the way to the same result.
+ * Once, on the first touch of the session, and never again. It cannot happen on load — every
+ * browser requires a user gesture and rejects the request otherwise — but re-arming afterwards
+ * would mean a player who deliberately left fullscreen is dragged back into it by their next tap.
+ * Leaving is a decision, so it is honoured for the rest of the session; the Fullscreen plugin is
+ * the way back in.
+ *
+ * Phones only, and Chromium only: WebKit allows fullscreen for video alone, so on iOS this does
+ * nothing and "Add to Home Screen" is the route to the same result.
  */
 export function installFullscreen(): () => void {
     const root = document.documentElement;
@@ -133,22 +140,29 @@ export function installFullscreen(): () => void {
         return () => {};
     }
 
+    let stop = (): void => {};
+
     const enter = (): void => {
+        stop();
+
         if (document.fullscreenElement !== null) {
             return;
         }
-        // navigationUI is honoured by Chromium and ignored elsewhere; either way the promise can
-        // reject when the gesture has already been spent, and a refusal is not worth reporting.
+
+        // navigationUI is honoured by Chromium and ignored elsewhere. The promise rejects when the
+        // gesture has already been spent, which is not worth reporting or retrying.
         void root.requestFullscreen({ navigationUI: 'hide' }).catch(() => {});
     };
 
-    window.addEventListener('pointerdown', enter, { passive: true });
-    window.addEventListener('touchend', enter, { passive: true });
-
-    return () => {
-        window.removeEventListener('pointerdown', enter);
+    stop = () => {
         window.removeEventListener('touchend', enter);
     };
+
+    // touchend rather than pointerdown: a tap that turns out to be the start of a camera drag or a
+    // pinch should not spend itself entering fullscreen, and pointerdown fires for a mouse too.
+    window.addEventListener('touchend', enter, { passive: true, once: true });
+
+    return stop;
 }
 
 /** Publishes the device classes and keeps them current. Returns the function that stops. */
