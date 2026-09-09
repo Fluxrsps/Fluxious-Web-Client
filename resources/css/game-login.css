@@ -512,6 +512,21 @@
     box-shadow: 0 0 6px var(--flx-green);
 }
 
+.flx-bar__endpoint {
+    flex: 0 0 auto;
+    margin-left: 10px;
+    padding: 6px 10px;
+    max-width: 40%;
+    background: var(--flx-field-bg);
+    border: 1px solid var(--flx-field-border);
+    color: var(--flx-muted);
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .flx-bar__tip {
     display: flex;
     align-items: center;
