@@ -362,7 +362,11 @@ export async function bootGameClient(): Promise<BootFailure | null> {
         }
 
         const wsHost = params.get('wsHost') || codebaseHost || window.location.hostname || '127.0.0.1';
-        const wsPort = params.get('wsPort') || DEFAULT_BRIDGE_PORT;
+        // 8091 is the bridge's own port. Behind TLS it is whatever the terminator listens on —
+        // 443 for a Cloudflare tunnel, 8443 for a proxy on a Cloudflare-proxied port — so the
+        // deploy sets it rather than the client assuming.
+        const wsPort =
+            params.get('wsPort') || import.meta.env.VITE_BRIDGE_PORT || DEFAULT_BRIDGE_PORT;
 
         // A page served over HTTPS may not open an insecure socket or fetch insecure files: the
         // browser blocks both as mixed content, and the client would fail with nothing to show for
