@@ -5,6 +5,59 @@ const WebCanvas = (function () {
   let scaleBuffer = null;
   let scaleCtx = null;
 
+  // The interfaces are drawn at a fixed pixel size and are laid out for the fixed-mode 765x503, so
+  // a host smaller than that gets the same widgets over fewer pixels: they take a larger share of
+  // the screen, and under 503 tall the panels reach each other and overlap. A phone in forced
+  // landscape reports about 844x390 CSS pixels, which is exactly that case. Rendering more game
+  // pixels than the element has CSS pixels and letting CSS scale the canvas back down restores the
+  // layout the client expects, at the cost of a larger frame to draw.
+  const MIN_GAME_WIDTH = 765;
+  const MIN_GAME_HEIGHT = 503;
+  // Past this the frame costs more than the layout is worth on a phone.
+  const MAX_RENDER_SCALE = 2;
+
+  // 0 picks the scale from the host size; anything else is the caller's own choice.
+  let renderScale = 0;
+
+  // The hosting page decides what a phone is and publishes it, the same source web/orientation.js
+  // reads, so the rotation and the render scale cannot disagree.
+  function isMobileHost() {
+    const decided = document.documentElement.getAttribute("data-flux-mobile");
+    if (decided === "1") {
+      return true;
+    }
+    if (decided === "0") {
+      return false;
+    }
+    return !!(window.FluxOrientation && window.FluxOrientation.isTouchDevice());
+  }
+
+  function scaleFor(w, h) {
+    if (renderScale > 0) {
+      return renderScale;
+    }
+    if (!isMobileHost()) {
+      return 1;
+    }
+    return Math.min(MAX_RENDER_SCALE, Math.max(1, MIN_GAME_WIDTH / w, MIN_GAME_HEIGHT / h));
+  }
+
+  // Both axes take the same scale, so the canvas keeps the host's aspect and CSS scales it without
+  // distortion.
+  function hostSize() {
+    const host = document.getElementById("game-host");
+    if (!host) {
+      return { width: MIN_GAME_WIDTH, height: MIN_GAME_HEIGHT };
+    }
+    const w = Math.max(1, host.clientWidth | 0);
+    const h = Math.max(1, host.clientHeight | 0);
+    const scale = scaleFor(w, h);
+    return {
+      width: Math.max(1, Math.round(w * scale)),
+      height: Math.max(1, Math.round(h * scale)),
+    };
+  }
+
   function ensureScaleBuffer(w, h) {
     if (!scaleBuffer || scaleBuffer.width !== w || scaleBuffer.height !== h) {
       scaleBuffer = document.createElement("canvas");
@@ -178,7 +231,33 @@ const WebCanvas = (function () {
     }
   }
 
-  return { attach, blit, drawOverlayText, drawLoadingBar, setSize };
+  return {
+    attach,
+    blit,
+    drawOverlayText,
+    drawLoadingBar,
+    setSize,
+
+    hostWidth() {
+      return hostSize().width;
+    },
+
+    hostHeight() {
+      return hostSize().height;
+    },
+
+    // 0 or less returns to picking the scale from the host size.
+    setRenderScale(scale) {
+      renderScale = scale > 0 ? +scale : 0;
+      window.dispatchEvent(new Event("resize"));
+    },
+
+    getRenderScale() {
+      const size = hostSize();
+      const host = document.getElementById("game-host");
+      return host ? size.width / Math.max(1, host.clientWidth | 0) : 1;
+    },
+  };
 })();
 
 window.WebCanvas = WebCanvas;

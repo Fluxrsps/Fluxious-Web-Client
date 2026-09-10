@@ -18,14 +18,78 @@ const WebInput = (function () {
   const HOLD_MS = 500;
   const PINCH_STEP = 40;
 
+  // Moving straight away swings the camera; resting the finger first and then moving drags with the
+  // left button held, which is what the client wants for an inventory item, a scrollbar or a
+  // slider. Nothing here can tell what the finger landed on — the client alone knows that — so how
+  // long it waited before moving is what picks between the two. Holding still past HOLD_MS is
+  // still the menu, so the window to start a drag runs from here to there.
+  let dragDwellMs = 180;
+
+  // Long enough for the tap to reach the client and its keyboard script to run: a tap is delivered
+  // on touchend and the client acts on it a frame later.
+  const DISMISS_DELAY_MS = 400;
+
   const GESTURE_NONE = 0;
   const GESTURE_PENDING = 1;
   const GESTURE_CAMERA = 2;
   const GESTURE_HOLD = 3;
   const GESTURE_PINCH = 4;
+  const GESTURE_DRAG = 5;
 
   let singleTap = false;
   let pinchZoom = true;
+  let keyboardDebug = false;
+
+  // `navigator.vibrate` is Android only: iOS has no vibration API in the browser at all, so this
+  // does nothing there. Inside the Android wrapper it additionally needs the VIBRATE permission in
+  // the manifest, or the call returns without buzzing.
+  //
+  // Milliseconds, or an on/off pattern such as [10, 30, 10] for a double tick. Short is the point:
+  // these fire mid-gesture, and anything longer reads as the phone stuttering.
+  const hapticPatterns = {
+    op: 8,
+    menu: 18,
+    drag: 12,
+    drop: 10,
+  };
+  let hapticsEnabled = true;
+
+  // The game's own haptic settings, republished by the client whenever the varbits behind them
+  // change (WebCallbacks.publishHapticPolicy). Everything is on until the client says otherwise,
+  // which is what those settings default to; `hover` is the one that defaults off.
+  const hapticPolicy = {
+    op: true,
+    drag: true,
+    menu: true,
+    hover: false,
+  };
+
+  // A drop is the end of a drag, so the drag setting covers both.
+  const HAPTIC_SETTING = {
+    op: "op",
+    menu: "menu",
+    drag: "drag",
+    drop: "drag",
+    hover: "hover",
+  };
+
+  function haptic(kind) {
+    if (!hapticsEnabled || typeof navigator.vibrate !== "function") {
+      return;
+    }
+    if (!hapticPolicy[HAPTIC_SETTING[kind]]) {
+      return;
+    }
+    const pattern = hapticPatterns[kind];
+    if (!pattern) {
+      return;
+    }
+    try {
+      navigator.vibrate(pattern);
+    } catch (err) {
+      /* a browser that refuses the pattern is not worth a broken gesture */
+    }
+  }
 
   const PREVENT_DEFAULT_KEYS = new Set([
     "Space",
@@ -37,6 +101,7 @@ const WebInput = (function () {
   ]);
 
   const VK_BACK_SPACE = 8;
+  const VK_ENTER = 10;
 
   let queue = [];
   let attached = false;
@@ -115,12 +180,17 @@ const WebInput = (function () {
   function createSoftKeyboard(canvas, focusCanvas) {
     const field = document.createElement("input");
 
+    let dismissTimer = 0;
+
     field.type = "text";
     field.setAttribute("autocomplete", "off");
     field.setAttribute("autocorrect", "off");
     field.setAttribute("autocapitalize", "off");
     field.setAttribute("spellcheck", "false");
     field.setAttribute("aria-hidden", "true");
+    // Without this the IME labels the action key "Go" or "Done", which some of them treat as
+    // submitting the field rather than as a key, so no Enter is reported at all.
+    field.setAttribute("enterkeyhint", "enter");
     field.tabIndex = -1;
     field.style.cssText =
       "position:fixed;bottom:0;left:0;width:1px;height:1px;padding:0;border:0;" +
@@ -128,10 +198,23 @@ const WebInput = (function () {
 
     (canvas.parentElement || document.body).appendChild(field);
 
+    // The typed character alone is not enough: sending a chat line and continuing a dialogue are
+    // key bindings, and the client reads those from the press, the way the canvas keydown handler
+    // reports a desktop Enter.
+    function enter() {
+      push(KEY_DOWN, VK_ENTER);
+      push(KEY_TYPED, 10);
+      push(KEY_UP, VK_ENTER);
+    }
+
     function typeText(text) {
       for (let i = 0; i < text.length; i++) {
         const code = text.charCodeAt(i);
-        push(KEY_TYPED, code === 13 || code === 10 ? 10 : code);
+        if (code === 13 || code === 10) {
+          enter();
+        } else {
+          push(KEY_TYPED, code);
+        }
       }
     }
 
@@ -148,7 +231,7 @@ const WebInput = (function () {
           typeText(e.data);
         }
       } else if (type === "insertLineBreak" || type === "insertParagraph") {
-        push(KEY_TYPED, 10);
+        enter();
       } else if (type === "deleteContentBackward" || type === "deleteWordBackward") {
         backspace();
       }
@@ -166,7 +249,7 @@ const WebInput = (function () {
 
     field.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
-        push(KEY_TYPED, 10);
+        enter();
         e.preventDefault();
       } else if (e.key === "Backspace") {
         backspace();
@@ -174,26 +257,54 @@ const WebInput = (function () {
       }
     });
 
+    // Read from the document rather than tracked: dismissing the keyboard with the system back
+    // gesture leaves the field focused without firing blur, so a flag of our own goes stale and
+    // the next tap re-raises the keyboard.
+    function isOpen() {
+      return document.activeElement === field;
+    }
+
+    function cancelDismiss() {
+      if (dismissTimer !== 0) {
+        window.clearTimeout(dismissTimer);
+        dismissTimer = 0;
+      }
+    }
+
+    function show() {
+      cancelDismiss();
+      field.value = "";
+      try {
+        field.focus({ preventScroll: true });
+      } catch (err) {
+        field.focus();
+      }
+    }
+
+    function hide() {
+      cancelDismiss();
+      field.blur();
+      focusCanvas();
+    }
+
     return {
-      // Read from the document rather than tracked: dismissing the keyboard with the system back
-      // gesture leaves the field focused without firing blur, so a flag of our own goes stale and
-      // the next tap re-raises the keyboard.
-      isOpen() {
-        return document.activeElement === field;
-      },
+      isOpen,
+      show,
+      hide,
 
-      show() {
-        field.value = "";
-        try {
-          field.focus({ preventScroll: true });
-        } catch (err) {
-          field.focus();
+      // Tapping the world is how the mobile client dismisses the keyboard, but the keyboard button
+      // is a tap too, and the client's show/hide for it only reaches us a tick later. Dismissing
+      // straight from the touch handler hid the keyboard before the button's script ran, so the
+      // script's show raised it again and the button could never close it. The dismiss waits
+      // instead, and any show/hide arriving in that window cancels it.
+      dismissSoon() {
+        if (!isOpen() || dismissTimer !== 0) {
+          return;
         }
-      },
-
-      hide() {
-        field.blur();
-        focusCanvas();
+        dismissTimer = window.setTimeout(() => {
+          dismissTimer = 0;
+          hide();
+        }, DISMISS_DELAY_MS);
       },
     };
   }
@@ -211,8 +322,6 @@ const WebInput = (function () {
     canvas.tabIndex = 0;
     canvas.style.outline = "none";
 
-    // Also dismisses the keyboard, by taking focus off the hidden field: tapping the world is how
-    // the mobile client closes it, and leaving it up would cover the game with no way to reach it.
     function focusCanvas() {
       try {
         canvas.focus({ preventScroll: true });
@@ -223,10 +332,21 @@ const WebInput = (function () {
 
     keyboard = createSoftKeyboard(canvas, focusCanvas);
 
+    // Focus for a press that starts a gesture. While the keyboard is up, taking focus back would
+    // close it before the client has seen the tap, so the dismiss is deferred and the client's own
+    // show or hide for that tap wins over it.
+    function focusForTap() {
+      if (keyboard !== null && keyboard.isOpen()) {
+        keyboard.dismissSoon();
+        return;
+      }
+      focusCanvas();
+    }
+
     let pressed = false;
 
     canvas.addEventListener("mousedown", (e) => {
-      focusCanvas();
+      focusForTap();
       const p = canvasCoords(canvas, e.clientX, e.clientY);
       const flags = (e.altKey ? 1 : 0) | (e.metaKey ? 2 : 0);
       pressed = true;
@@ -276,6 +396,7 @@ const WebInput = (function () {
     let holdTimer = 0;
     let startX = 0;
     let startY = 0;
+    let startTime = 0;
     let pinchDistance = 0;
 
     function clearHold() {
@@ -307,7 +428,7 @@ const WebInput = (function () {
     canvas.addEventListener(
       "touchstart",
       (e) => {
-        focusCanvas();
+        focusForTap();
         e.preventDefault();
 
         if (e.touches.length >= 2) {
@@ -315,6 +436,14 @@ const WebInput = (function () {
           // is already held, and pressing it again would leave a press with no release.
           if (gesture === GESTURE_PINCH) {
             pinchDistance = touchDistance(e.touches[0], e.touches[1]);
+            return;
+          }
+
+          // A drag holds the left button over something the client is carrying, and the camera
+          // holds the middle button; running both at once means the item is dropped wherever the
+          // camera happens to leave the cursor. The drag started first, so it keeps the gesture and
+          // the extra fingers are ignored until it ends.
+          if (gesture === GESTURE_DRAG) {
             return;
           }
 
@@ -340,6 +469,7 @@ const WebInput = (function () {
         const p = canvasCoords(canvas, e.touches[0].clientX, e.touches[0].clientY);
         startX = p.x;
         startY = p.y;
+        startTime = Date.now();
         gesture = GESTURE_PENDING;
 
         // The client picks its menu from where the cursor is, so move before any press.
@@ -353,6 +483,7 @@ const WebInput = (function () {
           }
           gesture = GESTURE_HOLD;
           push(DOWN, startX, startY, BUTTON_RIGHT, 0);
+          haptic("menu");
         }, HOLD_MS);
       },
       { passive: false }
@@ -399,13 +530,20 @@ const WebInput = (function () {
           if (Math.abs(p.x - startX) < DRAG_SLOP && Math.abs(p.y - startY) < DRAG_SLOP) {
             return;
           }
-          // Pressed at the origin so the client's drag delta starts where the finger landed.
+          // Both are pressed at the origin so the client's drag delta starts where the finger
+          // landed: for a widget drag that is also the slot the client picks the item up from.
           clearHold();
-          gesture = GESTURE_CAMERA;
-          push(CAMERA_DOWN, startX, startY);
+          if (Date.now() - startTime >= dragDwellMs) {
+            gesture = GESTURE_DRAG;
+            push(DOWN, startX, startY, BUTTON_LEFT, 0);
+            haptic("drag");
+          } else {
+            gesture = GESTURE_CAMERA;
+            push(CAMERA_DOWN, startX, startY);
+          }
         }
 
-        if (gesture === GESTURE_CAMERA || gesture === GESTURE_HOLD) {
+        if (gesture === GESTURE_CAMERA || gesture === GESTURE_HOLD || gesture === GESTURE_DRAG) {
           push(MOVE, p.x, p.y);
         }
       },
@@ -422,10 +560,22 @@ const WebInput = (function () {
 
       clearHold();
 
-      if (gesture === GESTURE_CAMERA || gesture === GESTURE_HOLD || gesture === GESTURE_PINCH) {
+      if (
+        gesture === GESTURE_CAMERA ||
+        gesture === GESTURE_HOLD ||
+        gesture === GESTURE_PINCH ||
+        gesture === GESTURE_DRAG
+      ) {
+        // The release lands where the finger was last reported, which is the slot a dragged item
+        // is dropped on.
         push(UP);
+        if (gesture === GESTURE_DRAG) {
+          haptic("drop");
+        }
       } else if (gesture === GESTURE_PENDING) {
         tap(startX, startY, singleTap ? BUTTON_RIGHT : BUTTON_LEFT);
+        // A tap is what performs an op, including picking an entry out of an open menu.
+        haptic("op");
       }
 
       gesture = GESTURE_NONE;
@@ -501,14 +651,69 @@ const WebInput = (function () {
       pinchZoom = !!enabled;
     },
 
+    // How long a finger must rest before moving counts as a drag rather than a camera swing. Must
+    // stay under the 500 ms hold that opens the menu, or a drag can never start.
+    setDragDwell(ms) {
+      dragDwellMs = ms > 0 ? ms | 0 : 0;
+    },
+
+    setHapticsEnabled(enabled) {
+      hapticsEnabled = !!enabled;
+    },
+
+    // Called by the client from the game's haptic settings; see WebJs.setHapticPolicy.
+    setHapticPolicy(op, drag, menu, hover) {
+      hapticPolicy.op = !!op;
+      hapticPolicy.drag = !!drag;
+      hapticPolicy.menu = !!menu;
+      hapticPolicy.hover = !!hover;
+    },
+
+    getHapticPolicy() {
+      return Object.assign({}, hapticPolicy);
+    },
+
+    hapticsSupported() {
+      return typeof navigator.vibrate === "function";
+    },
+
+    // `kind` is "menu", "drag" or "drop"; `pattern` is milliseconds or an on/off array such as
+    // [10, 30, 10]. 0 turns that one off without touching the others.
+    setHapticPattern(kind, pattern) {
+      if (Object.prototype.hasOwnProperty.call(hapticPatterns, kind)) {
+        hapticPatterns[kind] = pattern;
+      }
+    },
+
+    getHapticPatterns() {
+      return Object.assign({}, hapticPatterns);
+    },
+
+    // For trying patterns out from the console.
+    testHaptic(kind) {
+      haptic(kind);
+    },
+
+    // Reports which of the client's keyboard scripts actually ran, for telling a button that never
+    // asks to close apart from one whose close is being undone.
+    setKeyboardDebug(enabled) {
+      keyboardDebug = !!enabled;
+    },
+
     // Must be called from inside a user gesture, or the keyboard will not appear.
     showKeyboard() {
+      if (keyboardDebug) {
+        console.log("WebInput: client asked to show keyboard");
+      }
       if (keyboard !== null) {
         keyboard.show();
       }
     },
 
     hideKeyboard() {
+      if (keyboardDebug) {
+        console.log("WebInput: client asked to hide keyboard");
+      }
       if (keyboard !== null) {
         keyboard.hide();
       }
