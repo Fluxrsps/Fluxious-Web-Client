@@ -5,16 +5,21 @@ const WebCanvas = (function () {
   let scaleBuffer = null;
   let scaleCtx = null;
 
-  // The interfaces are drawn at a fixed pixel size and are laid out for the fixed-mode 765x503, so
-  // a host smaller than that gets the same widgets over fewer pixels: they take a larger share of
-  // the screen, and under 503 tall the panels reach each other and overlap. A phone in forced
-  // landscape reports about 844x390 CSS pixels, which is exactly that case. Rendering more game
-  // pixels than the element has CSS pixels and letting CSS scale the canvas back down restores the
-  // layout the client expects, at the cost of a larger frame to draw.
+  // Interfaces are drawn at a fixed pixel size, so how large they appear is decided entirely by how
+  // many pixels the client is given: the mobile toplevel's touch-sized widgets over a host's ~850
+  // CSS pixels swallow the screen and run into the minimap. The mobile client draws at the device's
+  // own resolution, which is what makes the same widgets sit small on a 2340x1080 phone, so that is
+  // what is asked for here - CSS then scales the canvas back to the element, one game pixel per
+  // device pixel.
+  //
+  // The 765x503 floor is separate and applies whatever the density: below it the fixed-mode layout
+  // has panels overlapping regardless.
   const MIN_GAME_WIDTH = 765;
   const MIN_GAME_HEIGHT = 503;
-  // Past this the frame costs more than the layout is worth on a phone.
-  const MAX_RENDER_SCALE = 2;
+  // Phone pixel ratios run to 4, and a frame that size costs more than the layout is worth, so the
+  // automatic choice stops at 2. A caller can still ask for more.
+  const MAX_AUTO_SCALE = 2;
+  const MAX_RENDER_SCALE = 4;
 
   // 0 picks the scale from the host size; anything else is the caller's own choice.
   let renderScale = 0;
@@ -34,12 +39,14 @@ const WebCanvas = (function () {
 
   function scaleFor(w, h) {
     if (renderScale > 0) {
-      return renderScale;
+      return Math.min(MAX_RENDER_SCALE, renderScale);
     }
     if (!isMobileHost()) {
       return 1;
     }
-    return Math.min(MAX_RENDER_SCALE, Math.max(1, MIN_GAME_WIDTH / w, MIN_GAME_HEIGHT / h));
+    const density = window.devicePixelRatio > 0 ? window.devicePixelRatio : 1;
+    const floor = Math.max(MIN_GAME_WIDTH / w, MIN_GAME_HEIGHT / h);
+    return Math.max(1, floor, Math.min(MAX_AUTO_SCALE, density));
   }
 
   // Both axes take the same scale, so the canvas keeps the host's aspect and CSS scales it without

@@ -29,6 +29,11 @@ const WebInput = (function () {
   // on touchend and the client acts on it a frame later.
   const DISMISS_DELAY_MS = 400;
 
+  // How long after such a tap a show from the client still counts as that tap's answer. Longer than
+  // the dismiss, to cover a press held past it and a client busy enough to answer a tick or two
+  // late.
+  const TOGGLE_WINDOW_MS = 900;
+
   const GESTURE_NONE = 0;
   const GESTURE_PENDING = 1;
   const GESTURE_CAMERA = 2;
@@ -181,6 +186,7 @@ const WebInput = (function () {
     const field = document.createElement("input");
 
     let dismissTimer = 0;
+    let dismissRequestedAt = 0;
 
     field.type = "text";
     field.setAttribute("autocomplete", "off");
@@ -269,9 +275,19 @@ const WebInput = (function () {
         window.clearTimeout(dismissTimer);
         dismissTimer = 0;
       }
+      dismissRequestedAt = 0;
     }
 
     function show() {
+      // The interface asks to show on every press of its keyboard button, the press meant to close
+      // it included: on a real phone the toggle is the native client's to keep, and here that is
+      // us. A show arriving just after a tap that began with the keyboard already up is that second
+      // press, so it closes rather than raising the keyboard again.
+      if (dismissRequestedAt !== 0 && Date.now() - dismissRequestedAt < TOGGLE_WINDOW_MS) {
+        hide();
+        return;
+      }
+
       cancelDismiss();
       field.value = "";
       try {
@@ -295,15 +311,18 @@ const WebInput = (function () {
       // Tapping the world is how the mobile client dismisses the keyboard, but the keyboard button
       // is a tap too, and the client's show/hide for it only reaches us a tick later. Dismissing
       // straight from the touch handler hid the keyboard before the button's script ran, so the
-      // script's show raised it again and the button could never close it. The dismiss waits
-      // instead, and any show/hide arriving in that window cancels it.
+      // script's show raised it again. The dismiss waits instead, and the tap is remembered for a
+      // little longer than that so a slow press - where the dismiss has already run by the time the
+      // client answers - still reads as the toggle it was.
       dismissSoon() {
         if (!isOpen() || dismissTimer !== 0) {
           return;
         }
+        dismissRequestedAt = Date.now();
         dismissTimer = window.setTimeout(() => {
           dismissTimer = 0;
-          hide();
+          field.blur();
+          focusCanvas();
         }, DISMISS_DELAY_MS);
       },
     };
