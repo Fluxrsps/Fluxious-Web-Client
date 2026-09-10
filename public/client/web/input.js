@@ -41,9 +41,31 @@ const WebInput = (function () {
   const GESTURE_PINCH = 4;
   const GESTURE_DRAG = 5;
 
+  // Two fingers can mean zoom or rotate, and doing both at once is why a pinch used to swing the
+  // camera: no one pinches without the point between their fingers wandering. Whichever the hands
+  // commit to first is what the gesture stays as until a finger lifts.
+  const PINCH_UNDECIDED = 0;
+  const PINCH_ZOOM = 1;
+  const PINCH_ROTATE = 2;
+
+  // In CSS pixels, measured from where the fingers landed. Rotating asks for more travel than
+  // zooming, so a pinch that drifts loses the race to the spread that caused the drift.
+  const PINCH_ZOOM_SLOP = 16;
+  const PINCH_ROTATE_SLOP = 32;
+
+  // Holding opens the menu; sliding onto an entry, resting on it and lifting picks it, the way the
+  // mobile client does. Only after the finger has moved into the menu - lifting straight off the
+  // press that opened it leaves the menu up, since the cursor is on the title bar at that point.
+  let hoverClickMs = 200;
+  // How far the finger has to travel to count as having moved to a different entry.
+  const HOVER_SLOP = 6;
+
   let singleTap = false;
   let pinchZoom = true;
   let keyboardDebug = false;
+
+  // Whether the client says the cursor is over something draggable; see WebCallbacks.
+  let dragTarget = false;
 
   // `navigator.vibrate` is Android only: iOS has no vibration API in the browser at all, so this
   // does nothing there. Inside the Android wrapper it additionally needs the VIBRATE permission in
@@ -417,6 +439,14 @@ const WebInput = (function () {
     let startY = 0;
     let startTime = 0;
     let pinchDistance = 0;
+    let pinchStartDistance = 0;
+    let pinchStartMidX = 0;
+    let pinchStartMidY = 0;
+    let pinchMode = PINCH_UNDECIDED;
+    let cameraHeld = false;
+    let hoverX = 0;
+    let hoverY = 0;
+    let hoverSince = 0;
 
     function clearHold() {
       if (holdTimer !== 0) {
@@ -451,8 +481,9 @@ const WebInput = (function () {
         e.preventDefault();
 
         if (e.touches.length >= 2) {
-          // Another finger landing during a pinch only re-bases the measurements: the camera button
-          // is already held, and pressing it again would leave a press with no release.
+          // Another finger landing during a pinch only re-bases the measurements: whatever the
+          // gesture had settled on is already under way and pressing again would leave a press with
+          // no release.
           if (gesture === GESTURE_PINCH) {
             pinchDistance = touchDistance(e.touches[0], e.touches[1]);
             return;
@@ -470,14 +501,17 @@ const WebInput = (function () {
           clearHold();
           if (gesture === GESTURE_CAMERA || gesture === GESTURE_HOLD) {
             push(UP);
+            cameraHeld = false;
           }
           gesture = GESTURE_PINCH;
           pinchDistance = touchDistance(e.touches[0], e.touches[1]);
+          pinchStartDistance = pinchDistance;
+          pinchStartMidX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+          pinchStartMidY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
 
-          // Held for as long as two fingers are down, so the midpoint's movement rotates the
-          // camera while the distance between them zooms it.
-          const start = touchMidpoint(e.touches[0], e.touches[1]);
-          push(CAMERA_DOWN, start.x, start.y);
+          // Nothing is pressed yet: the camera button only goes down if the fingers turn out to be
+          // rotating, so a zoom never drags the camera with it.
+          pinchMode = PINCH_UNDECIDED;
           return;
         }
 
@@ -503,6 +537,11 @@ const WebInput = (function () {
           gesture = GESTURE_HOLD;
           push(DOWN, startX, startY, BUTTON_RIGHT, 0);
           haptic("menu");
+          // Zero until the finger moves: the press that opened the menu is not a hover over one of
+          // its entries.
+          hoverSince = 0;
+          hoverX = startX;
+          hoverY = startY;
         }, HOLD_MS);
       },
       { passive: false }
@@ -518,16 +557,34 @@ const WebInput = (function () {
             return;
           }
 
-          // Rotate and zoom off the same move: the camera button is already held, so the midpoint
-          // drives rotation while the distance drives the wheel, and neither waits for the other.
-          const mid = touchMidpoint(e.touches[0], e.touches[1]);
-          push(MOVE, mid.x, mid.y);
+          const distance = touchDistance(e.touches[0], e.touches[1]);
 
-          if (!pinchZoom) {
+          if (pinchMode === PINCH_UNDECIDED) {
+            const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+            const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+            const midTravel = Math.hypot(midX - pinchStartMidX, midY - pinchStartMidY);
+            const spread = Math.abs(distance - pinchStartDistance);
+
+            if (pinchZoom && spread >= PINCH_ZOOM_SLOP) {
+              pinchMode = PINCH_ZOOM;
+              // Measured from here, so the spread that decided it is not also zoomed through.
+              pinchDistance = distance;
+            } else if (midTravel >= PINCH_ROTATE_SLOP) {
+              pinchMode = PINCH_ROTATE;
+              const start = touchMidpoint(e.touches[0], e.touches[1]);
+              push(CAMERA_DOWN, start.x, start.y);
+              cameraHeld = true;
+            } else {
+              return;
+            }
+          }
+
+          if (pinchMode === PINCH_ROTATE) {
+            const mid = touchMidpoint(e.touches[0], e.touches[1]);
+            push(MOVE, mid.x, mid.y);
             return;
           }
 
-          const distance = touchDistance(e.touches[0], e.touches[1]);
           const steps = (distance - pinchDistance) / PINCH_STEP;
           if (steps >= 1 || steps <= -1) {
             const notches = steps > 0 ? Math.floor(steps) : Math.ceil(steps);
@@ -552,18 +609,32 @@ const WebInput = (function () {
           // Both are pressed at the origin so the client's drag delta starts where the finger
           // landed: for a widget drag that is also the slot the client picks the item up from.
           clearHold();
-          if (Date.now() - startTime >= dragDwellMs) {
+          // The client has already said whether the finger landed on something it can drag, so no
+          // pause is needed over an item; the dwell is the fallback for the world and for a client
+          // that has not answered yet.
+          if (dragTarget || Date.now() - startTime >= dragDwellMs) {
             gesture = GESTURE_DRAG;
             push(DOWN, startX, startY, BUTTON_LEFT, 0);
             haptic("drag");
           } else {
             gesture = GESTURE_CAMERA;
             push(CAMERA_DOWN, startX, startY);
+            cameraHeld = true;
           }
         }
 
         if (gesture === GESTURE_CAMERA || gesture === GESTURE_HOLD || gesture === GESTURE_DRAG) {
           push(MOVE, p.x, p.y);
+        }
+
+        // The rest restarts whenever the finger moves off the entry it was over, so the dwell is
+        // measured against the entry that is about to be picked, not the whole gesture.
+        if (gesture === GESTURE_HOLD) {
+          if (Math.abs(p.x - hoverX) >= HOVER_SLOP || Math.abs(p.y - hoverY) >= HOVER_SLOP) {
+            hoverX = p.x;
+            hoverY = p.y;
+            hoverSince = Date.now();
+          }
         }
       },
       { passive: false }
@@ -579,17 +650,30 @@ const WebInput = (function () {
 
       clearHold();
 
+      // A pinch that only ever zoomed pressed nothing, so it has nothing to release.
       if (
         gesture === GESTURE_CAMERA ||
         gesture === GESTURE_HOLD ||
-        gesture === GESTURE_PINCH ||
-        gesture === GESTURE_DRAG
+        gesture === GESTURE_DRAG ||
+        (gesture === GESTURE_PINCH && cameraHeld)
       ) {
         // The release lands where the finger was last reported, which is the slot a dragged item
         // is dropped on.
         push(UP);
+        cameraHeld = false;
         if (gesture === GESTURE_DRAG) {
           haptic("drop");
+        }
+
+        // Releasing the button that opened the menu selects nothing, so resting on an entry and
+        // lifting is answered with the click the client is waiting for.
+        if (
+          gesture === GESTURE_HOLD &&
+          hoverSince !== 0 &&
+          Date.now() - hoverSince >= hoverClickMs
+        ) {
+          tap(hoverX, hoverY, BUTTON_LEFT);
+          haptic("op");
         }
       } else if (gesture === GESTURE_PENDING) {
         tap(startX, startY, singleTap ? BUTTON_RIGHT : BUTTON_LEFT);
@@ -598,6 +682,7 @@ const WebInput = (function () {
       }
 
       gesture = GESTURE_NONE;
+      pinchMode = PINCH_UNDECIDED;
     }
 
     canvas.addEventListener("touchend", endTouch, { passive: false });
@@ -676,8 +761,23 @@ const WebInput = (function () {
       dragDwellMs = ms > 0 ? ms | 0 : 0;
     },
 
+    // How long a finger has to rest on a menu entry before lifting picks it. 0 picks whatever the
+    // finger is over however briefly it paused there.
+    setHoverClickDelay(ms) {
+      hoverClickMs = ms > 0 ? ms | 0 : 0;
+    },
+
     setHapticsEnabled(enabled) {
       hapticsEnabled = !!enabled;
+    },
+
+    // Called by the client each time the cursor moves onto or off something it can drag.
+    setDragTarget(draggable) {
+      dragTarget = !!draggable;
+    },
+
+    isOverDragTarget() {
+      return dragTarget;
     },
 
     // Called by the client from the game's haptic settings; see WebJs.setHapticPolicy.
