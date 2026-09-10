@@ -36,23 +36,13 @@ export type MobileOs = 'android' | 'ios';
 function readOverride(): { mobile: boolean; os: MobileOs | null } | null {
     const param = new URLSearchParams(window.location.search).get('mobile');
 
-    if (param !== null && param in OVERRIDES) {
-        try {
-            window.localStorage.setItem(OVERRIDE_KEY, param);
-        } catch {
-            // Private browsing; the query param still applies for this page load.
-        }
-
-        return OVERRIDES[param];
-    }
-
     try {
-        const stored = window.localStorage.getItem(OVERRIDE_KEY);
-
-        return stored !== null && stored in OVERRIDES ? OVERRIDES[stored] : null;
+        window.localStorage.removeItem(OVERRIDE_KEY);
     } catch {
-        return null;
+        // Private browsing; nothing was stored to begin with.
     }
+
+    return param !== null && param in OVERRIDES ? OVERRIDES[param] : null;
 }
 
 const override = readOverride();

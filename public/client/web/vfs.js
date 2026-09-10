@@ -1,5 +1,6 @@
 const WebVfs = (function () {
   const CACHE_PREFIX = "cache/";
+  const DATA_FILE = "main_file_cache.dat2";
   let ready = false;
   let backend = "idb";
   let rootDir = null;
@@ -168,11 +169,30 @@ const WebVfs = (function () {
   }
 
   function cacheFileNames() {
-    const names = ["main_file_cache.dat2", "main_file_cache.idx255", "random.dat"];
+    const names = [DATA_FILE, "main_file_cache.idx255", "random.dat"];
     for (let i = 0; i < 256; i++) {
       names.push("main_file_cache.idx" + i);
     }
     return names;
+  }
+
+  // Opt-in, because seeding the data file means downloading the whole cache up front. The indexes
+  // are only a few hundred KB and are what the client needs to know the archive layout; the groups
+  // themselves arrive over JS5 as the client asks for them and are written into this same VFS, so
+  // they accumulate across sessions exactly as the desktop cache does.
+  function seedsDataFile() {
+    const config = window.__webConfig;
+    return !!(config && config.seedCacheData);
+  }
+
+  function seedFileNames() {
+    const names = cacheFileNames();
+    if (seedsDataFile()) {
+      return names;
+    }
+    return names.filter(function (name) {
+      return name !== DATA_FILE;
+    });
   }
 
   async function ensureCacheBootstrap() {
@@ -184,9 +204,13 @@ const WebVfs = (function () {
       await openFile(name);
     }
 
+    // Every file is opened above so the client has somewhere to write, but only these are
+    // downloaded; anything left out is filled in over JS5 on demand.
+    const seedNames = seedFileNames();
+
     let seeded = 0;
     let consecutiveMisses = 0;
-    for (const name of names) {
+    for (const name of seedNames) {
       if (consecutiveMisses >= 4 && name.startsWith("main_file_cache.idx")) {
         continue;
       }
@@ -213,7 +237,7 @@ const WebVfs = (function () {
       setFile(key, bytes);
       seeded++;
     }
-    return { files: names.length, seeded: seeded };
+    return { files: names.length, seeded: seeded, seededData: seedsDataFile() };
   }
 
   async function seedLength(name) {
@@ -331,6 +355,23 @@ const WebVfs = (function () {
       f.len = need;
     }
     markRange(f, position, need);
+    // Scheduled here rather than only from flush(): the client writes JS5 groups as they arrive but
+    // does not flush each one, so without this the bytes never left memory and every reload
+    // re-downloaded everything it had already been given.
+    scheduleFlush(key);
+  }
+
+  function scheduleFlush(key) {
+    if (backend === "opfs-mem") {
+      const h = syncHandles.get(key);
+      if (h) {
+        markDirty(key, h.fileHandle);
+      }
+      return;
+    }
+    if (backend === "idb") {
+      markDirty(key, null);
+    }
   }
 
   function flush(path) {
@@ -358,6 +399,17 @@ const WebVfs = (function () {
   const FLUSH_DEBOUNCE_MS = 5000;
   const dirtyFiles = new Map();
   let flushTimer = null;
+
+  // A reload inside the debounce window would otherwise throw away everything written since the
+  // last flush, which for a fresh cache is most of what JS5 just sent.
+  if (typeof window !== "undefined" && window.addEventListener) {
+    window.addEventListener("pagehide", runPendingFlushes);
+    window.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "hidden") {
+        runPendingFlushes();
+      }
+    });
+  }
 
   function markDirty(key, fileHandle) {
     dirtyFiles.set(key, fileHandle);

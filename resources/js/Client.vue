@@ -62,11 +62,6 @@ let stopFullscreen: (() => void) | null = null;
 
 const mobile = isMobileDevice();
 
-// Called straight from the click: a touch browser ignores a focus outside a user gesture.
-function toggleKeyboard(): void {
-    window.WebInput?.toggleKeyboard?.();
-}
-
 onMounted(async () => {
     const meta = viewportMeta();
     if (meta) {
@@ -129,18 +124,6 @@ onUnmounted(() => {
         <!-- Sized to #game each frame by the plugin runtime, so overlay coordinates match the
              ones the client draws in. -->
         <canvas id="game-overlay" ref="overlay" width="765" height="503"></canvas>
-
-        <!-- The mobile client's function button. Inside the host so the forced landscape
-             rotation carries it round with the game. -->
-        <button
-            v-if="mobile && !failure && !loadingVisible && !loginVisible"
-            type="button"
-            class="flx-keyboard-btn"
-            title="Keyboard"
-            @click="toggleKeyboard"
-        >
-            ⌨
-        </button>
     </div>
 
     <ErrorScreen v-if="failure" :failure="failure" />
@@ -190,28 +173,6 @@ onUnmounted(() => {
 }
 
 /* Bottom left, clear of the tab strip on the right and the chat box along the bottom. */
-.flx-keyboard-btn {
-    position: absolute;
-    bottom: max(10px, env(safe-area-inset-bottom));
-    left: max(10px, env(safe-area-inset-left));
-    z-index: 40;
-    width: 44px;
-    height: 44px;
-    padding: 0;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    background: rgba(0, 0, 0, 0.55);
-    color: #e8e2d6;
-    font-size: 20px;
-    line-height: 1;
-    touch-action: manipulation;
-    -webkit-touch-callout: none;
-    user-select: none;
-}
-
-.flx-keyboard-btn:active {
-    background: rgba(0, 0, 0, 0.8);
-}
-
 /* Taps must not scroll, zoom or rubber-band the page out from under the client. */
 html:has(#game-host),
 html:has(#game-host) body {

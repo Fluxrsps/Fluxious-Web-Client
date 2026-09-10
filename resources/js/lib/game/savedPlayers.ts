@@ -1,21 +1,22 @@
 import { ref } from 'vue';
 
+import { decryptSecret, encryptSecret } from './secretStore';
+
 /**
  * The saved-player list behind the login screen's left-hand panel.
  *
- * Browser-only, and deliberately so: the desktop client keeps its own encrypted profile store, but
- * that lives on a filesystem this build does not have.
+ * Browser-only, and deliberately so: the desktop client keeps its own profile store, but that lives
+ * on a filesystem this build does not have.
  *
- * SECURITY: a save holds the account password in plain text in localStorage, because clicking a
- * saved player logs straight in and there is no other way to do that without it. Anything with
- * access to the browser profile — another script on this origin, an extension, someone at the
- * machine — can read it. That is the cost of one-click login; the alternative is to store only the
- * username and make the player type the password each time.
+ * SECURITY: passwords are held in memory in plain text — clicking a saved player logs straight in,
+ * so the plaintext has to exist at that moment — but what reaches localStorage is AES-GCM
+ * ciphertext, keyed by a non-extractable key in IndexedDB. See `secretStore.ts` for what that does
+ * and does not protect against.
  */
 
 export type SavedPlayer = {
     name: string;
-    /** Password, in plain text. See the security note above. */
+    /** Plain text in memory only; encrypted on the way to storage. */
     password: string;
     /** Total level as last reported by the client, or 0 before it has ever been seen. */
     totalLevel: number;
@@ -31,26 +32,51 @@ export const MAX_SAVES = 5;
 
 const STORAGE_KEY = 'flux.game.saves';
 
-const players = ref<SavedPlayer[]>(load());
+/** Bumped when the stored password stopped being plain text, so old saves can be re-encrypted. */
+const ENCRYPTED_VERSION = 2;
+
+type StoredEntry = {
+    name: string;
+    password: string;
+    totalLevel: number;
+    world: number;
+    lastPlayed: number;
+    fav: boolean;
+};
+
+const players = ref<SavedPlayer[]>([]);
 
 export const savedPlayers = players;
 
-function load(): SavedPlayer[] {
+/**
+ * The list loads in two steps because decryption is async and the panel is rendered synchronously.
+ * Everything except the passwords is available immediately; each password arrives a tick later and
+ * is filled in place, long before a card can be clicked.
+ */
+const stored = loadStored();
+
+players.value = stored.entries.map((entry) => ({ ...entry, password: '' }));
+
+void hydratePasswords(stored);
+
+function loadStored(): { entries: StoredEntry[]; encrypted: boolean } {
     try {
         const raw = window.localStorage.getItem(STORAGE_KEY);
 
         if (!raw) {
-            return [];
+            return { entries: [], encrypted: true };
         }
 
         const parsed: unknown = JSON.parse(raw);
+        const list = Array.isArray(parsed) ? parsed : (parsed as Record<string, unknown>)?.saves;
+        const version = Array.isArray(parsed) ? 1 : Number((parsed as Record<string, unknown>)?.v ?? 1);
 
-        if (!Array.isArray(parsed)) {
-            return [];
+        if (!Array.isArray(list)) {
+            return { entries: [], encrypted: true };
         }
 
         // Anything in localStorage is user-editable, so every field is re-checked rather than cast.
-        return parsed
+        const entries = list
             .filter((entry): entry is Record<string, unknown> => typeof entry === 'object' && entry !== null)
             .map((entry) => ({
                 name: typeof entry.name === 'string' ? entry.name : '',
@@ -62,14 +88,46 @@ function load(): SavedPlayer[] {
             }))
             .filter((entry) => entry.name !== '')
             .slice(0, MAX_SAVES);
+
+        return { entries, encrypted: version >= ENCRYPTED_VERSION };
     } catch {
-        return [];
+        return { entries: [], encrypted: true };
     }
 }
 
-function persist(): void {
+async function hydratePasswords(source: { entries: StoredEntry[]; encrypted: boolean }): Promise<void> {
+    if (source.entries.length === 0) {
+        return;
+    }
+
+    const passwords = await Promise.all(
+        source.entries.map((entry) =>
+            source.encrypted ? decryptSecret(entry.password) : Promise.resolve(entry.password),
+        ),
+    );
+
+    players.value = players.value.map((entry, index) => ({ ...entry, password: passwords[index] ?? '' }));
+
+    // A list written before encryption existed is rewritten now, so the plaintext stops sitting in
+    // localStorage without waiting for the player's next login.
+    if (!source.encrypted) {
+        void persist();
+    }
+}
+
+async function persist(): Promise<void> {
+    const snapshot = players.value;
+
+    const entries = await Promise.all(
+        snapshot.map(async (entry) => {
+            const sealed = entry.password === '' ? '' : await encryptSecret(entry.password);
+
+            return { ...entry, password: sealed ?? '' };
+        }),
+    );
+
     try {
-        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(players.value));
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ v: ENCRYPTED_VERSION, saves: entries }));
     } catch {
         // Private browsing and full quotas both land here. Losing the list is not worth an error.
     }
@@ -111,7 +169,7 @@ export function rememberPlayer(name: string, world: number, password: string): v
         ].slice(0, MAX_SAVES);
     }
 
-    persist();
+    void persist();
 }
 
 /**
@@ -129,12 +187,12 @@ export function updateTotalLevel(name: string, totalLevel: number): void {
     }
 
     existing.totalLevel = totalLevel;
-    persist();
+    void persist();
 }
 
 export function forgetPlayer(name: string): void {
     players.value = players.value.filter((entry) => entry.name !== name);
-    persist();
+    void persist();
 }
 
 /** Marks a save as the favourite, or clears it. Only one save can hold the flag. */
@@ -142,7 +200,7 @@ export function toggleFavourite(name: string): void {
     const wasFavourite = players.value.find((entry) => entry.name === name)?.fav === true;
 
     players.value = players.value.map((entry) => ({ ...entry, fav: !wasFavourite && entry.name === name }));
-    persist();
+    void persist();
 }
 
 /** "Never", "Just now", "3 hours ago", "2 days ago" — enough to tell saves apart at a glance. */
