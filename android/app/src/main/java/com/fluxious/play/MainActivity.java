@@ -28,6 +28,13 @@ public class MainActivity extends Activity {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+        // Fullscreen windows are letterboxed away from a display cutout by default, which leaves
+        // a black strip beside the notch in landscape. The page draws under it (viewport-fit=cover).
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            getWindow().getAttributes().layoutInDisplayCutoutMode =
+                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        }
+
         web = new WebView(this);
 
         WebSettings settings = web.getSettings();
