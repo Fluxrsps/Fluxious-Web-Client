@@ -24,5 +24,8 @@ fn hslToRgb(hsl: vec3f) -> vec3f {
     var hueB = hue - 0.3333333333333333;
     if (hueB < 0.0) { hueB = hueB + 1.0; }
 
-    return vec3f(hslChannel(hueR, lower, upper), hslChannel(hue, lower, upper), hslChannel(hueB, lower, upper));
+    let rgb = vec3f(hslChannel(hueR, lower, upper), hslChannel(hue, lower, upper), hslChannel(hueB, lower, upper));
+
+    // The client's gamma is part of its palette, so it is part of the conversion; see the GLSL copy.
+    return pow(rgb, vec3f(scene.brightness));
 }

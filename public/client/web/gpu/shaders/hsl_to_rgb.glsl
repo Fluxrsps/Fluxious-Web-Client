@@ -3,6 +3,11 @@
  *
  * Not a general HSL: hue is 6 bits, saturation 3, lightness 7, and the ranges are the client's.
  * Ported from the desktop renderer's hsl_to_rgb.glsl so a tile is the colour it has always been.
+ *
+ * The brightness gamma at the end is part of the conversion, not a post-effect: the client bakes it
+ * into its palette when it builds it, so a colour without it is what the client would draw at
+ * brightness 1.0 - visibly darker than the desktop client at the player's actual setting.
+ * `uBrightness` is declared by whichever stage includes this.
  */
 vec3 hslToRgb(vec3 hsl) {
     float hue = hsl.x / 64.0 + 0.0078125;
@@ -33,5 +38,5 @@ vec3 hslToRgb(vec3 hsl) {
           : 3.0 * hueB < 2.0 ? lower + (upper - lower) * (0.6666666666666666 - hueB) * 6.0
           : lower;
 
-    return rgb;
+    return pow(rgb, vec3(uBrightness));
 }

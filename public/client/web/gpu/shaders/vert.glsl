@@ -36,6 +36,8 @@ uniform int uExpandedChunks;
 uniform int uTick;
 uniform ivec4 uTint;
 uniform highp sampler2D uTextureAnim;
+// The client's gamma; hslToRgb applies it. Same uniform as the fragment stage's, set once per frame.
+uniform float uBrightness;
 
 out vec4 fColour;
 centroid out float fHsl;

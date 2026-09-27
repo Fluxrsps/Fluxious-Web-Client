@@ -10,8 +10,23 @@ import { reportLoading } from './loadingState';
  * this Inertia page); its runtime helpers are plain scripts that publish themselves on `window`, so
  * they are loaded in order before the client itself. Everything the client needs to reach the
  * server goes into `window.__webConfig`, which it reads once on startup.
+ *
+ * Boot is a handful of independent waits — the server config, the runtime scripts, the client
+ * download, the cache, the bridge probes, the artwork — and none of them need the others' results
+ * except where noted below. They are started together and awaited where they are needed, so the
+ * time to the login screen is the longest of them rather than the sum.
  */
 const CLIENT_BASE = '/client/';
+
+/**
+ * Identifies this deploy's client files, and goes on every client URL as `?v=`.
+ *
+ * The files under /client/ are served as immutable, so a changed build has to change its URL:
+ * the hash is taken from the files themselves at build time (see vite.config.ts), which means a
+ * redeployed client is fetched once and then comes out of the browser's cache on every visit
+ * until it changes again. The old `?t=<now>` re-downloaded seven megabytes on every load.
+ */
+const CLIENT_BUILD = import.meta.env.VITE_CLIENT_BUILD || 'dev';
 
 /** Runtime helpers, in dependency order: decoders first, then the bridges that use them. */
 const RUNTIME_SCRIPTS = [
@@ -78,6 +93,17 @@ const DEFAULT_REVISION = 240;
 const BRIDGE_PROBE_TIMEOUT_MS = 5000;
 
 /**
+ * How long to wait for `jav_config.ws` before falling back to the host it named last time.
+ *
+ * The config changes when a world moves, which is rare, and the fetch has been seen to take seven
+ * seconds on a cold browser while the bridge it names answered in a hundredth of that. So a remembered
+ * answer is used once the fetch is this late, and the fetch is left to finish and refresh the memory
+ * for next time. A first visit has nothing remembered and waits the full timeout as before.
+ */
+const JAV_CONFIG_SOFT_TIMEOUT_MS = 2000;
+const JAV_CONFIG_MEMORY_KEY = 'flux.javConfig.codebaseHost';
+
+/**
  * A boot failure, described for a player rather than a developer.
  *
  * `detail` is the technical cause. It goes to the console only: the page must not put server
@@ -89,6 +115,11 @@ export type BootFailure = {
     detail?: string;
     retryable: boolean;
 };
+
+/** The URL a client file is loaded by: under {@link CLIENT_BASE}, stamped with the build. */
+function clientUrl(file: string): string {
+    return `${CLIENT_BASE}${file}?v=${encodeURIComponent(CLIENT_BUILD)}`;
+}
 
 /**
  * Whether the WebSocket bridge is up.
@@ -129,7 +160,6 @@ function worldListUrl(javConfigUrl: string, bridgeOrigin: string, params: URLSea
     return new URL('worldslist.ws', base).href;
 }
 
-/** Whether this page is a developer's own machine rather than a deployed site. */
 /**
  * The bridge's host for a world named by `codebase`.
  *
@@ -151,6 +181,7 @@ function bridgeHost(codebaseHost: string): string {
     return [`${labels[0]}${BRIDGE_HOST_SUFFIX}`, ...labels.slice(1)].join('.');
 }
 
+/** Whether this page is a developer's own machine rather than a deployed site. */
 function isLocal(): boolean {
     const host = window.location.hostname;
 
@@ -222,6 +253,14 @@ function alreadyLoaded(src: string): boolean {
  */
 type ScriptLoad = { status: 'ok' } | { status: 'missing' } | { status: 'threw'; detail: string };
 
+/**
+ * Appends one script and reports how it ended.
+ *
+ * `async = false` puts a dynamically inserted script into the document's ordered queue: the browser
+ * downloads it at once but runs it after every earlier script inserted the same way. That is what
+ * lets {@link loadScripts} hand the whole runtime to the browser in one go — twenty downloads in
+ * flight together — while each still sees the globals of the ones before it.
+ */
 function loadScript(src: string): Promise<ScriptLoad> {
     if (alreadyLoaded(src)) {
         return Promise.resolve({ status: 'ok' });
@@ -247,6 +286,7 @@ function loadScript(src: string): Promise<ScriptLoad> {
             resolve(result);
         };
 
+        el.async = false;
         el.src = src;
         el.onload = () => {
             if (thrown) {
@@ -260,6 +300,106 @@ function loadScript(src: string): Promise<ScriptLoad> {
         el.onerror = () => finish({ status: 'missing' });
         document.body.appendChild(el);
     });
+}
+
+/**
+ * Loads scripts in order, downloading them all at once.
+ *
+ * The result is the first failure in document order, or ok. Everything is appended before anything
+ * is awaited; the loading each waited on the last before, and the runtime took a round trip per file.
+ */
+async function loadScripts(files: string[]): Promise<{ file: string; load: ScriptLoad } | null> {
+    const loads = files.map((file) => ({ file, promise: loadScript(clientUrl(file)) }));
+
+    for (const { file, promise } of loads) {
+        const load = await promise;
+
+        if (load.status !== 'ok') {
+            return { file, load };
+        }
+    }
+
+    return null;
+}
+
+/**
+ * Starts the client download without running it.
+ *
+ * The client is the largest thing boot fetches and the last thing it needs, so the download is
+ * started first and the file is in the cache by the time {@link loadScript} asks for it. A preload
+ * rather than a fetch(), so the browser matches it to the script tag later without a second request.
+ */
+function preloadScript(src: string): void {
+    const url = new URL(src, window.location.href).href;
+    const existing = [...document.querySelectorAll('link[rel="preload"]')].some(
+        (link) => (link as HTMLLinkElement).href === url,
+    );
+
+    if (existing || alreadyLoaded(src)) {
+        return;
+    }
+
+    const link = document.createElement('link');
+
+    link.rel = 'preload';
+    link.as = 'script';
+    link.href = src;
+    document.head.appendChild(link);
+}
+
+/**
+ * The host `jav_config.ws` names, or the reason it could not be read.
+ *
+ * Remembers the last good answer so a slow config server holds boot up by at most
+ * {@link JAV_CONFIG_SOFT_TIMEOUT_MS} on a repeat visit. Keyed by config URL, so pointing a dev
+ * build at a different config does not replay a host from the live one.
+ */
+async function resolveCodebaseHost(url: string): Promise<{ host: string | null; reason: string }> {
+    const memoryKey = `${JAV_CONFIG_MEMORY_KEY}:${url}`;
+    let remembered: string | null = null;
+
+    try {
+        remembered = window.localStorage.getItem(memoryKey);
+    } catch {
+        // Storage can be unavailable (private mode, blocked); the fetch alone is then the answer.
+    }
+
+    const fetched = (async () => {
+        const host = hostFromCodebase(await loadJavConfig(url));
+
+        if (!host) {
+            throw new Error('no usable codebase');
+        }
+
+        try {
+            window.localStorage.setItem(memoryKey, host);
+        } catch {
+            // Not remembered; the next visit fetches as this one did.
+        }
+
+        return host;
+    })();
+
+    if (remembered) {
+        const late = new Promise<null>((resolve) =>
+            window.setTimeout(() => resolve(null), JAV_CONFIG_SOFT_TIMEOUT_MS),
+        );
+        const host = await Promise.race([fetched.catch(() => null), late]);
+
+        if (host === null) {
+            // Left running: a late answer still refreshes what is remembered, and a failure is only
+            // logged because there is a host to use regardless.
+            fetched.catch((e) => console.warn(`[boot] ${url}: ${e instanceof Error ? e.message : e}`));
+        }
+
+        return { host: host ?? remembered, reason: '' };
+    }
+
+    try {
+        return { host: await fetched, reason: '' };
+    } catch (e) {
+        return { host: null, reason: e instanceof Error ? e.message : String(e) };
+    }
 }
 
 /**
@@ -317,90 +457,94 @@ export async function bootGameClient(): Promise<BootFailure | null> {
         easing.start();
         easing.set(8, 'Loading runtime');
 
-        for (const script of RUNTIME_SCRIPTS) {
-            const load = await loadScript(CLIENT_BASE + script);
+        // Started before anything else: the download is the longest single wait in boot and needs
+        // nothing from the steps below, only to be in the cache when the script tag asks for it.
+        const clientScriptUrl = clientUrl('web-client.js');
+        preloadScript(clientScriptUrl);
 
-            if (load.status === 'missing') {
-                return fail({
-                    title: 'Client files are missing',
-                    message:
-                        'Part of the game client failed to load. This usually means the site is ' +
-                        'mid-deploy, so refreshing in a moment should fix it.',
-                    detail: `Failed to load ${CLIENT_BASE}${script}`,
-                    retryable: true,
-                });
-            }
+        // Which server to play against comes from jav_config.ws, the same file the desktop launcher
+        // reads: `codebase` names the host. Fetched every boot rather than built in, so moving a
+        // world is one edit on the server and every client follows. Started now, alongside the
+        // runtime download; a query-string host is a tester pointing the client somewhere by hand,
+        // and that beats the published configuration, so there is no reason to fetch it at all then.
+        const javConfigUrl =
+            params.get('javConfig') || import.meta.env.VITE_JAV_CONFIG_URL || DEFAULT_JAV_CONFIG_URL;
+        const codebase = params.get('wsHost')
+            ? Promise.resolve({ host: null, reason: '' })
+            : resolveCodebaseHost(javConfigUrl);
 
-            if (load.status === 'threw') {
-                return fail({
-                    title: 'The client stopped unexpectedly',
-                    message:
-                        'A part of the game client failed while starting up. This is a fault on our ' +
-                        'side rather than yours — please let us know if it keeps happening.',
-                    detail: `${CLIENT_BASE}${script} threw while loading: ${load.detail}`,
-                    retryable: true,
-                });
-            }
+        const runtime = await loadScripts(RUNTIME_SCRIPTS);
+
+        if (runtime && runtime.load.status === 'missing') {
+            return fail({
+                title: 'Client files are missing',
+                message:
+                    'Part of the game client failed to load. This usually means the site is ' +
+                    'mid-deploy, so refreshing in a moment should fix it.',
+                detail: `Failed to load ${CLIENT_BASE}${runtime.file}`,
+                retryable: true,
+            });
+        }
+
+        if (runtime && runtime.load.status === 'threw') {
+            return fail({
+                title: 'The client stopped unexpectedly',
+                message:
+                    'A part of the game client failed while starting up. This is a fault on our ' +
+                    'side rather than yours — please let us know if it keeps happening.',
+                detail: `${CLIENT_BASE}${runtime.file} threw while loading: ${runtime.load.detail}`,
+                retryable: true,
+            });
         }
 
         // Before the canvas is attached: a canvas keeps one kind of context for its lifetime, so
         // whether the frame goes to the GPU or to a 2D context is settled here, once.
         easing.set(10, 'Starting renderer');
-        await window.WebGpu.init('game');
+        const renderer = window.WebGpu.init('game');
 
+        // Needs only the runtime (WebVfs) and none of the server details, so it runs while the
+        // config is read and the bridge probed. Opening the cache is a few hundred storage round
+        // trips and was the longest local step in boot.
+        const cache = window.WebVfs.init().then(() => window.WebVfs.ensureCacheBootstrap());
+
+        // Not fatal: preloadAsset reports its own failure, and the login screen draws without the
+        // artwork the same way the desktop client does when the files are missing.
+        const artwork = Promise.all(
+            LOGIN_ASSETS.map(([name, url]) => window.WebImage.preloadAsset(name, url)),
+        );
+
+        await renderer;
         window.WebCanvas.attach('game');
         window.WebInput.attach('game');
 
-        // Which server to play against comes from jav_config.ws, the same file the desktop launcher
-        // reads: `codebase` names the host. Fetched every boot rather than built in, so moving a
-        // world is one edit on the server and every client follows.
-        easing.set(10, 'Reading server configuration');
+        easing.set(12, 'Reading server configuration');
 
-        const javConfigUrl =
-            params.get('javConfig') || import.meta.env.VITE_JAV_CONFIG_URL || DEFAULT_JAV_CONFIG_URL;
+        const { host: codebaseHost, reason } = await codebase;
 
-        let codebaseHost: string | null = null;
-
-        // A query-string host is a tester pointing the client somewhere by hand, and that beats the
-        // published configuration — so there is no reason to fetch it at all in that case.
-        if (!params.get('wsHost')) {
-            const failure = { url: javConfigUrl, reason: '' };
-
-            try {
-                codebaseHost = hostFromCodebase(await loadJavConfig(javConfigUrl));
-
-                if (!codebaseHost) {
-                    failure.reason = 'no usable codebase';
-                }
-            } catch (e) {
-                failure.reason = e instanceof Error ? e.message : String(e);
+        if (!params.get('wsHost') && !codebaseHost) {
+            // Development runs against a server on this machine, and the published config
+            // names a live world it should not be talking to — so a failure there is expected
+            // rather than fatal, and the local bridge is the right answer.
+            if (!isLocal()) {
+                return fail({
+                    title: 'Cannot reach the server list',
+                    message:
+                        'We could not work out which server to connect you to. This is a problem ' +
+                        'on our side rather than yours; please try again in a minute.',
+                    detail: `${javConfigUrl}: ${reason}`,
+                    retryable: true,
+                });
             }
 
-            if (!codebaseHost) {
-                // Development runs against a server on this machine, and the published config
-                // names a live world it should not be talking to — so a failure there is expected
-                // rather than fatal, and the local bridge is the right answer.
-                if (!isLocal()) {
-                    return fail({
-                        title: 'Cannot reach the server list',
-                        message:
-                            'We could not work out which server to connect you to. This is a problem ' +
-                            'on our side rather than yours; please try again in a minute.',
-                        detail: `${failure.url}: ${failure.reason}`,
-                        retryable: true,
-                    });
-                }
-
-                console.warn(
-                    `[boot] ${failure.url}: ${failure.reason} — using this host, as this is a local run`,
-                );
-            }
+            console.warn(`[boot] ${javConfigUrl}: ${reason} — using this host, as this is a local run`);
         }
 
-        // `?wsHost=` is a tester naming the bridge outright, so it is taken as written; the
-        // published config names the world rather than the bridge, so that one is derived.
+        // `?wsHost=` is a tester naming the bridge outright, so it is taken as written, and
+        // `VITE_BRIDGE_HOST` is the same thing said once for a whole dev run. The published config
+        // names the world rather than the bridge, so that one is derived.
         const wsHost =
             params.get('wsHost') ||
+            import.meta.env.VITE_BRIDGE_HOST ||
             (codebaseHost && bridgeHost(codebaseHost)) ||
             window.location.hostname ||
             '127.0.0.1';
@@ -451,13 +595,25 @@ export async function bootGameClient(): Promise<BootFailure | null> {
             revision: window.__webConfig.revision,
             source: params.get('wsHost')
                 ? 'url override'
-                : codebaseHost
-                  ? 'launcher config'
-                  : 'this page',
+                : import.meta.env.VITE_BRIDGE_HOST
+                  ? 'site config'
+                  : codebaseHost
+                    ? 'launcher config'
+                    : 'this page',
         });
 
-        easing.set(12, 'Contacting game server');
-        if (!(await isBridgeReachable(bridgeOrigin))) {
+        easing.set(15, 'Contacting game server');
+
+        // The bridge answers over HTTP but the socket is what the client plays through, and the two
+        // are blocked independently — so both are asked, together, and told apart below. The world
+        // list is fetched alongside: it is small, and only the client needs it.
+        const [bridgeUp, socketUp] = await Promise.all([
+            isBridgeReachable(bridgeOrigin),
+            isSocketReachable(window.__webConfig.js5WsUrl),
+            window.WebHttp.prefetch(window.__webConfig.worldListUrl),
+        ]);
+
+        if (!bridgeUp) {
             return fail({
                 title: 'The game server is offline',
                 message:
@@ -468,9 +624,7 @@ export async function bootGameClient(): Promise<BootFailure | null> {
             });
         }
 
-        // The bridge answers over HTTP but the socket is what the client plays through, and the two
-        // are blocked independently.
-        if (!(await isSocketReachable(window.__webConfig.js5WsUrl))) {
+        if (!socketUp) {
             return fail({
                 title: 'The game server cannot be reached',
                 message:
@@ -481,22 +635,14 @@ export async function bootGameClient(): Promise<BootFailure | null> {
             });
         }
 
-        easing.set(15, 'Opening cache');
-        await window.WebVfs.init();
-        easing.set(32, 'Preparing cache');
-        await window.WebVfs.ensureCacheBootstrap();
-
-        easing.set(45, 'Fetching world list');
-        await window.WebHttp.prefetch(window.__webConfig.worldListUrl);
+        easing.set(40, 'Preparing cache');
+        await cache;
 
         easing.set(58, 'Loading artwork');
-        // Not fatal: preloadAsset reports its own failure, and the login screen draws without the
-        // artwork the same way the desktop client does when the files are missing.
-        await Promise.all(LOGIN_ASSETS.map(([name, url]) => window.WebImage.preloadAsset(name, url)));
+        await artwork;
 
         easing.set(68, 'Downloading client');
-        const clientUrl = `${CLIENT_BASE}web-client.js?t=${Date.now()}`;
-        const load = await loadScript(clientUrl);
+        const load = await loadScript(clientScriptUrl);
 
         if (load.status === 'missing') {
             return fail({

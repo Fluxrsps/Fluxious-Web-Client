@@ -24,6 +24,11 @@
 
         <title>Fluxious - Play</title>
 
+        <!-- The client is seven megabytes and the last thing boot needs, so its download starts
+             here, before the page's own script has been fetched. The stamp matches the one the boot
+             script puts on the URL, so the script tag it adds later is served from this. -->
+        <link rel="preload" as="script" href="/client/web-client.js?v=%VITE_CLIENT_BUILD%" />
+
         <script type="module" src="/resources/js/app.ts"></script>
     </head>
     <body>

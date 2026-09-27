@@ -390,13 +390,73 @@ const WebImage = (function () {
     }
   }
 
+  let scratchCanvas = null;
+  let scratchCtx = null;
+
   function packFrame(source, w, h) {
-    const canvas = document.createElement("canvas");
-    canvas.width = w;
-    canvas.height = h;
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    ctx.drawImage(source, 0, 0);
-    return packSpriteArgb(w, h, ctx.getImageData(0, 0, w, h).data);
+    // One canvas for every frame rather than a new one each: creating a canvas and its context per
+    // frame of the login animation was a visible slice of boot on the main thread.
+    if (!scratchCanvas || scratchCanvas.width !== w || scratchCanvas.height !== h) {
+      scratchCanvas = document.createElement("canvas");
+      scratchCanvas.width = w;
+      scratchCanvas.height = h;
+      scratchCtx = scratchCanvas.getContext("2d", { willReadFrequently: true });
+    }
+    scratchCtx.drawImage(source, 0, 0);
+    return packSpriteArgb(w, h, scratchCtx.getImageData(0, 0, w, h).data);
+  }
+
+  /**
+   * Packs a decoded VideoFrame without going through a canvas, where the browser lets us.
+   *
+   * ImageDecoder gives frames as VideoFrames, and copyTo can hand over their pixels directly; the
+   * draw-then-getImageData route rasterises the frame a second time to read it back. Only the
+   * layouts we can pack ourselves are taken; anything else falls back to the canvas.
+   */
+  async function packVideoFrame(image, w, h) {
+    const format = image.format;
+    if (!image.copyTo || !image.allocationSize || (format !== "RGBA" && format !== "RGBX" && format !== "BGRA" && format !== "BGRX")) {
+      return packFrame(image, w, h);
+    }
+    let rgba;
+    try {
+      const rect = { x: 0, y: 0, width: w, height: h };
+      const buffer = new Uint8Array(image.allocationSize({ rect: rect }));
+      const layout = await image.copyTo(buffer, { rect: rect });
+      const stride = layout && layout[0] ? layout[0].stride : w * 4;
+      if (stride !== w * 4) {
+        // Padded rows: repack tightly so the packer can walk it as one run.
+        const tight = new Uint8Array(w * h * 4);
+        for (let y = 0; y < h; y++) {
+          tight.set(buffer.subarray(y * stride, y * stride + w * 4), y * w * 4);
+        }
+        rgba = tight;
+      } else {
+        rgba = buffer;
+      }
+    } catch (e) {
+      return packFrame(image, w, h);
+    }
+    if (format === "BGRA" || format === "BGRX") {
+      const pixels = new Int32Array(w * h);
+      for (let i = 0, p = 0; i < pixels.length; i++, p += 4) {
+        if (format === "BGRA" && (rgba[p + 3] & 0xff) === 0) {
+          pixels[i] = 0;
+          continue;
+        }
+        pixels[i] = ((rgba[p + 2] & 0xff) << 16) | ((rgba[p + 1] & 0xff) << 8) | (rgba[p] & 0xff);
+      }
+      return pixels;
+    }
+    if (format === "RGBX") {
+      // No alpha channel to test; every pixel is opaque.
+      const pixels = new Int32Array(w * h);
+      for (let i = 0, p = 0; i < pixels.length; i++, p += 4) {
+        pixels[i] = ((rgba[p] & 0xff) << 16) | ((rgba[p + 1] & 0xff) << 8) | (rgba[p + 2] & 0xff);
+      }
+      return pixels;
+    }
+    return packSpriteArgb(w, h, rgba);
   }
 
   async function decodeAnimated(blob, type) {
@@ -427,7 +487,7 @@ const WebImage = (function () {
           width = image.displayWidth | 0;
           height = image.displayHeight | 0;
         }
-        frames.push(packFrame(image, width, height));
+        frames.push(await packVideoFrame(image, width, height));
         const delay = Math.max(20, Math.round((image.duration || 100000) / 1000));
         delays.push(delay);
         total += delay;

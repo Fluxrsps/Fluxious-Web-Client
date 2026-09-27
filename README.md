@@ -56,13 +56,14 @@ in the config becomes `world1-proxy.fluxious-rsps.com` in the browser. Every wor
 both records. Address literals and single-label names are left alone, so a bridge on the local
 network still works without one.
 
-Two build-time settings, both optional, in `.env` locally and project environment variables on
-Vercel:
+Build-time settings, all optional, in `.env` locally and project environment variables on Vercel:
 
 | Variable | Empty means |
 |---|---|
 | `VITE_JAV_CONFIG_URL` | `https://central.fluxious-rsps.com/jav_config.ws` |
 | `VITE_GAME_WS_SECURE` | Follow the page: HTTPS uses `wss`, HTTP uses `ws` |
+| `VITE_BRIDGE_HOST` | The `-proxy` host derived from the config's `codebase` |
+| `VITE_BRIDGE_PORT` | `8091`, the bridge's own port |
 
 **The config host must send `Access-Control-Allow-Origin`.** The page fetches it from the site's own
 origin, so without that header the browser blocks the read and the client has no server to connect
@@ -74,7 +75,9 @@ The bridge host itself has to serve TLS for the same reason: a page on `https://
 
 For testing, `?wsHost=` skips the config lookup entirely and `?wsPort=` overrides the port; running
 on localhost also falls back to the local bridge when the config cannot be read, so development
-against a server on this machine needs no flags.
+against a server on this machine needs no flags. `VITE_BRIDGE_HOST` is the same override said once
+for a whole dev run, for when the published config *can* be read and would otherwise send the client
+to a live world.
 
 ## Deploying to Vercel
 

@@ -38,12 +38,23 @@
 
     let loading = null;
 
-    /** Where this script came from, which is where the shaders sit beside it. */
+    /**
+     * Where this script came from, which is where the shaders sit beside it.
+     *
+     * The page stamps every client URL with `?v=<build>` so the files can be cached as immutable.
+     * The stamp is split off here and put back on each shader's URL, so the shaders are versioned
+     * and cached the same way — and so it does not end up in the middle of the path.
+     */
     function directory() {
         const script = document.querySelector('script[src*="web/gpu/shaders.js"]');
         const src = script ? script.getAttribute('src') : 'web/gpu/shaders.js';
+        const query = src.indexOf('?');
+        const path = query < 0 ? src : src.slice(0, query);
 
-        return src.replace('shaders.js', 'shaders/');
+        return {
+            base: path.replace('shaders.js', 'shaders/'),
+            version: query < 0 ? '' : src.slice(query),
+        };
     }
 
     /**
@@ -77,10 +88,10 @@
                 return loading;
             }
 
-            const base = directory();
+            const { base, version } = directory();
 
             loading = Promise.all(FILES.map((name) =>
-                fetch(base + name)
+                fetch(base + name + version)
                     .then((response) => (response.ok ? response.text() : Promise.reject(new Error(name + ': HTTP ' + response.status))))
                     .then((text) => sources.set(name, text))))
                 .then(() => true)

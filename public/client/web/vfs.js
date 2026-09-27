@@ -200,44 +200,49 @@ const WebVfs = (function () {
       await init();
     }
     const names = cacheFileNames();
-    for (const name of names) {
-      await openFile(name);
+    // All at once: each open is a round trip into the browser's storage, and 259 of them one
+    // after another took over a second before a single byte had been fetched.
+    await Promise.all(names.map((name) => openFile(name)));
+
+    // Nothing is downloaded unless the whole cache is. The index files only mean anything
+    // alongside the data file they point into: seeding them on their own gave the client indexes
+    // into a .dat2 it did not have, so every group still came over JS5 - and because the client
+    // rewrites its indexes as those groups land, the local copies no longer matched the server's
+    // and were "reseeded" on the next visit, which threw away every group the last session had
+    // saved. Without seeding the cache fills over JS5 and persists, exactly as the desktop's does.
+    if (!seedsDataFile()) {
+      return { files: names.length, seeded: 0, seededData: false };
     }
 
-    // Every file is opened above so the client has somewhere to write, but only these are
-    // downloaded; anything left out is filled in over JS5 on demand.
     const seedNames = seedFileNames();
-
-    let seeded = 0;
-    let consecutiveMisses = 0;
-    for (const name of seedNames) {
-      if (consecutiveMisses >= 4 && name.startsWith("main_file_cache.idx")) {
-        continue;
-      }
-      const key = normalize(name);
-      const existing = memoryFiles.get(key);
-      const localLength = existing ? existing.len : 0;
-
-      const remoteLength = await seedLength(name);
+    const lengths = await Promise.all(seedNames.map((name) => seedLength(name)));
+    const wanted = [];
+    for (let i = 0; i < seedNames.length; i++) {
+      const name = seedNames[i];
+      const remoteLength = lengths[i];
       if (remoteLength < 0) {
-        consecutiveMisses++;
         continue;
       }
-      consecutiveMisses = 0;
+      const existing = memoryFiles.get(normalize(name));
+      const localLength = existing ? existing.len : 0;
       if (localLength === remoteLength) {
         continue;
       }
       if (localLength > 0) {
         log("reseeding " + name + ": have " + localLength + " bytes, server has " + remoteLength);
       }
-      const bytes = await fetchSeed(name);
-      if (!bytes) {
-        continue;
-      }
-      setFile(key, bytes);
-      seeded++;
+      wanted.push(name);
     }
-    return { files: names.length, seeded: seeded, seededData: seedsDataFile() };
+
+    const fetched = await Promise.all(wanted.map((name) => fetchSeed(name)));
+    let seeded = 0;
+    for (let i = 0; i < wanted.length; i++) {
+      if (fetched[i]) {
+        setFile(normalize(wanted[i]), fetched[i]);
+        seeded++;
+      }
+    }
+    return { files: names.length, seeded: seeded, seededData: true };
   }
 
   async function seedLength(name) {
