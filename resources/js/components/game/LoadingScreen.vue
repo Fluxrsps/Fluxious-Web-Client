@@ -25,23 +25,66 @@ const backgroundSrcset = [
 ].join(', ');
 
 const TIP_INTERVAL_MS = 5000;
-const tips = (tipData.tips ?? []).filter((tip) => typeof tip === 'string' && tip.trim().length > 0);
 
+/** Tips live on the CDN so they can be edited without a site deploy. */
+const TIPS_URL = 'https://cdn.fluxious-rsps.com/tips/didyouknow.json';
+
+const readTips = (value: unknown): string[] =>
+    Array.isArray(value)
+        ? value.filter((tip): tip is string => typeof tip === 'string' && tip.trim().length > 0)
+        : [];
+
+// The bundled tips are what shows first, and what stays up if the CDN is slow, blocked or down.
+const tips = ref(readTips(tipData.tips));
 const tipIndex = ref(0);
+
 let timer: ReturnType<typeof setInterval> | undefined;
+const pending = new AbortController();
+
+/**
+ * Replaces the bundled tips with the CDN's once they arrive. A flat array is the file's own shape;
+ * an object carrying a `tips` array is taken too, so this reads the site's local file either way.
+ */
+async function loadTips() {
+    try {
+        const response = await fetch(TIPS_URL, { signal: pending.signal, cache: 'no-cache' });
+        if (!response.ok) {
+            return;
+        }
+        const payload: unknown = await response.json();
+        const loaded = readTips(
+            Array.isArray(payload) ? payload : (payload as { tips?: unknown } | null)?.tips,
+        );
+        if (loaded.length === 0) {
+            return;
+        }
+        tips.value = loaded;
+        // A random start, so the same few tips are not the ones every player reads.
+        tipIndex.value = Math.floor(Math.random() * loaded.length);
+    } catch {
+        // The bundled tips stay up. A loading screen is not the place to report a failed fetch.
+    }
+}
 
 onMounted(() => {
-    if (tips.length > 1) {
-        timer = setInterval(() => {
-            tipIndex.value = (tipIndex.value + 1) % tips.length;
-        }, TIP_INTERVAL_MS);
-    }
+    void loadTips();
+    // Unconditional: the list can grow from one bundled tip to the CDN's whole set mid-load.
+    timer = setInterval(() => {
+        if (tips.value.length > 1) {
+            tipIndex.value = (tipIndex.value + 1) % tips.value.length;
+        }
+    }, TIP_INTERVAL_MS);
 });
 
-onBeforeUnmount(() => clearInterval(timer));
+onBeforeUnmount(() => {
+    clearInterval(timer);
+    pending.abort();
+});
 
 const percent = computed(() => Math.max(0, Math.min(100, Math.round(loadingProgress.value))));
-const currentTip = computed(() => tips[tipIndex.value % Math.max(tips.length, 1)] ?? '');
+const currentTip = computed(
+    () => tips.value[tipIndex.value % Math.max(tips.value.length, 1)] ?? '',
+);
 </script>
 
 <template>
