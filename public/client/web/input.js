@@ -16,7 +16,21 @@ const WebInput = (function () {
 
   const DRAG_SLOP = 12;
   const HOLD_MS = 500;
-  const PINCH_STEP = 40;
+
+  /**
+   * How much the gap between the fingers has to change, proportionally, for one step of zoom.
+   *
+   * The client zooms by a fixed amount per wheel notch and there is no way to ask it for a fraction
+   * of one, so how smooth a pinch feels comes down to how closely the notches track the fingers. A
+   * ratio rather than a pixel distance is what makes that consistent: closing a 400 pixel gap to 200
+   * is the same gesture as closing 100 to 50, and reading it in pixels made the first four times as
+   * strong as the second. It also has no natural scale to get wrong on a dense screen.
+   *
+   * At 4% a pinch that halves or doubles the gap is about seventeen steps, which is most of the
+   * client's range, and each step lands after a few pixels of movement rather than forty.
+   */
+  const PINCH_ZOOM_RATIO = 1.04;
+  const PINCH_ZOOM_LN = Math.log(PINCH_ZOOM_RATIO);
 
   // Moving straight away swings the camera; resting the finger first and then moving drags with the
   // left button held, which is what the client wants for an inventory item, a scrollbar or a
@@ -50,7 +64,11 @@ const WebInput = (function () {
 
   // In CSS pixels, measured from where the fingers landed. Rotating asks for more travel than
   // zooming, so a pinch that drifts loses the race to the spread that caused the drift.
-  const PINCH_ZOOM_SLOP = 16;
+  //
+  // The zoom figure is the dead patch at the start of every pinch, so it is kept small: the gesture
+  // wants to answer at once, and a deliberate two-finger drag holds its spread while moving the
+  // midpoint well past the rotate figure, which is what keeps the two apart.
+  const PINCH_ZOOM_SLOP = 10;
   const PINCH_ROTATE_SLOP = 32;
 
   // Holding opens the menu; sliding onto an entry, resting on it and lifting picks it, the way the
@@ -585,13 +603,20 @@ const WebInput = (function () {
             return;
           }
 
-          const steps = (distance - pinchDistance) / PINCH_STEP;
-          if (steps >= 1 || steps <= -1) {
-            const notches = steps > 0 ? Math.floor(steps) : Math.ceil(steps);
-            for (let i = 0; i < Math.abs(notches); i++) {
-              push(WHEEL, notches > 0 ? -1 : 1);
+          // Proportional, not the difference: see PINCH_ZOOM_RATIO. Two fingers cannot actually
+          // reach the same point, but a guard costs nothing next to a division by zero.
+          if (distance > 0 && pinchDistance > 0) {
+            const steps = Math.log(distance / pinchDistance) / PINCH_ZOOM_LN;
+
+            if (steps >= 1 || steps <= -1) {
+              const notches = steps > 0 ? Math.floor(steps) : Math.ceil(steps);
+              for (let i = 0; i < Math.abs(notches); i++) {
+                push(WHEEL, notches > 0 ? -1 : 1);
+              }
+              // Advanced by exactly what was sent, so the remainder carries into the next move
+              // rather than being dropped - which is what would make a slow pinch stall.
+              pinchDistance *= Math.pow(PINCH_ZOOM_RATIO, notches);
             }
-            pinchDistance += notches * PINCH_STEP;
           }
           return;
         }

@@ -23,6 +23,19 @@ export type RevealPosition = (typeof REVEAL_POSITIONS)[number];
  */
 const DEFAULT_REVEAL_POSITION: RevealPosition = isMobileDevice() ? 'left' : 'right';
 
+/**
+ * How large the game interface is drawn, as a percentage.
+ *
+ * 100 is one game pixel per screen pixel — on a phone that means the device's own pixels, which is
+ * what the real mobile client does, and it leaves the mobile layout's touch-sized widgets looking
+ * small on a dense screen. A hand-held screen is held closer and has less of it, so the default
+ * asks for larger there.
+ *
+ * Applied by drawing fewer, bigger game pixels; see `scaleFor` in `web/canvas.js`, which also caps
+ * it at the point the layout would start overlapping itself.
+ */
+const DEFAULT_UI_SCALE = isMobileDevice() ? 150 : 100;
+
 export const fluxiousConfig: ConfigGroup = {
     group: CONFIG_GROUP_KEY,
     items: [
@@ -50,6 +63,19 @@ export const fluxiousConfig: ConfigGroup = {
                 { value: 'bottom', label: 'Bottom' },
                 { value: 'left', label: 'Left' },
             ],
+        },
+        {
+            type: 'number',
+            keyName: 'uiScale',
+            name: 'Interface size',
+            description:
+                'How large the game interface is drawn, as a percentage. Higher zooms in. How far it'
+                + ' can go depends on the screen: past a point the layout runs out of room and stops'
+                + ' getting any larger.',
+            position: 4,
+            defaultValue: DEFAULT_UI_SCALE,
+            min: 50,
+            max: 200,
         },
         {
             type: 'boolean',

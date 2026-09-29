@@ -68,7 +68,17 @@ declare global {
             init(): Promise<void>;
             ensureCacheBootstrap(): Promise<void>;
         };
-        WebCanvas: { attach(id: string): void };
+        WebCanvas: {
+            attach(id: string): void;
+            /**
+             * How large to draw the interface, as a percentage of the automatic scale; higher is
+             * larger. Optional because the page can be served alongside an older client build.
+             */
+            setUiScalePercent?(percent: number): void;
+            getUiScalePercent?(): number;
+            /** The largest interface size this screen can actually show, for a settings hint. */
+            maxUsefulUiScalePercent?(): number;
+        };
         /**
          * The GPU renderer, from `web/gpu/*.js`.
          *

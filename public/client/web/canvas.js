@@ -24,6 +24,63 @@ const WebCanvas = (function () {
   // 0 picks the scale from the host size; anything else is the caller's own choice.
   let renderScale = 0;
 
+  /**
+   * How large the interface should be drawn, as a percentage of the automatic choice.
+   *
+   * Interfaces are a fixed number of game pixels, so their size on screen is decided entirely by how
+   * many game pixels the canvas has: fewer pixels over the same element makes each one bigger, which
+   * is what "zoomed in" means here. So this divides the render scale rather than multiplying it.
+   *
+   * The default is above 100 on a phone. Matching the device's pixel density - what 100 means - is
+   * what the real mobile client does, and it leaves the touch-sized widgets of the mobile layout
+   * looking small on a dense screen; a hand-held screen wants them larger than that.
+   *
+   * How far it can actually go is limited by the floor below, because the mobile layout's widgets
+   * start running into each other and into the minimap once the game surface gets too small.
+   */
+  const DEFAULT_UI_SCALE_MOBILE = 150;
+  const DEFAULT_UI_SCALE_DESKTOP = 100;
+  const MIN_UI_SCALE = 50;
+  const MAX_UI_SCALE = 200;
+
+  /**
+   * Where the player's choice is stored.
+   *
+   * Read straight out of storage rather than waited for from the plugin that owns the setting: the
+   * canvas is sized before any plugin has started, and a first frame at the wrong scale would resize
+   * the client a moment later - which the client answers by rebuilding its buffers and relaying out
+   * every interface. Same key the config store writes; see `configStore.ts`.
+   */
+  const UI_SCALE_KEY = "flux.config.fluxious.uiScale";
+
+  let uiScalePercent = 0;
+
+  function clampUiScale(percent) {
+    return Math.max(MIN_UI_SCALE, Math.min(MAX_UI_SCALE, percent));
+  }
+
+  function storedUiScale() {
+    try {
+      const raw = window.localStorage.getItem(UI_SCALE_KEY);
+      if (raw !== null && raw !== "") {
+        const parsed = parseFloat(raw);
+        if (isFinite(parsed) && parsed > 0) {
+          return clampUiScale(parsed);
+        }
+      }
+    } catch (ignored) {
+      // Blocked or private-mode storage throws rather than answering null; the default is fine.
+    }
+    return isMobileHost() ? DEFAULT_UI_SCALE_MOBILE : DEFAULT_UI_SCALE_DESKTOP;
+  }
+
+  function currentUiScale() {
+    if (uiScalePercent === 0) {
+      uiScalePercent = storedUiScale();
+    }
+    return uiScalePercent;
+  }
+
   // The hosting page decides what a phone is and publishes it, the same source web/orientation.js
   // reads, so the rotation and the render scale cannot disagree.
   function isMobileHost() {
@@ -41,12 +98,27 @@ const WebCanvas = (function () {
     if (renderScale > 0) {
       return Math.min(MAX_RENDER_SCALE, renderScale);
     }
-    if (!isMobileHost()) {
-      return 1;
+
+    // One game pixel per CSS pixel on a desktop, the device's own pixels on a phone. See the note on
+    // the constants above for why the two differ.
+    let automatic = 1;
+
+    if (isMobileHost()) {
+      const density = window.devicePixelRatio > 0 ? window.devicePixelRatio : 1;
+      automatic = Math.min(MAX_AUTO_SCALE, density);
     }
-    const density = window.devicePixelRatio > 0 ? window.devicePixelRatio : 1;
+
+    const scale = currentUiScale();
+
+    if (scale === 100) {
+      return automatic;
+    }
+
+    // The player's zoom divides it: fewer game pixels over the same element is a larger interface.
+    // The floor still wins, because past it the layout overlaps itself whatever was asked for.
     const floor = Math.max(MIN_GAME_WIDTH / w, MIN_GAME_HEIGHT / h);
-    return Math.max(1, floor, Math.min(MAX_AUTO_SCALE, density));
+
+    return Math.max(floor, Math.min(MAX_RENDER_SCALE, automatic / (scale / 100)));
   }
 
   // Both axes take the same scale, so the canvas keeps the host's aspect and CSS scales it without
@@ -257,6 +329,42 @@ const WebCanvas = (function () {
     setRenderScale(scale) {
       renderScale = scale > 0 ? +scale : 0;
       window.dispatchEvent(new Event("resize"));
+    },
+
+    /**
+     * How large to draw the interface, as a percentage of the automatic scale. Higher is larger.
+     *
+     * The resize is what makes it take effect: the client reads the host size every frame and
+     * rebuilds its buffers when it changes, so nothing here has to reach into the client.
+     */
+    setUiScalePercent(percent) {
+      const next = percent > 0 ? clampUiScale(+percent) : storedUiScale();
+      if (next === uiScalePercent) {
+        return;
+      }
+      uiScalePercent = next;
+      window.dispatchEvent(new Event("resize"));
+    },
+
+    getUiScalePercent() {
+      return currentUiScale();
+    },
+
+    /** The most zoomed-in this host can go, as a percentage, for a settings panel to show a limit. */
+    maxUsefulUiScalePercent() {
+      const host = document.getElementById("game-host");
+      if (!host) {
+        return MAX_UI_SCALE;
+      }
+      const w = Math.max(1, host.clientWidth | 0);
+      const h = Math.max(1, host.clientHeight | 0);
+      const floor = Math.max(MIN_GAME_WIDTH / w, MIN_GAME_HEIGHT / h);
+      let automatic = 1;
+      if (isMobileHost()) {
+        const density = window.devicePixelRatio > 0 ? window.devicePixelRatio : 1;
+        automatic = Math.min(MAX_AUTO_SCALE, density);
+      }
+      return Math.min(MAX_UI_SCALE, Math.max(MIN_UI_SCALE, Math.round((automatic / floor) * 100)));
     },
 
     getRenderScale() {

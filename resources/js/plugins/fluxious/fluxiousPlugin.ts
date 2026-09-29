@@ -32,6 +32,17 @@ const navButton: NavigationButton = {
     onClick: () => setSidebarHidden(true),
 };
 
+/**
+ * Hands the player's interface size to the canvas, which resizes itself to suit.
+ *
+ * The canvas reads the stored value itself for the very first frame — it is sized before any plugin
+ * has started — so this matters for a change made while the client is running. Called on start-up
+ * too, so the one path is exercised either way rather than only when someone touches the setting.
+ */
+function applyUiScale(): void {
+    window.WebCanvas.setUiScalePercent?.(config?.number('uiScale') ?? 100);
+}
+
 function onKeyDown(event: KeyboardEvent): void {
     // Never while the player is writing: a note containing the shortcut letter would otherwise
     // close the panel out from under them.
@@ -65,6 +76,7 @@ export const fluxiousPlugin: FluxPlugin = {
 
     startUp(context: PluginContext) {
         config = context.config;
+        applyUiScale();
         addNavigation(navButton);
         // On the window rather than the panel: the shortcut has to work while the game canvas has
         // focus, which is where a player's keyboard usually is. In the capture phase so it is seen
@@ -82,10 +94,10 @@ export const fluxiousPlugin: FluxPlugin = {
     },
 
     onConfigChanged(group) {
-        // The bind is read fresh on each key press, so nothing to rebuild; this only exists to
-        // make that deliberate rather than an omission.
+        // The keybind is read fresh on each key press, so nothing to rebuild for that one. The
+        // interface size is different: the canvas has to be resized for it to mean anything.
         if (group === CONFIG_GROUP_KEY) {
-            return;
+            applyUiScale();
         }
     },
 };
