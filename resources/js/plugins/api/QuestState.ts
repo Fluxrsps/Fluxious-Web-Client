@@ -3,19 +3,19 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class QuestState extends ApiObject {
     hashCode(): number {
-        return callNum(1173, this.handle, []);
-    }
-
-    name(): string | null {
-        return callStr(1174, this.handle, []);
-    }
-
-    ordinal(): number {
         return callNum(1175, this.handle, []);
     }
 
-    toString(): string | null {
+    name(): string | null {
         return callStr(1176, this.handle, []);
+    }
+
+    ordinal(): number {
+        return callNum(1177, this.handle, []);
+    }
+
+    toString(): string | null {
+        return callStr(1178, this.handle, []);
     }
 
 }

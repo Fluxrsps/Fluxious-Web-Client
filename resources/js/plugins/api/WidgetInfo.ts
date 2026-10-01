@@ -3,35 +3,35 @@ import { ApiObject, callNum, callStr } from './runtime';
 
 export class WidgetInfo extends ApiObject {
     getChildId(): number {
-        return callNum(2142, this.handle, []);
-    }
-
-    getGroupId(): number {
-        return callNum(2143, this.handle, []);
-    }
-
-    getId(): number {
         return callNum(2144, this.handle, []);
     }
 
-    getPackedId(): number {
+    getGroupId(): number {
         return callNum(2145, this.handle, []);
     }
 
-    hashCode(): number {
+    getId(): number {
         return callNum(2146, this.handle, []);
     }
 
-    name(): string | null {
-        return callStr(2147, this.handle, []);
+    getPackedId(): number {
+        return callNum(2147, this.handle, []);
     }
 
-    ordinal(): number {
+    hashCode(): number {
         return callNum(2148, this.handle, []);
     }
 
-    toString(): string | null {
+    name(): string | null {
         return callStr(2149, this.handle, []);
+    }
+
+    ordinal(): number {
+        return callNum(2150, this.handle, []);
+    }
+
+    toString(): string | null {
+        return callStr(2151, this.handle, []);
     }
 
 }

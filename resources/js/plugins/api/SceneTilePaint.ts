@@ -3,75 +3,75 @@ import { ApiObject, callNum, callVoid } from './runtime';
 
 export class SceneTilePaint extends ApiObject {
     getBufferLen(): number {
-        return callNum(1314, this.handle, []);
-    }
-
-    getBufferOffset(): number {
-        return callNum(1315, this.handle, []);
-    }
-
-    getNeColor(): number {
         return callNum(1316, this.handle, []);
     }
 
-    getNwColor(): number {
+    getBufferOffset(): number {
         return callNum(1317, this.handle, []);
     }
 
-    getRBG(): number {
+    getNeColor(): number {
         return callNum(1318, this.handle, []);
     }
 
-    getSeColor(): number {
+    getNwColor(): number {
         return callNum(1319, this.handle, []);
     }
 
-    getSwColor(): number {
+    getRBG(): number {
         return callNum(1320, this.handle, []);
     }
 
-    getTexture(): number {
+    getSeColor(): number {
         return callNum(1321, this.handle, []);
     }
 
-    getUvBufferOffset(): number {
+    getSwColor(): number {
         return callNum(1322, this.handle, []);
     }
 
+    getTexture(): number {
+        return callNum(1323, this.handle, []);
+    }
+
+    getUvBufferOffset(): number {
+        return callNum(1324, this.handle, []);
+    }
+
     isFlat(): boolean {
-        return callNum(1323, this.handle, []) !== 0;
+        return callNum(1325, this.handle, []) !== 0;
     }
 
     setBufferLen(a0: number): void {
-        callVoid(1324, this.handle, [a0]);
-    }
-
-    setBufferOffset(a0: number): void {
-        callVoid(1325, this.handle, [a0]);
-    }
-
-    setNeColor(a0: number): void {
         callVoid(1326, this.handle, [a0]);
     }
 
-    setNwColor(a0: number): void {
+    setBufferOffset(a0: number): void {
         callVoid(1327, this.handle, [a0]);
     }
 
-    setSeColor(a0: number): void {
+    setNeColor(a0: number): void {
         callVoid(1328, this.handle, [a0]);
     }
 
-    setSwColor(a0: number): void {
+    setNwColor(a0: number): void {
         callVoid(1329, this.handle, [a0]);
     }
 
-    setTexture(a0: number): void {
+    setSeColor(a0: number): void {
         callVoid(1330, this.handle, [a0]);
     }
 
-    setUvBufferOffset(a0: number): void {
+    setSwColor(a0: number): void {
         callVoid(1331, this.handle, [a0]);
+    }
+
+    setTexture(a0: number): void {
+        callVoid(1332, this.handle, [a0]);
+    }
+
+    setUvBufferOffset(a0: number): void {
+        callVoid(1333, this.handle, [a0]);
     }
 
 }
